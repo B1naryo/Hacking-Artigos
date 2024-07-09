@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>0xma - Cyber Security Articles</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <meta name="description" content="0xma.com contains a bunch of articles related to cyber security.">
+        <meta name="keywords" content="kali, linux, kali linux, xss, cross-site scripting, lfi, local file inclusion, ssti, server-side template injection, second order sql injection, privileges escalation">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="books/index.html">Book Summaries</a></li>
+                    <li class="nav_li"><a href="hacking/index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="#">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <div class="index_titles top_title">
+                    <a href="hacking/clicker_file_write.html"><h3>Exploiting File Write Vulnerability</h3></a>
+                    <p class="date">February 15, 2024</p>
+                    <p>In this tutorial we will see how to get a reverse shell on a web application that runs PHP. The website offers a game that records the number of times you click on the page. The web application allows us to export the scoreboard in .txt, .json, or .html formats. However, we can also export the scoreboard in PHP format and write a custom PHP file which will allow us to run commands.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/clicker_sql_injection.html"><h3>SQL Injection - Example 6</h3></a>
+                    <p class="date">February 15, 2024</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection attack. The website offers a game that records the number of times you click on the page. However, the PHP function that saves the user score is vulnerable to SQL injection attack.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/clicker_newline_injection.html"><h3>Newline Injection</h3></a>
+                    <p class="date">February 15, 2024</p>
+                    <p>In this tutorial, we will see how to perform a newline injection attack. The website offers a game that records the number of times you click on the page. However, the PHP function that saves the user score is vulnerable to newline injection attack.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/retired_file_read.html"><h3>Bypass PHP URL Filtering to Perform LFI Attack</h3></a>
+                    <p class="date">September 29, 2023</p>
+                    <p>In this tutorial, we will see how to bypass URL filtering to read local files on the target system. I will use some custom PHP code to explain the backend logic and how it can be bypassed. And at the end we will use a simple Bash script to read local files from the target using the terminal without having to use the browser.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/fingerprint_ear.html"><h3>EAR (Execute After Redirect) Vulnerability</h3></a>
+                    <p class="date">August 17, 2023</p>
+                    <p>In this tutorial, we will see how to exploit the EAR (Execute After Redirect) vulnerability. According to OWASP: Execution After Redirect (EAR) is an attack where an attacker ignores redirects and retrieves sensitive content intended for authenticated users. A successful EAR exploit can lead to complete compromise of the application.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/phoenix_wordpress_sql_injection.html"><h3>Time-Based SQL Injection - Example 01</h3></a>
+                    <p class="date">July 27, 2023</p>
+                    <p>In this tutorial, we will see how to perform a time-based SQL injection attack on a Wordpress website. We will see how to determine what DBMS is in use, names of the databases on the system, the tables in the databases, and finally we will see how to dump the contents of the databases.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/backendtwo_mass_assignment.html"><h3>Mass Assignment Vulnerability</h3></a>
+                    <p class="date">June 24, 2023</p>
+                    <p>In this tutorial, we will see how to perform a mass assignment vulnerability attack. The API on the website takes JSON input. We can change settings like email address, profile, etc. But the API also allows us to change our privilege level.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pandora_rce_one.html"><h3>Remote Command Execution in Artica Pandora FMS 744 (CVE-2020-13851)</h3></a>
+                    <p class="date">June 23, 2023</p>
+                    <p>In this tutorial, we will see how to perform a get a reverse shell by triggering a RCE (Remote Code Execution) vulnerability in Artica Pandora FMS. The vulnerability exists in the "Events" page of the FMS.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/unicode_directory_travel_bypass_filter.html"><h3>Perform Directory Traversal by Bypassing Filters</h3></a>
+                    <p class="date">June 22, 2023</p>
+                    <p>In this tutorial, we will see how to bypass a web application filter and perform directory traversal. We will be using the unicode character "%ef%bc%8f" which translates to "/" in ASCII. The target performs normalization after the payload bypasses the WAF, therefore, allowing us to bypass the filter and perform directory traversal attack.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pandora_sql_injection.html"><h3>SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 02</h3></a>
+                    <p class="date">June 14, 2023</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection on the Artica Pandora FMS using sqlmap. This will allow us to read SESSION IDs from the database and we will see how to use wfuzz to find a valid SESSION ID and login as another user on the target.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pandora_rce_two.html"><h3>SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 01</h3></a>
+                    <p class="date">June 09, 2023</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection attack in the pandora_console component of the Artica Pandora FMS 742. It allows an unauthenticated attacker to upgrade his unprivileged session via the /include/chart_generator.php "session_id" parameter which leads to login bypass.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pivotapi_kerberoasting.html"><h3>AS-REP Roast Attach (Kerberoasting)</h3></a>
+                    <p class="date">May 31, 2022</p>
+                    <p>In this tutorial, we will see how to perform AS-REP Roasting attack. AS-REP Roasting is an attack against Kerberos for user accounts that do not require any kind of pre-authentication. Pre-authentication is required by default in Active Directory but it can be modified by a user account control setting on user accounts.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pivotapi_reset_password_using_powerview.html"><h3>Reset Password Using PowerView PowerShell Script</h3></a>
+                    <p class="date">May 26, 2022</p>
+                    <p>In this tutorial, we will see how to reset a user's password using the PowerView.ps1 PowerShell script. After downloading this script, we will have to first import it and then use the "Set-DomainUserPassword" function to reset the password.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pivotapi_get_laps_creds.html"><h3>Retrieve LAPS (Local Administrator Password Solution) Credentials</h3></a>
+                    <p class="date">May 24, 2022</p>
+                    <p>In this tutorial, we will see how to retrieve the LAPS (Local Administrator Password Solution) password from the system. We will start by adding a user to the LAPS group. And once the user is part of the LAPS group, we will see how to retrieve the LAPS password and login to the target as administrator.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/pivotapi_mssql_proxy.html"><h3>MSSQL Proxy</h3></a>
+                    <p class="date">May 20, 2022</p>
+                    <p>In this tutorial, we will see how to proxy our traffic through Microsoft SQL Server. This technique can be used to perform lateral movement through a compromised Microsoft SQL Server. It is important to have "sysadmin" privileges on the Microsoft SQL server.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/search_gmsa.html"><h3>Retrieve GMSA (Group Managed Service Accounts) Password</h3></a>
+                    <p class="date">May 15, 2022</p>
+                    <p>In this tutorial, we will see how to retrieve the password from a GMSA (Group Managed Service Account) account. After retrieving the password, we will see how to use the credential to run commands with the privileges of the GMSA account.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/toby_crack_mysql_hashes.html"><h3>Capture and Crack MariaDB/MySQL Hashes</h3></a>
+                    <p class="date">May 11, 2022</p>
+                    <p>In this tutorial, we will see how to capture MariaDB/MySQL credentials and crack it to get the plain-text password. We will see how to run the MySQL service on the local box and have the target connect back to us so that we could capture the hashes and then crack it using hashcat.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/shibboleth_maria_db_exploit.html"><h3>MariaDB/MySQL Exploit Version 10.3.25 (CVE-2021-27928)</h3></a>
+                    <p class="date">May 10, 2022</p>
+                    <p>In this tutorial, we will see how to exploit MariaDB/MySQL 10.3.25 to get root level access. We login to the MySQL instance as a standard user and run a .so file that we generate using msfvenom. The .so file is a shared object file which is kind of Linux's version of a DLL.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/altered_dirty_pipe_02.html"><h3>Dirty Pipe Exploit (CVE-2022-0847) - Example 02</h3></a>
+                    <p class="date">May 9, 2022</p>
+                    <p>In this tutorial, we will see how to perform a privilege escalation attack using the Dirty Pipe exploit. Dirty Pipe takes advantage of a vulnerability in the Linux kernel which allows overwriting data in the arbitary read-only files. This leads to privilege escalation because unprivileged processes can inject code into root processes.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/altered_dirty_pipe_01.html"><h3>Dirty Pipe Exploit (CVE-2022-0847) - Example 01</h3></a>
+                    <p class="date">May 8, 2022</p>
+                    <p>In this tutorial, we will see how to perform a privilege escalation attack using the Dirty Pipe exploit. Dirty Pipe takes advantage of a vulnerability in the Linux kernel which allows overwriting data in the arbitary read-only files. This leads to privilege escalation because unprivileged processes can inject code into root processes.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/backdoor_identify_process_through_lfi.html"><h3>Identify Vulnerable Processes Through LFI</h3></a>
+                    <p class="date">May 7, 2022</p>
+                    <p>In this tutorial, we will see how to exploit a LFI (Local File Inclusion) vulnerability to identify processes running on the system. Normally, people use LFI to read files on the target system. However, it can also be used to list all the processes running on the target which will allow us to identify any vulnerable processes that we can exploit in future.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/shibboleth_brute_force_pin.html"><h3>Brute-Force Pins Using wfuzz</h3></a>
+                    <p class="date">May 6, 2022</p>
+                    <p>In this tutorial, we will see how to brute-force PINs using wfuzz. The web site has a "Forgot Password" button that will prompt for a username. Upon submitting the username, it will send a PIN to the email address associated with the username.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/altered_sql_injection.html"><h3>SQL Injection - Example 5</h3></a>
+                    <p class="date">May 5, 2022</p>
+                    <p>In this tutorial, we will see how to perform SQL injection by modifying data that is sent as JSON. Using this technique, we can list the contents of the databases, read local files on the server and gain reverse shell to the target.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/altered_php_type_juggling.html"><h3>PHP Type Juggling</h3></a>
+                    <p class="date">May 4, 2022</p>
+                    <p>In this tutorial, we will see how to perform PHP type juggling. We will see how to take parameters from the GET request and send it as JSON in the body of the GET request. Using this technique, we will be able to access data in an unintended way.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/bolt_template_injection.html"><h3>Server Side Template Injection - Example 3</h3></a>
+                    <p class="date">May 3, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SSTI (Server-Side Template Injection) attack. We inject the payload in the username. Upon changing our profile, an email is sent to us which asks us to confirm our profile changes by clicking on a link. Once we click on the link, it triggers the payload and another email is sent to us saying that our changes has been confirmed.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/spider_template_injection.html"><h3>Server Side Template Injection - Example 2</h3></a>
+                    <p class="date">May 2, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SSTI (Server-Side Template Injection) attack. The website allows us to register ourselves and provides us with a UUID that we can use with the password to login to the web application. Once logged in, we can buy furniture by adding it to the cart.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/hancliffe_template_injection.html"><h3>Server Side Template Injection - Example 1</h3></a>
+                    <p class="date">May 1, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SSTI (Server-Side Template Injection) attack. The web server is running nginx. This SSTI attack will allow us to upload a netcat executable to the target and gain a reverse shell on the local box.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/earlyaccess_lfi.html"><h3>Local File Inclusion (LFI) Attack - Example 1</h3></a>
+                    <p class="date">April 30, 2022</p>
+                    <p>In this tutorial, we will see how to perform a Local File Inclusion (LFI) attack. LFI attacks can be used by an attacker to expose files on the web server. Using this method we can access sensitive files on the web server and read its contents.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/spider_sql_injection.html"><h3>SQL Injection - Example 4</h3></a>
+                    <p class="date">April 29, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection attack by injecting our payload in the UUID which we will use to generate a Flask cookie using a leaked Flask secret. When the cookie is submitted to the web application, it tries to extract the UUID from the cookie and based on that UUID, it tries to obtain a username from the database.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/union_sql_injection.html"><h3>SQL Injection - Example 3</h3></a>
+                    <p class="date">April 28, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection in a website where we submit our names to join a tournament. We will run the SQL injection attacks using Burp Suite and curl. After we identify a SQL injection vulnerability, we will write a Python script to perform a LFI (Local File Inclusion) attack to identify and download important files in the local system.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/previse_sql_injection.html"><h3>SQL Injection - Example 2</h3></a>
+                    <p class="date">April 27, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection by uploading a file. The web application allows the users to upload a file and once the file has been uploaded, the files are listed and available for everyone to download. While uploading a file, we will capture it in Burp Suite and make modifications to the POST request to perform a SQL injection.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/ricoh_printer_privilege_escalation.html"><h3>Ricoh Printer Driver Privilege Escalation</h3></a>
+                    <p class="date">April 26, 2022</p>
+                    <p>In this tutorial, we will see how to escalate our privileges from a standard user to SYSTEM level privileges. The target has Ricoh printer driver installed on the system which has a privilege escalation vulnerability. For this exploit to work, it is important to have standard user access on the system.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/scf_capture_hashes.html"><h3>Capture Hashes with SCF File</h3></a>
+                    <p class="date">April 25, 2022</p>
+                    <p>In this tutorial, we will see how to capture the login credentials of a user by uploading a .scf file to a shared folder. Once a user accesses that folder, that particular user's hashes/login credentials will be shared with us. SCF stands for Shell Command File and it supports a very limited set of Windows Explorer Commands.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/arp_privilege_escalation.html"><h3>ARP Privilege Escalation</h3></a>
+                    <p class="date">April 24, 2022</p>
+                    <p>In this tutorial, we will see how to use ARP to read files that can be read by users with root level privileges. We are assuming that the ARP tool has the "ep" capabilities set. If these capabilities are set then it can allow us to read any file that we want on the Linux system.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/privilege_escalation_via_server_operators_group.html"><h3>Privilege Escalation via Server Operators Group</h3></a>
+                    <p class="date">April 23, 2022</p>
+                    <p>In this tutorial, we will see how to escalate our privileges from an account that is a member of the "Server Operators Group" so that we could gain "nt authority\system" level privileges. Members of this group can start and stop system services.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/earlyaccess_xss.html"><h3>Capture LDAP Credentials</h3></a>
+                    <p class="date">April 22, 2022</p>
+                    <p>In this tutorial, we will see how to capture the LDAP credentials of our target that is running a printer service. We have access to the printer's configuration settings. These settings allows us to specify a server's IP address with which it will be communicating. We will be using our own box's IP address and once the Printer service communicates with us we will be able to capture the credentials.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/earlyaccess_xss.html"><h3>Cross-Site Scripting (XSS) Attack - Example 2</h3></a>
+                    <p class="date">April 17, 2022</p>
+                    <p>In this tutorial, we will see how to perform a cross-site scripting (XSS) attack and retrieve cookies of another user. We inject the XSS payload in the username section of the user's profile. Once the user sends a message to the site administrators, the XSS payload is triggered and we retrieve the cookies.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/validation_sql_injection.html"><h3>Second Order SQL Injection - Example 2</h3></a>
+                    <p class="date">April 12, 2022</p>
+                    <p>In this tutorial, we will see how to perform a second order SQL injection. The SQL injection will be performed on an item from the drop down list which the developer forgot to filter for bad characters. After revealing the contents of the database, we will see how to write a PHP file on the web server and gain reverse shell on the box.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/writer_sql_injection.html"><h3>SQL Injection - Example 1</h3></a>
+                    <p class="date">April 04, 2022</p>
+                    <p>In this tutorial, we will see how to perform a SQL injection on the login page of a website. We will learn how to use "ffuf" to see if the login page is vulnerable to SQL injection by using different payloads from danielmiessler's SecLists. And at the end of this tutorial, we will see how to write a simple Python script to perform a LFI (Local File Inclusion) attack on the web application.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/stacked_xss.html"><h3>XSS (Cross-Site Scripting) - Example 1</h3></a>
+                    <p class="date">March 29, 2022</p>
+                    <p>In this tutorial, we will see how to perform XXS (Cross-Site Scripting) attack by modifying the "Referer" header of our request that is used while we are submitting a "Contact Us" form. Using this attack technique, we will see how to read a user's email by writing some JavaScript code.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/bypass_apparmor_with_perl_script.html"><h3>Bypass AppArmor with Perl Script</h3></a>
+                    <p class="date">March 18, 2022</p>
+                    <p>In this tutorial, we will see how to bypass AppArmor using a Perl script. AppArmor is a Linux kernel security module that allows the system administrator to restrict programs' capabilities with per-program profiles.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/earlyaccess_sql_injection.html"><h3>Second Order SQL Injection - Example 1</h3></a>
+                    <p class="date">March 13, 2022</p>
+                    <p>In this tutorial, we will see how to perform a second order SQL injection and read the contents of the database. In a second order SQL injection, the attacker's input is injected into the database and is later used in a SQL query when a user accesses some other functionality of the same application.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/nunchucks_server_side_template_injection.html"><h3>Server-Side Template Injection - Example 1</h3></a>
+                    <p class="date">March 09, 2022</p>
+                    <p>In this tutorial, we will see how to exploit SSTI (Server-Side Template Injection) vulnerability on the Nunjucks template engine and gain remote code execution.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/node_cookie_deserialization_command_injection.html"><h3>Node Cookie Deserialization Command Injection</h3></a>
+                    <p class="date">February 24, 2022</p>
+                    <p>In this tutorial, we will see how to inject malformed cookie to gain remote code execution on the target. The target is using the "node-serialize" module to deserialize the cookie. This page and this page contains ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/xxe_injection.html"><h3>XXE Injection</h3></a>
+                    <p class="date">February 20, 2022</p>
+                    <p>In this tutorial we will see how to perform an XXE (XML External Entity) injection. The web application in this example accepts a form that is in a XML format. Using XXE injection, we can fetch any content we want ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/nosql_authentication_bypass.html"><h3>NoSQL Authentication Bypass</h3></a>
+                    <p class="date">February 15, 2022</p>
+                    <p>In this tutorial we will see how to bypass NoSQL authentication. The server is running Node.js (Express) and it prompts us for a username and password.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/wordpress_theme_edit.html"><h3>Reverse Shell in WordPress via Theme (Template) Edit Feature</h3></a>
+                    <p class="date">August 13, 2021</p>
+                    <p>In this tutorial we will see how to get a reverse shell on a WordPress server by editing a theme. The assumption is that we already have ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/wordpress_edit_plugin.html"><h3>Reverse Shell in WordPress via Edit Plugin Feature</h3></a>
+                    <p class="date">August 6, 2021</p>
+                    <p>In this tutorial we will see how to edit a plugin to get a reverse shell on the WordPress server. In order to edit a plugin, we need to have administrative privileges on the WordPress server otherwise it ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/wordpress_add_plugin.html"><h3>Reverse Shell in WordPress via Add Plugin Feature</h3></a>
+                    <p class="date">July 30, 2021</p>
+                    <p>In this tutorial we will see how to create a simple plugin using PHP that we can then upload to the WordPress server. Installing this malicious plugin with a backdoor will allow us to get a reverse shell on the server.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/browse_smb_file_shares_with_smbmap.html"><h3>Browse SMB File Shares With smbmap</h3></a>
+                    <p class="date">July 23, 2021</p>
+                    <p>In this tutorial we will see how to connect to a SMB server using credentials and browse it to find directories or files that we are interested in. We will also cover how to download individual files from the SMB ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/exploit_printnightmare.html"><h3>Exploit PrintNightmare</h3></a>
+                    <p class="date">July 16, 2021</p>
+                    <p>In this tutorial we will see how to use the PrintNightmare exploit to escalate our privileges. PrintNightmare (CVE-2021-1675) exploit came out in 2021 and is a critical remote code execution and local privilege ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/transferring_files_with_netcat.html"><h3>Transfer Files with NetCat</h3></a>
+                    <p class="date">July 9, 2021</p>
+                    <p>In this tutorial we will see how to transfer files from one machine to another machine using netcat. It might come in handy in situations where we are trying to copy some file from one box to another and the only ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/brute_force_kerberos_users_with_kerbrute.html"><h3>Brute Force Kerberos Users With Kerbrute</h3></a>
+                    <p class="date">July 2, 2021</p>
+                    <p>In this tutorial we will see how to bruteforce Kerberos users using a username list. This helps us identify usernames of the potential victims in the organization.</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/brute_force_windows_server_metasploit.html"><h3>Brute Force Windows Server SMB Credentials with Metasploit</h3></a>
+                    <p class="date">June 25, 2021</p>
+                    <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/brute_force_windows_server_crackmapexec.html"><h3>Brute Force Windows Server SMB Credentials with CrackMapExec</h3></a>
+                    <p class="date">June 18, 2021</p>
+                    <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/brute_force_windows_server_2016_ncrack.html"><h3>Brute Force Windows Server SMB Credentials with NCrack</h3></a>
+                    <p class="date">June 11, 2021</p>
+                    <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/brute_force_windows_server_2016_hydra.html"><h3>Brute Force Windows Server SMB Credentials with Hydra</h3></a>
+                    <p class="date">June 4, 2021</p>
+                    <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that use common passwords which would make our organization vulnerable ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/brute_force_windows_server_2016_medusa.html"><h3>Bruteforce Windows Server SMB Credentials with Medusa</h3></a>
+                    <p class="date">May 28, 2021</p>
+                    <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that use common passwords which would make our organization vulnerable ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/extract_passwords_with_lazagne.html"><h3>Extract Passwords with LaZagne</h3></a>
+                    <p class="date">May 21, 2021</p>
+                    <p>In this tutorial we will see how to retrieve or extract passwords from the local computer. For this demo we will be using the Firefox browser to login to our email account. Then we run lazagne to retrieve the stored ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/wpadmin_shell_upload.html"><h3>wp_admin_shell_upload</h3></a>
+                    <p class="date">May 14, 2021</p>
+                    <p>In this tutorial we will see how to upload a reverse shell and gain remote code execution on a Wordpress target. We will be using the wp_admin_shell_upload module of Metasploit to perform this ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/modifying_etc_passwd_file.html"><h3>Escalate Privileges by Modifying the /etc/passwd File</h3></a>
+                    <p class="date">May 7, 2021</p>
+                    <p>In this tutorial we will see how we can modify the /etc/passwd file to reset the root user's password or to create a new user with root level privileges. However, for this we need to have write access to the ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/escalate_privileges_via_pip.html"><h3>Escalate Privileges via pip</h3></a>
+                    <p class="date">April 30, 2021</p>
+                    <p>In this tutorial we will see how to escalate our privileges by creating a simple Python script that will get installed using pip. The current user "homer" is a standard user and doesn't have root privileges. But ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/extract_firefox_profile_passwords.html"><h3>Extract Passwords from Firefox Profile</h3></a>
+                    <p class="date">April 23, 2021</p>
+                    <p>In this tutorial we will see how to recover passwords from a Firefox profile which is protected by a Master password (now it is called a Primary Password by Mozilla). However, if there is a profile that is not protected ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/local_privilege_escalation_on_linux_kernel.html"><h3>Local Privilege Escalation on Linux Kernel < 4.4.0-116</h3></a>
+                    <p class="date">April 16, 2021</p>
+                    <p>In this tutorial we will see how to elevate our privileges using an exploit that affects Linux Kernels that are older than 4.4.0-116. This exploit can affect Ubuntu 16.04.4. For this example, we will be running the exploit ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/exploit_eternalblue_with_custom_script_2.html"><h3>Exploit EternalBlue with Custom Exploit - 2</h3></a>
+                    <p class="date">April 9, 2021</p>
+                    <p>In this tutorial we will see how to gain access to a remote computer using the EternalBlue exploit. EternalBlue exploits a vulnerability in Microsoft's implementation of the Server Message Block (SMB)  ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/exploit_eternalblue_with_custom_script_1.html"><h3>Exploit EternalBlue with Custom Exploit - 1</h3></a>
+                    <p class="date">April 2, 2021</p>
+                    <p>In this tutorial we will see how to gain access to a remote computer using the EternalBlue exploit. EternalBlue exploits a vulnerability in Microsoft's implementation of the Server Message Block (SMB) ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/eternal_blue_metasploit.html"><h3>Eternal Blue Exploitation with Metasploit</h3></a>
+                    <p class="date">March 26, 2021</p>
+                    <p>In this tutorial we will see how to gain access to a remote computer using the EternalBlue exploit. EternalBlue exploits a vulnerability in Microsoft's implementation of the Server Message Block (SMB) ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/psexec_in_linux.html"><h3>PsExec in Linux</h3></a>
+                    <p class="date">March 19, 2021</p>
+                    <p>In this tutorial we will see how to run PsExec in Linux to connect to a Windows machine and execute processes. We will be using the psexec.py and the psexec module of Metasploit in this example. This ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/simple_powershell_wget_script.html"><h3>Simple wget PowerShell Script</h3></a>
+                    <p class="date">March 12, 2021</p>
+                    <p>In this tutorial, we will see how to create a simple PowerShell script that will act like the "wget" tool in Linux. The advantages of writing this script is that we can very easily download files from a remote server to our ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/metasploit_privilege_escalation.html"><h3>Escalating Privileges with Metasploit's Local Exploit Suggester</h3></a>
+                    <p class="date">March 5, 2021</p>
+                    <p>In this tutorial we will see how to use the "local exploit suggester" module of Metasploit. This module allows us to escalate our privileges ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/reading_outlook_pst_files.html"><h3>Reading Outlook Files in Terminal</h3></a>
+                    <p class="date">February 26, 2021</p>
+                    <p>In this tutorial we will see how to open .pst files in a inux terminal. There are accounts, such as POP accounts, that store information in Outlook Data Files (.pst files) on the local computer. And .mbox files contain ...</p>
+                </div>
+                <div class="index_titles top_title">
+                    <a href="hacking/escalate_regular_shell_to_meterpreter_shell.html"><h3>Escalate a Regular Shell to Meterpreter Shell</h3></a>
+                    <p class="date">February 19, 2021</p>
+                    <p>In this tutorial we will see how to login to a Windows 10 machine using telnet and then run Metasploit against it to get a meterpreter shell. Now, this might be a rare situation in which we get access to a Windows 10 ...</p>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

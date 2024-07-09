@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+		<!--	created with www.mysitemapgenerator.com	-->
+		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>https://0xma.com/</loc>
+	<lastmod>2022-04-24T05:46:14+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/index.html</loc>
+	<lastmod>2022-04-24T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/clicker_file_write.html</loc>
+	<lastmod>2024-02-06T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/clicker_sql_injection.html</loc>
+	<lastmod>2024-02-06T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/clicker_newline_injection.html</loc>
+	<lastmod>2024-02-06T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/retired_file_read.html</loc>
+	<lastmod>2022-09-29T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/fingerprint_ear.html</loc>
+	<lastmod>2022-08-17T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/phoenix_wordpress_sql_injection.html</loc>
+	<lastmod>2022-07-27T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/backendtwo_mass_assignment.html</loc>
+	<lastmod>2022-06-24T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pandora_rce_one.html</loc>
+	<lastmod>2022-06-23T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/unicode_directory_travel_bypass_filter.html</loc>
+	<lastmod>2022-06-22T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pandora_sql_injection.html</loc>
+	<lastmod>2022-06-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pandora_rce_two.html</loc>
+	<lastmod>2022-06-08T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pivotapi_kerberoasting.html</loc>
+	<lastmod>2022-05-31T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pivotapi_reset_password_using_powerview.html</loc>
+	<lastmod>2022-05-26T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pivotapi_get_laps_creds.html</loc>
+	<lastmod>2022-05-24T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/pivotapi_mssql_proxy.html</loc>
+	<lastmod>2022-05-20T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/search_gmsa.html</loc>
+	<lastmod>2022-05-15T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/toby_crack_mysql_hashes.html</loc>
+	<lastmod>2022-05-11T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/shibboleth_maria_db_exploit.html</loc>
+	<lastmod>2022-05-10T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/altered_dirty_pipe_02.html</loc>
+	<lastmod>2022-05-09T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/altered_dirty_pipe_01.html</loc>
+	<lastmod>2022-05-08T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/backdoor_identify_process_through_lfi.html</loc>
+	<lastmod>2022-05-07T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/shibboleth_brute_force_pin.html</loc>
+	<lastmod>2022-05-06T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/altered_sql_injection.html</loc>
+	<lastmod>2022-05-05T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/altered_php_type_juggling.html</loc>
+	<lastmod>2022-05-04T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/bolt_template_injection.html</loc>
+	<lastmod>2022-05-03T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/spider_template_injection.html</loc>
+	<lastmod>2022-05-02T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/hancliffe_template_injection.html</loc>
+	<lastmod>2022-05-01T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/earlyaccess_lfi.html</loc>
+	<lastmod>2022-04-30T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/spider_sql_injection.html</loc>
+	<lastmod>2022-04-29T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/union_sql_injection.html</loc>
+	<lastmod>2022-04-28T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/previse_sql_injection.html</loc>
+	<lastmod>2022-04-27T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/ricoh_printer_privilege_escalation.html</loc>
+	<lastmod>2022-04-26T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/scf_capture_hashes.html</loc>
+	<lastmod>2022-04-25T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/arp_privilege_escalation.html</loc>
+	<lastmod>2022-04-24T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/privilege_escalation_via_server_operators_group.html</loc>
+	<lastmod>2022-04-23T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/capture_ldap_credentials.html</loc>
+	<lastmod>2022-04-22T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/earlyaccess_xss.html</loc>
+	<lastmod>2022-04-17T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/validation_sql_injection.html</loc>
+	<lastmod>2022-04-12T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/writer_sql_injection.html</loc>
+	<lastmod>2022-04-04T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/stacked_xss.html</loc>
+	<lastmod>2022-03-29T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/reading_targets_from_a_file.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/nmap_smb_os_discovery.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/nmap_ms17_010.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/nmap_ms08_067.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/nmap_enum_smb_shares.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/generating_html_scan_reports.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/finding_smb_vulnerabilities.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/bypass_apparmor_with_perl_script.html</loc>
+	<lastmod>2022-03-18T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/earlyaccess_sql_injection.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/nunchucks_server_side_template_injection.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/node_cookie_deserialization_command_injection.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/xxe_injection.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/nosql_authentication_bypass.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/wordpress_theme_edit.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/wordpress_edit_plugin.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/wordpress_add_plugin.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/browse_smb_file_shares_with_smbmap.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/exploit_printnightmare.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/transferring_files_with_netcat.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/brute_force_kerberos_users_with_kerbrute.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/brute_force_windows_server_metasploit.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/brute_force_windows_server_crackmapexec.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/brute_force_windows_server_2016_ncrack.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/brute_force_windows_server_2016_hydra.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/brute_force_windows_server_2016_medusa.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/extract_passwords_with_lazagne.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/wpadmin_shell_upload.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/modifying_etc_passwd_file.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/escalate_privileges_via_pip.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/extract_firefox_profile_passwords.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/local_privilege_escalation_on_linux_kernel.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/exploit_eternalblue_with_custom_script_2.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/exploit_eternalblue_with_custom_script_1.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/eternal_blue_metasploit.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/psexec_in_linux.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/simple_powershell_wget_script.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/metasploit_privilege_escalation.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/reading_outlook_pst_files.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/hacking/escalate_regular_shell_to_meterpreter_shell.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://0xma.com/index.html</loc>
+	<lastmod>2022-03-14T05:46:14+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+</urlset>
