@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cross-Site Scripting (XSS) Attack - Example 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a XSS injection attack and steal the cookies of another user.">
+        <meta name="keywords" content="kali, linux, kali linux, xss, xss injection, xss cookies">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 17, 2022</p>
+                <h1 class="heading">Cross-Site Scripting (XSS) Attack - Example 2</h1>
+                <p>In this tutorial, we will see how to perform a cross-site scripting (XSS) attack and retrieve cookies of another user. We inject the XSS payload in the username section of the user's profile. Once the user sends a message to the site administrators, the XSS payload is triggered and we retrieve the cookies.</p>
+                <p>Let's register a user.</p>
+                <img src="../img/earlyaccess_xss/001.png" alt="Registration page." title="Registration page.">
+                <br>
+                <br>
+                <p>Once registered, it redirects us to the main page.</p>
+                <img src="../img/earlyaccess_xss/002.png" alt="Main Page." title="Main Page.">
+                <br>
+                <br>
+                <p>Click on the username and go to Profile.</p>
+                <img src="../img/earlyaccess_xss/003.png" alt="Going to the profile page." title="Going to the profile page.">
+                <br>
+                <br>
+                <p>This is the profile page where we can change the username, email and password.</p>
+                <img src="../img/earlyaccess_xss/004.png" alt="Profile page." title="Profile page.">
+                <br>
+                <br>
+                <p>Changing the username to include the &lt;b&gt; tags makes the username bold. If the username is displayed in bold text somewhere in the web application, then it is a good indication that the web application might be vulnerable to XSS attacks.</p>
+                <img src="../img/earlyaccess_xss/005.png" alt="Submitting the XSS payload." title="Submitting the XSS payload.">
+                <br>
+                <br>
+                <p>The username shown at the top-right corner of the page shows the &lt;b&gt; tags and the username is not displayed in bold.</p>
+                <img src="../img/earlyaccess_xss/006.png" alt="XSS payload in the profile page." title="XSS payload in the profile page.">
+                <br>
+                <br>
+                <p>Let's see if the username is displayed in bold text in other places of the web application. We go to the "Contact Us" page.</p>
+                <img src="../img/earlyaccess_xss/007.png" alt="Going to the Contact Us page." title="Going to the Contact Us page.">
+                <br>
+                <br>
+                <p>Let's type something in the form and click on "Send".</p>
+                <img src="../img/earlyaccess_xss/008.png" alt="Submitting the Contact Us form." title="Submitting the Contact Us form.">
+                <br>
+                <br>
+                <p>The form has been submitted successfully.</p>
+                <img src="../img/earlyaccess_xss/009.png" alt="Message successfully sent." title="Message successfully sent.">
+                <br>
+                <br>
+                <p>Click on the "Message to: admin" link.</p>
+                <img src="../img/earlyaccess_xss/010.png" alt="Going to the sent message." title="Going to the sent message.">
+                <br>
+                <br>
+                <p>We can see that the username "0xma" is in bold. In case it is not visible, I will try to italicize the username.</p>
+                <img src="../img/earlyaccess_xss/011.png" alt="Bold username in the Info page." title="Bold username in the Info page.">
+                <br>
+                <br>
+                <p>Let's surround the username with &lt;i&gt; tags to italicize it.</p>
+                <img src="../img/earlyaccess_xss/012.png" alt="Italicizing our username." title="Italicizing our username.">
+                <br>
+                <br>
+                <p>Submit the form.</p>
+                <img src="../img/earlyaccess_xss/013.png" alt="Sending another message." title="Sending another message.">
+                <br>
+                <br>
+                <p>And now we can see that the username is displayed in italics.</p>
+                <img src="../img/earlyaccess_xss/014.png" alt="Italcized username in the Info page." title="Italcized username in the Info page.">
+                <br>
+                <br>
+                <p>Our next step is to steal the cookies. Let's use some JavaScript to connect to the local server which we initiate by running the <span class="command">sudo python3 -m http.server 80</span> command in the terminal. Note that this command runs a web server on our local machine and opens port 80. Once it connects to the web server, it will reveal its cookies.</p>
+                <img src="../img/earlyaccess_xss/015.png" alt="Modifying username to retrieve cookies." title="Modifying username to retrieve cookies.">
+                <br>
+                <br>
+                <p>Let's submit the form once again.</p>
+                <img src="../img/earlyaccess_xss/016.png" alt="Submit the form." title="Submit the form.">
+                <br>
+                <br>
+                <p>Click on the "Message to: admin" link.</p>
+                <img src="../img/earlyaccess_xss/017.png" alt="Going to the sent message." title="Going to the sent message.">
+                <br>
+                <br>
+                <p>We get a "Error response" page with error code 404. Unlike the last time, we don't see our message.</p>
+                <img src="../img/earlyaccess_xss/018.png" alt="Error response page." title="Error response page.">
+                <br>
+                <br>
+                <p>Whenever someone on the target side checks the message, it will send the cookie to the local web server in a GET request. After a couple of minutes,  we get a GET request which includes the session cookies.</p>
+                <img src="../img/earlyaccess_xss/019.png" alt="Session cookie received in Python web server." title="Session cookie received in Python web server.">
+                <br>
+                <br>
+                <p>Let's URL Decode our session cookies in CyberChef. However, we could do this in Burp Suite as well.</p>
+                <img src="../img/earlyaccess_xss/020.png" alt="URL decoding the session cookie in CyberChef." title="URL decoding the session cookie in CyberChef.">
+                <br>
+                <br>
+                <p>Right-click on the browser page and then click on "Inspect". The Storage tab shows the cookies.</p>
+                <img src="../img/earlyaccess_xss/021.png" alt="Viewing the current session cookie." title="Viewing the current session cookie.">
+                <br>
+                <br>
+                <p>Enter in the URL decoded session cookie.</p>
+                <img src="../img/earlyaccess_xss/022.png" alt="Replacing the current session cookie with the newly received session cookie." title="Replacing the current session cookie with the newly received session cookie.">
+                <br>
+                <br>
+                <p>Now the user is logged in as the "admin" user.</p>
+                <img src="../img/earlyaccess_xss/023.png" alt="Gaining admin privileges on the web application." title="Gaining admin privileges on the web application.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nosql_authentication_bypass.html" class="widget_links">NoSQL Authentication Bypass</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">WPAdmin Shell Upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_theme_edit.html" class="widget_links">Reverse Shell in WordPress via Theme (Template) Edit Feature</a></li>
+                        </ul>
+                    </div>
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

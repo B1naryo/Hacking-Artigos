@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dirty Pipe Exploit - Example 02</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 9, 2022</p>
+                <h1 class="heading">Dirty Pipe Exploit - Example 02</h1>
+                <p>In this tutorial, we will see how to perform a privilege escalation attack using the Dirty Pipe exploit. Dirty Pipe takes advantage of a vulnerability in the Linux kernel which allows overwriting data in the arbitary read-only files. This leads to privilege escalation because unprivileged processes can inject code into root processes.</p>
+                <p><a href="https://dirtypipe.cm4all.com/">This</a> page contains more information about the Dirty Pipe exploit.</p>
+                <p>The following screenshots from GitHub shows some information about the Dirty Pipe exploit.</p>
+                <img src="../img/altered_dirty_pipe_2/001.png" alt="GitHub Dirty Pipe exploit." title="GitHub Dirty Pipe exploit.">
+                <img src="../img/altered_dirty_pipe_2/002.png" alt="GitHub Dirty Pipe exploit." title="GitHub Dirty Pipe exploit.">
+                <img src="../img/altered_dirty_pipe_2/003.png" alt="GitHub Dirty Pipe exploit." title="GitHub Dirty Pipe exploit.">
+                <img src="../img/altered_dirty_pipe_2/004.png" alt="GitHub Dirty Pipe exploit." title="GitHub Dirty Pipe exploit.">
+                <img src="../img/altered_dirty_pipe_2/005.png" alt="GitHub Dirty Pipe exploit." title="GitHub Dirty Pipe exploit.">
+                <br>
+                <br>
+                <p>Let's download the exploit from GitHub.</p>
+                <img src="../img/altered_dirty_pipe_2/006.png" alt="Downloading the exploit from GitHub." title="Downloading the exploit from GitHub.">
+                <br>
+                <br>
+                <p>It compiles the exploit code into a Linux executable which we will upload to the target.</p>
+                <img src="../img/altered_dirty_pipe_2/007.png" alt="Compiling the exploit code using gcc." title="Compiling the exploit code using gcc.">
+                <br>
+                <br>
+                <p><span class="command">wget</span> downloads the file from the local box. We have to set the executable bit as well.</p>
+                <img src="../img/altered_dirty_pipe_2/008.png" alt="Downloading the executable using wget." title="Downloading the executable using wget.">
+                <br>
+                <br>
+                <p>The file has been retrieved from the Python web server.</p>
+                <img src="../img/altered_dirty_pipe_2/009.png" alt="File retrieved from the Python web server." title="File retrieved from the Python web server.">
+                <br>
+                <br>
+                <p>This exploit requires a binary that has the SUID bit set. We can see that the <span class="command">pkexec</span> binary meets the criteria.</p>
+                <img src="../img/altered_dirty_pipe_2/010.png" alt="Looking for a binary that has the suid bit set." title="Looking for a binary that has the suid bit set.">
+                <br>
+                <br>
+                <p>Executing the exploit with the binary that has the SUID bit set will give us root access to the box.</p>
+                <img src="../img/altered_dirty_pipe_2/011.png" alt="Executing the exploit to get root access to the box." title="Executing the exploit to get root access to the box.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_01.html" class="widget_links">Dirty Pipe Exploit - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/ricoh_printer_privilege_escalation.html" class="widget_links">Ricoh Printer Driver Privilege Escalation</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/scf_capture_hashes.html" class="widget_links">Capture Hashes with SCF File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/privilege_escalation_via_server_operators_group.html" class="widget_links">Privilege Escalation via Server Operators Group</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel &lt; 4.4.0-116</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

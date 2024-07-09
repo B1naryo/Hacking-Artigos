@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mass Assignment Vulnerability</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">June 24, 2022</p>
+                <h1 class="heading">Mass Assignment Vulnerability</h1>
+                <p>In this tutorial, we will see how to perform a mass assignment vulnerability attack. The API on the website takes JSON input. We can change settings like email address, profile, etc. But the API also allows us to change our privilege level.</p>
+                <p>Let's start by creating an account on the web application API.</p>
+                <img src="../img/backendtwo_mass_assignment/001.png" alt="Signing up in the web application API using JSON." title="Signing up in the web application API using JSON.">
+                <br>
+                <br>
+                <p>Now that we have created an account, we can login and get an access token.</p>
+                <img src="../img/backendtwo_mass_assignment/002.png" alt="Log in to the web application API to get an access token." title="Log in to the web application API to get an access token.">
+                <br>
+                <br>
+                <p>The documentation for the API is in "http://10.129.106.137/docs/". I try to access that page and capture the request in Burp Intercept.</p>
+                <img src="../img/backendtwo_mass_assignment/003.png" alt="Visiting the documentation page for the API." title="Visiting the documentation page for the API.">
+                <br>
+                <br>
+                <p>Since the documentation page requires us to be authenticated, it is important to add the "Authorization" header with the access token that we got from the API.</p>
+                <img src="../img/backendtwo_mass_assignment/004.png" alt="Adding the 'Authorization' header to the request." title="Adding the 'Authorization' header to the request.">
+                <br>
+                <br>
+                <p>It is important to add this header to all the subsequent requests that are sent to the API.</p>
+                <img src="../img/backendtwo_mass_assignment/005.png" alt="Adding the 'Authorization' header to the request." title="Adding the 'Authorization' header to the request.">
+                <br>
+                <br>
+                <img src="../img/backendtwo_mass_assignment/006.png" alt="Adding the 'Authorization' header to the request." title="Adding the 'Authorization' header to the request.">
+                <br>
+                <br>
+                <p>This shows the API's documentation page. From here we can view and change user settings.</p>
+                <img src="../img/backendtwo_mass_assignment/007.png" alt="API documentation page that allows us to view and change user settings." title="API documentation page that allows us to view and change user settings.">
+                <br>
+                <br>
+                <p>Trying to access the user's settings displays this page. It has the following fields: guid, email, profile, last_update, time_created, is_superuser and id.</p>
+                <img src="../img/backendtwo_mass_assignment/008.png" alt="User settings." title="User settings.">
+                <br>
+                <br>
+                <p>The user section allows us to fetch user data, edit the user's profile, edit the user's password, login and signup.</p>
+                <img src="../img/backendtwo_mass_assignment/009.png" alt="Options available for the user in the API documentation." title="Options available for the user in the API documentation.">
+                <br>
+                <br>
+                <p>Since the user profile was empty, let's try to add something to it.</p>
+                <img src="../img/backendtwo_mass_assignment/010.png" alt="Adding a user profile." title="Adding a user profile.">
+                <br>
+                <br>
+                <p>We can see that the profile is updated.</p>
+                <img src="../img/backendtwo_mass_assignment/011.png" alt="Profile update in the API documentation." title="Profile update in the API documentation.">
+                <br>
+                <br>
+                <p>Let's see if we can update the email address as well.</p>
+                <img src="../img/backendtwo_mass_assignment/012.png" alt="Updating the email address in the profile." title="Updating the email address in the profile.">
+                <br>
+                <br>
+                <p>The email address has been updated.</p>
+                <img src="../img/backendtwo_mass_assignment/013.png" alt="Profile update in the API documentation." title="Profile update in the API documentation.">
+                <br>
+                <br>
+                <p>The next step is to see if we can update the user's privileges.</p>
+                <img src="../img/backendtwo_mass_assignment/014.png" alt="Updating the 'is_superuser' setting to elevate the user's privilege." title="Updating the 'is_superuser' setting to elevate the user's privilege.">
+                <br>
+                <br>
+                <p>We can see that the 'is_superuser' setting is set to true. We have successfully been able to elevate our privileges.</p>
+                <img src="../img/backendtwo_mass_assignment/015.png" alt="Profile update in the API documentation." title="Profile update in the API documentation.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/unicode_directory_travel_bypass_filter.html" class="widget_links">Perform Directory Traversal by Bypassing Filters</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backdoor_identify_process_through_lfi.html" class="widget_links">Identify Vulnerable Processes Through LFI</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_brute_force_pin.html" class="widget_links">Brute-Force Pins Using wfuzz</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

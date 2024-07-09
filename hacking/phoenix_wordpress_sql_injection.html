@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Time-Based SQL Injection - Example 01</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">July 27, 2022</p>
+                <h1 class="heading">Time-Based SQL Injection - Example 01</h1>
+                <p>In this tutorial, we will see how to perform a time-based SQL injection attack on a Wordpress website. We will see how to determine what DBMS is in use, names of the databases on the system, the tables in the databases, and finally we will see how to dump the contents of the databases.</p>
+                <p>Using the <span class="command">--technique=T</span> option tells sqlmap to use time-based SQL injection technique. It identifies the DBMS to be MySQL.</p>
+                <img src="../img/phoenix_wordpress_sql_injection/001.png" alt="Running time-based sql injection to determine the DBMS type." title="Running time-based sql injection to determine the DBMS type.">
+                <img src="../img/phoenix_wordpress_sql_injection/002.png" alt="Running time-based sql injection to determine the DBMS type." title="Running time-based sql injection to determine the DBMS type.">
+                <br>
+                <br>
+                <p>The <span class="command">--dbs</span> option tells sqlmap to find the databases on the target. It was able to find two databases: information_schema and wordpress.</p>
+                <img src="../img/phoenix_wordpress_sql_injection/003.png" alt="Running sqlmap to determine the database names on the target." title="Running sqlmap to determine the database names on the target.">
+                <img src="../img/phoenix_wordpress_sql_injection/004.png" alt="Running sqlmap to determine the database names on the target." title="Running sqlmap to determine the database names on the target.">
+                <br>
+                <br>
+                <p>The <span class="command">--tables</span> option reveals the table names in the "wordpress" database. It was able to find forty tables in the database.</p>
+                <img src="../img/phoenix_wordpress_sql_injection/005.png" alt="Running sqlmap to find the tables in a database." title="Running sqlmap to find the tables in a database.">
+                <img src="../img/phoenix_wordpress_sql_injection/006.png" alt="Running sqlmap to find the tables in a database." title="Running sqlmap to find the tables in a database.">
+                <br>
+                <br>
+                <p>The <span class="command">--columns</span> option reveals the column names in the "wp_users" table. This table has ten columns.</p>
+                <img src="../img/phoenix_wordpress_sql_injection/007.png" alt="Running sqlmap to find column names in the table." title="Running sqlmap to find column names in the table.">
+                <img src="../img/phoenix_wordpress_sql_injection/008.png" alt="Running sqlmap to find column names in the table." title="Running sqlmap to find column names in the table.">
+                <br>
+                <br>
+                <p>The <span class="command">--dump</span> option dumps the contents of the wp_users table.</p>
+                <img src="../img/phoenix_wordpress_sql_injection/009.png" alt="Dumping the contents of the table using sqlmap." title="Dumping the contents of the table using sqlmap.">
+                <img src="../img/phoenix_wordpress_sql_injection/010.png" alt="Dumping the contents of the table using sqlmap." title="Dumping the contents of the table using sqlmap.">
+                <!-- <img src="../img/phoenix_wordpress_sql_injection/011.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>We can also add a "WHERE" clause to extract a specific row from the table. In this case, it is returning the row with the ID of 1.</p>
+                <img src="../img/phoenix_wordpress_sql_injection/012.png" alt="Running sqlmap to retrieve a specific row from the table." title="Running sqlmap to retrieve a specific row from the table.">
+                <img src="../img/phoenix_wordpress_sql_injection/013.png" alt="Running sqlmap to retrieve a specific row from the table." title="Running sqlmap to retrieve a specific row from the table.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/backendtwo_mass_assignment.html" class="widget_links">Mass Assignment Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/unicode_directory_travel_bypass_filter.html" class="widget_links">Perform Directory Traversal by Bypassing Filters</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backdoor_identify_process_through_lfi.html" class="widget_links">Identify Vulnerable Processes Through LFI</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_brute_force_pin.html" class="widget_links">Brute-Force Pins Using wfuzz</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

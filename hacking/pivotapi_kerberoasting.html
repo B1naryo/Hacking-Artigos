@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AS-REP Roast Attach (Kerberoasting)</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 31, 2022</p>
+                <h1 class="heading">AS-REP Roast Attach (Kerberoasting)</h1>
+                <p>In this tutorial, we will see how to perform AS-REP Roasting attack. AS-REP Roasting is an attack against Kerberos for user accounts that do not require any kind of pre-authentication. Pre-authentication is required by default in Active Directory but it can be modified by a user account control setting on user accounts.</p>
+                <p><a href="https://stealthbits.com/blog/cracking-active-directory-passwords-with-as-rep-roasting/">This</a> page contains more information about this type of attack.</p>
+                <p>Let's run <span class="command">GetNPUsers.py</span> to retrieve the TGT for the user called "Kaorz".</p>
+                <img src="../img/pivotapi_kerberoasting/001.png" alt="Running GetNPUsers.py to retrieve TGT for a user." title="Running GetNPUsers.py to retrieve TGT for a user.">
+                <br>
+                <br>
+                <p>Save the TGT in a text file.</p>
+                <img src="../img/pivotapi_kerberoasting/002.png" alt="Saving the TGT in a text file." title="Saving the TGT in a text file.">
+                <br>
+                <br>
+                <p>It shows how to crack the TGT using <span class="command">hashcat</span>.</p>
+                <img src="../img/pivotapi_kerberoasting/003.png" alt="Cracking the TGT using hashcat." title="Cracking the TGT using hashcat.">
+                <img src="../img/pivotapi_kerberoasting/004.png" alt="Cracking the TGT using hashcat." title="Cracking the TGT using hashcat.">
+                <br>
+                <br>
+                <p>And it shows how to crack the TGT using <span class="command">john</span>.</p>
+                <img src="../img/pivotapi_kerberoasting/005.png" alt="Cracking the TGT using john." title="Cracking the TGT using john.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_reset_password_using_powerview.html" class="widget_links">Reset Password Using PowerView PowerShell Script</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ricoh Printer Driver Privilege Escalation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to escalate our privileges by exploiting a Ricoh printer driver.">
+        <meta name="keywords" content="kali, linux, kali linux, ricoh, driver, privilege, escalation, ricoh driver privilege escalation">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 26, 2022</p>
+                <h1 class="heading">Ricoh Printer Driver Privilege Escalation</h1>
+                <p>In this tutorial, we will see how to escalate our privileges from a standard user to SYSTEM level privileges. The target has Ricoh printer driver installed on the system which has a privilege escalation vulnerability. For this exploit to work, it is important to have standard user access on the system.</p>
+                <p>Let's generate a 64-bit meterpreter executable using <span class="command">msfvenom</span>.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/001.png" alt="Generating a 64-bit meterpreter executable." title="Generating a 64-bit meterpreter executable.">
+                <br>
+                <br>
+                <p>This shows the generated executable which we intend to upload and execute on the target.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/002.png" alt="64-bit meterpreter payload." title="64-bit meterpreter payload.">
+                <br>
+                <br>
+                <p>It uploads the executable to the target.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/003.png" alt="Uploading the executable to the target." title="Uploading the executable to the target.">
+                <br>
+                <br>
+                <p>The file has been successfully upload.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/004.png" alt="File upload successful." title="File upload successful.">
+                <br>
+                <br>
+                <p>Let's create a metasploit listener with the payload we have generated and the IP address and port on which we are listening.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/005.png" alt="Creating a metasploit listener." title="Creating a metasploit listener.">
+                <br>
+                <br>
+                <p>Run the meterpreter executable.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/006.png" alt="Running the meterpreter executable." title="Running the meterpreter executable.">
+                <br>
+                <br>
+                <p>We get a reverse shell on the metasploit listener. We can see that the target is running 64-bit Windows 10. And the current user is "tony".</p>
+                <img src="../img/ricoh_printer_privilege_escalation/007.png" alt="Reverse connection established in metasploit." title="Reverse connection established in metasploit.">
+                <br>
+                <br>
+                <p><span class="command">ps</span> lists all the processes on the system. For this exploit to work, we need to migrate to the "explorer.exe" process.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/008.png" alt="List of all the processes in metasploit." title="List of all the processes in metasploit.">
+                <img src="../img/ricoh_printer_privilege_escalation/009.png" alt="List of all the processes in metasploit." title="List of all the processes in metasploit.">
+                <br>
+                <br>
+                <p>It migrates to the "explorer.exe" process.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/010.png" alt="Migrating to the explorer.exe process." title="Migrating to the explorer.exe process.">
+                <br>
+                <br>
+                <p><span class="command">background</span> puts the current session in the background. <span class="command">use exploit/windows/local/ricoh_driver_privesc</span> sets the "ricoh_driver_privesc" to be used on the target. Note that the meterpreter session was using session number 1. We use <span class="command">set SESSION 1</span> becauase we want this exploit to be used in the session that we had put in the background earlier. </p>
+                <img src="../img/ricoh_printer_privilege_escalation/011.png" alt="Running the exploit." title="Running the exploit.">
+                <br>
+                <br>
+                <p>After running the exploit, another meterpreter session is opened (meterpreter session 2). Now we have "NT AUTHORITY\SYSTEM" access on the system.</p>
+                <img src="../img/ricoh_printer_privilege_escalation/012.png" alt="Privilege escalation successful." title="Privilege escalation successful.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/scf_capture_hashes.html" class="widget_links">Capture Hashes with SCF File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/privilege_escalation_via_server_operators_group.html" class="widget_links">Privilege Escalation via Server Operators Group</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel &lt; 4.4.0-116</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

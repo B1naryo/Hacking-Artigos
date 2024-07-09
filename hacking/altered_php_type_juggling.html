@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PHP Type Juggling</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform PHP type juggling.">
+        <meta name="keywords" content="kali, linux, kali linux, php, type, juggling, php type juggling, web application hacking, json hacking">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 4, 2022</p>
+                <h1 class="heading">PHP Type Juggling</h1>
+                <p>In this tutorial, we will see how to perform PHP type juggling. We will see how to take parameters from the GET request and send it as JSON in the body of the GET request. Using this technique, we will be able to access data in an unintended way.</p>
+                <p>This is the main page of the web application. Clicking on "View", displays some data about that particular user.</p>
+                <img src="../img/altered_php_type_juggling/001.png" alt="Main page of the web application." title="Main page of the web application.">
+                <br>
+                <br>
+                <p>Clicking on the "View" button triggers a function called "getBio".</p>
+                <img src="../img/altered_php_type_juggling/002.png" alt="Viewing the source of the main page." title="Viewing the source of the main page.">
+                <br>
+                <br>
+                <p>This function sends a GET request to "api/getprofile".</p>
+                <img src="../img/altered_php_type_juggling/003.png" alt="JavaScript function that is triggered when clicking on the View button." title="JavaScript function that is triggered when clicking on the View button.">
+                <br>
+                <br>
+                <p>Capturing the GET request shows that it contains two parameters: id and secret.</p>
+                <img src="../img/altered_php_type_juggling/004.png" alt="Capturing the HTTP request in Burp Suite." title="Capturing the HTTP request in Burp Suite.">
+                <br>
+                <br>
+                <p>It displays some data about the user called "big0us".</p>
+                <img src="../img/altered_php_type_juggling/005.png" alt="Displaying some random data about a user." title="Displaying some random data about a user.">
+                <br>
+                <br>
+                <p>Clicking on the second user sends a different "id" and "secret".</p>
+                <img src="../img/altered_php_type_juggling/006.png" alt="Capturing the HTTP request for the second user in Burp Suite." title="Capturing the HTTP request for the second user in Burp Suite.">
+                <br>
+                <br>
+                <p>And it displays some info related to the second user.</p>
+                <img src="../img/altered_php_type_juggling/007.png" alt="Displaying some random data about the second user." title="Displaying some random data about the second user.">
+                <br>
+                <br>
+                <p>Let's send one of these GET requests to Burp Repeater.</p>
+                <img src="../img/altered_php_type_juggling/008.png" alt="Sending a GET request to Burp Repeater." title="Sending a GET request to Burp Repeater.">
+                <br>
+                <br>
+                <p>This is the default response to a valid request.</p>
+                <img src="../img/altered_php_type_juggling/009.png" alt="Sending a HTTP request through Burp Repeater." title="Sending a HTTP request through Burp Repeater.">
+                <br>
+                <br>
+                <p>Right-click on the request and click on "Change request method".</p>
+                <img src="../img/altered_php_type_juggling/010.png" alt="Changing the request method from GET to POST." title="Changing the request method from GET to POST.">
+                <br>
+                <br>
+                <p>Sending the request as a POST results in a "405 Method Not Allowed".</p>
+                <img src="../img/altered_php_type_juggling/011.png" alt="Sending the request as a POST." title="Sending the request as a POST.">
+                <br>
+                <br>
+                <p>Let's change the POST to GET but keep the "id" and "secret" in the body. This results in "422 Unprocessable Content" response.</p>
+                <img src="../img/altered_php_type_juggling/012.png" alt="Changing the request back to GET." title="Changing the request back to GET.">
+                <br>
+                <br>
+                <p>The next step is to change the contents of the body to JSON. I have also added a new header: Content-Type: application/json. This seems to work because we get the data related to the first user.</p>
+                <img src="../img/altered_php_type_juggling/013.png" alt="Sending the request body as JSON." title="Sending the request body as JSON.">
+                <br>
+                <br>
+                <p>Let's try to retrieve data for the second user by changing the ID. However, it detects that the input has been tampered. It is because each user has its own particular hash.</p>
+                <img src="../img/altered_php_type_juggling/014.png" alt="Trying to access data of a different user." title="Trying to access data of a different user.">
+                <br>
+                <br>
+                <p>However, changing the value of "secret" to "true" seems to work. And it displays data related to the second user. Using PHP juggling attack can allow us to perform many unintended actions and gain access to data that we are not supposed to have, bypass login restrictions, etc.</p>
+                <img src="../img/altered_php_type_juggling/015.png" alt="Performing PHP juggling attack by using true for the secret value." title="Performing PHP juggling attack by using true for the secret value.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

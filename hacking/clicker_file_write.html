@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exploiting File Write Vulnerability</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">February 15, 2024</p>
+                <h1 class="heading">Exploiting File Write Vulnerability</h1>
+                <p>In this tutorial we will see how to get a reverse shell on a web application that runs PHP. The website offers a game that records the number of times you click on the page. The web application allows us to export the scoreboard in .txt, .json, or .html formats. However, we can also export the scoreboard in PHP format and write a custom PHP file which will allow us to run commands.</p>
+                <p>This is the 'Administration' portal which shows the top scorers of the game.</p>
+                <img src="../img/clicker_file_write/001.png" alt="Administration portal which displays top scorers." title="Administration portal which displays top scorers.">
+                <br>
+                <br>
+                <p>We can export this in three different formats: .txt, .json, and .html.</p>
+                <img src="../img/clicker_file_write/002.png" alt="Exporting the top scorers in three different formats." title="Exporting the top scorers in three different formats.">
+                <br>
+                <br>
+                <p>After exporting the data, it gives the location where it is saved.</p>
+                <img src="../img/clicker_file_write/003.png" alt="Viewing the location where the data is saved." title="Viewing the location where the data is saved.">
+                <br>
+                <br>
+                <p>The exported data includes the user's nickname, the number of clicks and the user's level.</p>
+                <img src="../img/clicker_file_write/004.png" alt="Viewing the exported data." title="Viewing the exported data.">
+                <br>
+                <br>
+                <p>Clicking on the white circular area increases the number of clicks. Note that we have the option to save the game.</p>
+                <img src="../img/clicker_file_write/005.png" alt="Playing the game." title="Playing the game.">
+                <br>
+                <br>
+                <p>This is the request that is passed to the web application when we save the game. It passes two parameters: clicks and levels.</p>
+                <img src="../img/clicker_file_write/006.png" alt="HTTP request that saves the game." title="HTTP request that saves the game.">
+                <br>
+                <br>
+                <p>Let's add another parameter called 'nickname'.</p>
+                <img src="../img/clicker_file_write/007.png" alt="Adding a new parameter called 'nickname'." title="Adding a new parameter called 'nickname'.">
+                <br>
+                <br>
+                <p>Exporting the data shows that the new nickname has taken effect.</p>
+                <img src="../img/clicker_file_write/008.png" alt="Viewing the new nickname." title="Viewing the new nickname.">
+                <br>
+                <br>
+                <p>Let's see if we can add a PHP command shell in place of the user's nickname.</p>
+                <img src="../img/clicker_file_write/009.png" alt="Adding a PHP command shell in place of the user's nickname." title="Adding a PHP command shell in place of the user's nickname.">
+                <br>
+                <br>
+                <p>When exporting the table of top players, it takes two parameters: 'threshold' and 'extension'.</p>
+                <img src="../img/clicker_file_write/010.png" alt="HTTP request that exports the top players." title="HTTP request that exports the top players.">
+                <br>
+                <br>
+                <p>Let's change the extension to PHP. There is no restriction in place to stop us from doing so.</p>
+                <img src="../img/clicker_file_write/011.png" alt="Changing the extension to PHP." title="Changing the extension to PHP.">
+                <br>
+                <br>
+                <p>Let's visit the exported data page and pass in the 'id' command to see its output.</p>
+                <img src="../img/clicker_file_write/012.png" alt="Running the 'id' command." title="Running the 'id' command.">
+                <br>
+                <br>
+                <p>In order to get a reverse shell, we need to URL-encode the Bash reverse shell command.</p>
+                <img src="../img/clicker_file_write/014.png" alt="Encoding the Bash reverse shell command." title="Encoding the Bash reverse shell command.">
+                <br>
+                <br>
+                <p>Pass in the URL-encoded Bash reverse shell command.</p>
+                <img src="../img/clicker_file_write/013.png" alt="Running the reverse shell command." title="Running the reverse shell command.">
+                <br>
+                <br>
+                <p>And we get a reverse shell on our netcat listener.</p>
+                <img src="../img/clicker_file_write/015.png" alt="Getting a reverse shell on our netcat listener." title="Getting a reverse shell on our netcat listener.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/clicker_sql_injection.html" class="widget_links">SQL Injection - Example 6</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/clicker_newline_injection.html" class="widget_links">Newline Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/retired_file_read.html" class="widget_links">Bypass PHP URL Filtering to Perform LFI Attack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/fingerprint_ear.html" class="widget_links">EAR (Execute After Redirect) Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/phoenix_wordpress_sql_injection.html" class="widget_links">Time-Based SQL Injection - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backendtwo_mass_assignment.html" class="widget_links">Mass Assignment Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_one.html" class="widget_links">Remote Command Execution in Artica Pandora FMS 744 (CVE-2020-13851)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/unicode_directory_travel_bypass_filter.html" class="widget_links">Perform Directory Traversal by Bypassing Filters</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_sql_injection.html" class="widget_links">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 02</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_two.html" class="widget_links">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 01</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Example 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a SQL injection by uploading a file.">
+        <meta name="keywords" content="kali, linux, kali linux, sql, injection, file, upload, sql injection file upload">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 27, 2022</p>
+                <h1 class="heading">SQL Injection - Example 2</h1>
+                <p>In this tutorial, we will see how to perform a SQL injection by uploading a file. The web application allows the users to upload a file and once the file has been uploaded, the files are listed and available for everyone to download. While uploading a file, we will capture it in Burp Suite and make modifications to the POST request to perform a SQL injection.</p>
+                <p>This is the page that allows us to upload files.</p>
+                <img src="../img/previse_sql_injection/001.png" alt="Main page of the application." title="Main page of the application.">
+                <br>
+                <br>
+                <p>The sample file which we will upload.</p>
+                <img src="../img/previse_sql_injection/002.png" alt="Sample text file to upload." title="Sample text file to upload.">
+                <br>
+                <br>
+                <p>Let's click on "Select file".</p>
+                <img src="../img/previse_sql_injection/003.png" alt="File upload page." title="File upload page.">
+                <br>
+                <br>
+                <p>Select the sample text file.</p>
+                <img src="../img/previse_sql_injection/004.png" alt="Selecting the sample text file." title="Selecting the sample text file.">
+                <br>
+                <br>
+                <p>Once the file is selected, click on "Submit".</p>
+                <img src="../img/previse_sql_injection/005.png" alt="Submitting the file." title="Submitting the file.">
+                <br>
+                <br>
+                <p>This is the captured POST request that uploads the file. Note that it contains the contents of the text file and it has a parameter called "filename" which contains the name of the file "Previse.txt".</p>
+                <img src="../img/previse_sql_injection/006.png" alt="Captured request in Burp Intercept." title="Captured request in Burp Intercept.">
+                <br>
+                <br>
+                <p>Once uploaded, the file gets listed which is available for everyone to download.</p>
+                <img src="../img/previse_sql_injection/007.png" alt="File list in the web application." title="File list in the web application.">
+                <br>
+                <br>
+                <p>This is the PHP code that is used in the page that uploads the file.</p>
+                <img src="../img/previse_sql_injection/029.png" alt="PHP code of the upload page." title="PHP code of the upload page.">
+                <br>
+                <br>
+                <p>It is the SQL statement that is used to insert data related to the file in the database. It takes four values: filename, filesize, filedata, and username.</p>
+                <img src="../img/previse_sql_injection/030.png" alt="SQL INSERT statement that saves the properties of the file in the database." title="SQL INSERT statement that saves the properties of the file in the database.">
+                <br>
+                <br>
+                <p>The goal is to insert SQL injection payloads for values taken from the file and comment out the rest of the statement.</p>
+                <img src="../img/previse_sql_injection/031.png" alt="SQL injection that we try to perform." title="SQL injection that we try to perform.">
+                <br>
+                <br>
+                <p>This is the statement that we try to inject. "empty admin file" is used for fileName, "0" is used for fileSize, "" is used for fileData, and "admin" is used for $_SESSION['user']. And since we comment out the rest of the SQL statement, everything following the comment is ignored.</p>
+                <img src="../img/previse_sql_injection/008.png" alt="SQL injection when uploading a file." title="SQL injection when uploading a file.">
+                <br>
+                <br>
+                <p>Executing the SQL injection through Burp Repeater results in "Error while uploading! :(".</p>
+                <img src="../img/previse_sql_injection/009.png" alt="Error while uploading message." title="Error while uploading message.">
+                <br>
+                <br>
+                <p>However, if we remove the blank line after the contents of the file "This is a sample file", the SQL injection gets executed successfully. Note that the contents of the file is changed to "0xma.com", but it is irrelevant.</p>
+                <img src="../img/previse_sql_injection/010.png" alt="Successful SQL injection." title="Successful SQL injection.">
+                <br>
+                <br>
+                <p>A new file has been added to the list with the name of "EMPTY ADMIN FILE". It means that the SQL injection was successful.</p>
+                <img src="../img/previse_sql_injection/011.png" alt="SQL injection added the filename to the list." title="SQL injection added the filename to the list.">
+                <br>
+                <br>
+                <p>Let's try to insert some text "0xmacybersec" in the username field.</p>
+                <img src="../img/previse_sql_injection/012.png" alt="Inserting some text in the username field." title="Inserting some text in the username field.">
+                <br>
+                <br>
+                <p>Send the SQL injection through Burp Repeater.</p>
+                <img src="../img/previse_sql_injection/013.png" alt="SQL injection through Burp Repeater." title="SQL injection through Burp Repeater.">
+                <br>
+                <br>
+                <p>We can see that the username has been added to the file list.</p>
+                <img src="../img/previse_sql_injection/014.png" alt="SQL injection added the username." title="SQL injection added the username.">
+                <br>
+                <br>
+                <p>Next, let's try to get all the "usernames" from the "accounts" table. We are assuming that there is a table by the name of accounts that has a column by the name of username.</p>
+                <img src="../img/previse_sql_injection/015.png" alt="SQL injection to get usernames from the accounts table." title="SQL injection to get usernames from the accounts table.">
+                <br>
+                <br>
+                <p>However, executing the SQL injection results in an error message.</p>
+                <img src="../img/previse_sql_injection/016.png" alt="Error while uploading message." title="Error while uploading message.">
+                <br>
+                <br>
+                <p>The error message is an indication that there is probably more than one user in the table. This is why it is important to limit the results to one row.</p>
+                <img src="../img/previse_sql_injection/017.png" alt="SQL injection to retrieve one username from the table." title="SQL injection to retrieve one username from the table.">
+                <br>
+                <br>
+                <p>Executing the SQL injection through Burp Repeater returns a "File successfully uploaded! :)" message.</p>
+                <img src="../img/previse_sql_injection/018.png" alt="SQL injection through Burp Repeater." title="SQL injection through Burp Repeater.">
+                <br>
+                <br>
+                <p>We can see that the username "0xmacybersec" is added to the list. This is the username that is registered in the web application and is saved in the database.</p>
+                <img src="../img/previse_sql_injection/019.png" alt="One username retrieved from the database." title="One username retrieved from the database.">
+                <br>
+                <br>
+                <p>Next, we try to get all the usernames in the database by using the "group_concat" function. This function concatenates all the usernames in the table (in this case 2) and displays them in the page.</p>
+                <img src="../img/previse_sql_injection/020.png" alt="SQL injection to display all the usernames in the table." title="SQL injection to display all the usernames in the table.">
+                <br>
+                <br>
+                <img src="../img/previse_sql_injection/021.png" alt="SQL injection to retrieve all usernames through Burp Repeater." title="SQL injection to retrieve all usernames through Burp Repeater.">
+                <br>
+                <br>
+                <p>All the usernames in the table (in this case 2) are displayed in the list.</p>
+                <img src="../img/previse_sql_injection/022.png" alt="SQL injection displayed in the list." title="SQL injection displayed in the list.">
+                <br>
+                <br>
+                <p>Again, we are assuming that if there is a column by the name of "username" then there must be a column by the name of "password" as well. Using this SQL injection, we are trying to get a username and password separated by a ':' from the accounts table.</p>
+                <img src="../img/previse_sql_injection/023.png" alt="SQL injection to retrieve username and password." title="SQL injection to retrieve username and password.">
+                <br>
+                <br>
+                <img src="../img/previse_sql_injection/024.png" alt="SQL injection through Burp Repeater." title="SQL injection through Burp Repeater.">
+                <br>
+                <br>
+                <p>We can see that the username and password is displayed in the list.</p>
+                <img src="../img/previse_sql_injection/025.png" alt="Username and password displayed in the list." title="Username and password displayed in the list.">
+                <br>
+                <br>
+                <p>The next goal is to try and get all the usernames and passwords in the table. In order to make it more readable we try to separate each row with a &lt;br&gt; tag.</p>
+                <img src="../img/previse_sql_injection/026.png" alt="SQL injection to retrieve all the usernames and passwords in the table." title="SQL injection to retrieve all the usernames and passwords in the table.">
+                <br>
+                <br>
+                <img src="../img/previse_sql_injection/027.png" alt="SQL injection through Burp Repeater." title="SQL injection through Burp Repeater.">
+                <br>
+                <br>
+                <p>All the usernames and passwords are displayed in the list.</p>
+                <img src="../img/previse_sql_injection/028.png" alt="Usernames and passwords displayed in the list." title="Usernames and passwords displayed in the list.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nosql_authentication_bypass.html" class="widget_links">NoSQL Authentication Bypass</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">WPAdmin Shell Upload</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

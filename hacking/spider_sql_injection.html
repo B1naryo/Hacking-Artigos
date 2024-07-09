@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Examle 4</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a SQL injection using a flask middleware.">
+        <meta name="keywords" content="kali, linux, kali linux, sql, injection, middleware, sql injection, sql injection middleware, flask, middleware, script, flask middleware, flask script">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 29, 2022</p>
+                <h1 class="heading">SQL Injection - Examle 4</h1>
+                <p>In this tutorial, we will see how to perform a SQL injection attack by injecting our payload in the UUID which we will use to generate a Flask cookie using a leaked Flask secret. When the cookie is submitted to the web application, it tries to extract the UUID from the cookie and based on that UUID, it tries to obtain a username from the database. <a href="./spider_template_injection.html">This</a> tutorial provides more information about how we got the Flask secret key using a SSTI (Server-Side Template Injection) attack.</p>
+                <p>This is the main page for the website which allows us to add chairs to the cart.</p>
+                <img src="../img/spider_sql_injection/001.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>Let's register a user.</p>
+                <img src="../img/spider_template_injection/005.png" alt="User registration page." title="User registration page.">
+                <br>
+                <br>
+                <p>It returns a UUID which we use to login to the website instead of using the username.</p>
+                <img src="../img/spider_template_injection/006.png" alt="Logging in to the website." title="Logging in to the website.">
+                <br>
+                <br>
+                <p>Once logged in we can purchase any furniture that we want by adding it to the cart. Let's click on "User Information" on the left panel to see what information it contains regarding the user.</p>
+                <img src="../img/spider_template_injection/007.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>This page contains only the username and UUID.</p>
+                <img src="../img/spider_template_injection/008.png" alt="User information page." title="User information page.">
+                <br>
+                <br>
+                <p>Let's copy the cookie and decode it to see what it contains.</p>
+                <img src="../img/spider_template_injection/009.png" alt="Copying the cookie from the website." title="Copying the cookie from the website.">
+                <br>
+                <br>
+                <p>The last part of the cookie (after the dot (.)) can't be decoded. But the part that is decoded shows that it contains the UUID and the items that we have added to the cart.</p>
+                <img src="../img/spider_template_injection/010.png" alt="Base64 decoding the cookie." title="Base64 decoding the cookie.">
+                <br>
+                <br>
+                <p>Let's click on a chair and add it to the cart.</p>
+                <img src="../img/spider_template_injection/011.png" alt="Adding an item to our cart." title="Adding an item to our cart.">
+                <br>
+                <br>
+                <p>Copy the cookie.</p>
+                <img src="../img/spider_template_injection/012.png" alt="Copying the cookie." title="Copying the cookie.">
+                <br>
+                <br>
+                <p>Base64 decoding the cookie shows that an item has been added to the cart. So this was a quick introduction to the functionality of the website.</p>
+                <img src="../img/spider_template_injection/013.png" alt="Base64 decoding the cookie." title="Base64 decoding the cookie.">
+                <br>
+                <br>
+                <p>Let's start the SQL injection attack. This is a simple Flask web server that acts as proxy between us and the target server. This proxy server will listen for a request and as soon as it receives a request, it pulls the UUID field from the GET request and then craft a new request with that particular UUID in the cookie.</p>
+                <img src="../img/spider_sql_injection/002.png" alt="Simple Flask proxy server." title="Simple Flask proxy server.">
+                <br>
+                <br>
+                <p>Let's run the Flask server. We can see that it is listening on port 5000.</p>
+                <img src="../img/spider_sql_injection/003.png" alt="Running the Flask server." title="Running the Flask server.">
+                <br>
+                <br>
+                <p>This is the main page of the website that we saw earlier. However, the styling doesn't work but it is fine because we don't need the CSS to work for this attack. Note that we include our UUID in the URL which is given to us when we register to the website.</p>
+                <img src="../img/spider_sql_injection/004.png" alt="Website accessed through proxy." title="Website accessed through proxy.">
+                <br>
+                <br>
+                <p>Let's add a single quote after the UUID to see how the web application handles it.</p>
+                <img src="../img/spider_sql_injection/005.png" alt="Adding a single quote to the UUID." title="Adding a single quote to the UUID.">
+                <br>
+                <br>
+                <p>Adding a single quote after the UUID breaks the server.</p>
+                <img src="../img/spider_sql_injection/006.png" alt="Internal Server Error message." title="Internal Server Error message.">
+                <br>
+                <br>
+                <p>Adding a <span class="command">' or 1=1-- -</span> checks if 1 is equal to 1 (which it always is) and comments out the rest of the SQL query.</p>
+                <img src="../img/spider_sql_injection/007.png" alt="Modifying the SQL injection by commenting out the rest of the SQL query." title="Modifying the SQL injection by commenting out the rest of the SQL query.">
+                <br>
+                <br>
+                <p>We can see that the error message is not displayed anymore.</p>
+                <img src="../img/spider_sql_injection/008.png" alt="Main page of the website without errors." title="Main page of the website without errors.">
+                <br>
+                <br>
+                <p>Let's use a UNION injection technique to see if we can return anything back from the database.</p>
+                <img src="../img/spider_sql_injection/009.png" alt="UNION SQL injection to determine how many columns are returned." title="UNION SQL injection to determine how many columns are returned.">
+                <br>
+                <br>
+                <p>We can see that the web application returns one column (because we don't see any errors) but we don't see "1" in the page.</p>
+                <img src="../img/spider_sql_injection/010.png" alt="One column returned from the web application." title="One column returned from the web application.">
+                <br>
+                <br>
+                <p>Let's try to remove the UUID from the GET parameter.</p>
+                <img src="../img/spider_sql_injection/011.png" alt="Removing the UUID from the GET parameter." title="Removing the UUID from the GET parameter.">
+                <br>
+                <br>
+                <p>We can see that after removing the UUID, 1 is displayed on the page.</p>
+                <img src="../img/spider_sql_injection/012.png" alt="Removing the UUID returns 1 on the screen." title="Removing the UUID returns 1 on the screen.">
+                <br>
+                <br>
+                <p>Entering '0xma.com' in the UNION statement returns '0xma.com' in the page.</p>
+                <img src="../img/spider_sql_injection/013.png" alt="Adding 0xma.com to the UNION statement." title="Adding 0xma.com to the UNION statement.">
+                <br>
+                <br>
+                <img src="../img/spider_sql_injection/014.png" alt="Adding 0xma.com to the UNION statement." title="Adding 0xma.com to the UNION statement.">
+                <br>
+                <br>
+                <p>This SQL UNION injection returns a single database name from the database.</p>
+                <img src="../img/spider_sql_injection/015.png" alt="Returning a database name using SQL injection." title="Returning a database name using SQL injection.">
+                <br>
+                <br>
+                <img src="../img/spider_sql_injection/016.png" alt="" title="">
+                <br>
+                <br>
+                <p>Since we are interested in returning all the database names, we use the <span class=command>GROUP_CONCAT()</span> function.</p>
+                <img src="../img/spider_sql_injection/017.png" alt="Returning all the database names using SQL injection." title="Returning all the database names using SQL injection.">
+                <br>
+                <br>
+                <p>The "shop" database seems to be interesting.</p>
+                <img src="../img/spider_sql_injection/018.png" alt="Returning all the database names using SQL injection." title="Returning all the database names using SQL injection.">
+                <br>
+                <br>
+                <p>Let's see if we can return all the table names in the "shop" database.</p>
+                <img src="../img/spider_sql_injection/019.png" alt="Returning the table names in the database using SQL injection." title="Returning the table names in the database using SQL injection.">
+                <br>
+                <br>
+                <p>We can see that it returns four tables: items, messages, support and users. The "users" table seems to be interesting.</p>
+                <img src="../img/spider_sql_injection/020.png" alt="Returning the table names in the database using SQL injection." title="Returning the table names in the database using SQL injection.">
+                <br>
+                <br>
+                <p>Let's return all the column names in the "users" table.</p>
+                <img src="../img/spider_sql_injection/021.png" alt="Returning all the columns in the users table using SQL injection." title="Returning all the columns in the users table using SQL injection.">
+                <br>
+                <br>
+                <p>The "users" table has some interesting columns: id, name, password and uuid.</p>
+                <img src="../img/spider_sql_injection/022.png" alt="Returning the column names in the users table using SQL injection." title="Returning the column names in the users table using SQL injection.">
+                <!-- <img src="../img/spider_sql_injection/023.png" alt="" title="">
+                <img src="../img/spider_sql_injection/024.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Let's return all the values in the "UUID" column. Note that we use the <span class="command">GROUP_CONCAT()</span> function so that it returns all the rows in the column. If we didn't include this function, then only the first row would have been returned back to us.</p>
+                <img src="../img/spider_sql_injection/025.png" alt="Returning the UUID column in the users table using SQL injection." title="Returning the UUID column in the users table using SQL injection.">
+                <br>
+                <br>
+                <img src="../img/spider_sql_injection/026.png" alt="Returning the UUID column in the users table using SQL injection." title="Returning the UUID column in the users table using SQL injection.">
+                <br>
+                <br>
+                <p>This returns all the rows in the "name" column.</p>
+                <img src="../img/spider_sql_injection/027.png" alt="Returning the name column in the users table using SQL injection." title="Returning the name column in the users table using SQL injection.">
+                <br>
+                <br>
+                <p>The first user "chiv" seems to be interesting. Since it is the first user created in the table, it probably has administrative privileges.</p>
+                <img src="../img/spider_sql_injection/028.png" alt="Returning the name column in the users table using SQL injection." title="Returning the name column in the users table using SQL injection.">
+                <br>
+                <br>
+                <p>Let's return the passwords in the "users table".</p>
+                <img src="../img/spider_sql_injection/029.png" alt="Returning the passwords in the users table using SQL injection." title="Returning the passwords in the users table using SQL injection.">
+                <br>
+                <br>
+                <p>Since the first user in the table is "chiv", the first password in the table should also belong to this user.</p>
+                <img src="../img/spider_sql_injection/030.png" alt="Returning the passwords in the users table using SQL injection." title="Returning the passwords in the users table using SQL injection.">
+                <br>
+                <br>
+                <p>We can use the <span class=command>CONCAT()</span> function to concatenate two columns of the same table. Note that we are also separating each line with the &lt;br&gt; tags.</p>
+                <img src="../img/spider_sql_injection/031.png" alt="Returning the name and password columns using SQL injection." title="Returning the name and password columns using SQL injection.">
+                <br>
+                <br>
+                <img src="../img/spider_sql_injection/032.png" alt="Returning the name and password columns using SQL injection." title="Returning the name and password columns using SQL injection.">
+                <br>
+                <br>
+                <p>Now that we have manually performed a SQL injection and extracted the names and passwords from the "users" table, let's try to dump the contents of the "users" table using <span class="command">sqlmap</span>.</p>
+                <img src="../img/spider_sql_injection/033.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <img src="../img/spider_sql_injection/034.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <img src="../img/spider_sql_injection/035.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <img src="../img/spider_sql_injection/036.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <img src="../img/spider_sql_injection/037.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <img src="../img/spider_sql_injection/038.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <img src="../img/spider_sql_injection/039.png" alt="Dumping the users table using sqlmap." title="Dumping the users table using sqlmap.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

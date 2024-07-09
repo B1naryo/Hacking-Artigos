@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Capture and Crack MariaDB/MySQL Hashes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 11, 2022</p>
+                <h1 class="heading">Capture and Crack MariaDB/MySQL Hashes</h1>
+                <p>In this tutorial, we will see how to capture MariaDB/MySQL credentials and crack it to get the plain-text password. We will see how to run the MySQL service on the local box and have the target connect back to us so that we could capture the hashes and then crack it using hashcat.</p>
+                <p>It shows that the MySQL service is inactive.</p>
+                <img src="../img/toby_crack_mysql_hashes/001.png" alt="MySQL/MariaDB service not running or inactive." title="MySQL/MariaDB service not running or inactive.">
+                <br>
+                <br>
+                <p>Let's start the MySQL service.</p>
+                <img src="../img/toby_crack_mysql_hashes/002.png" alt="Starting the MySQL/MariaDB service." title="Starting the MySQL/MariaDB service.">
+                <br>
+                <br>
+                <p>It shows that the MySQL service is running.</p>
+                <img src="../img/toby_crack_mysql_hashes/003.png" alt="MySQL/MariaDB service running or active." title="MySQL/MariaDB service running or active.">
+                <br>
+                <br>
+                <p>First, we have to login to the MySQL instance running on the local box. Then, we have to create a user with which the remote server will be connecting to the MySQL service (which in this case is 'jack'). We have to specify the IP address of the remote server as well.</p>
+                <img src="../img/toby_crack_mysql_hashes/004.png" alt="Creating a user in the MariaDB/MySQL server." title="Creating a user in the MariaDB/MySQL server.">
+                <br>
+                <br>
+                <p>It triggers the target to connect to the MySQL service running on the local box.</p>
+                <img src="../img/toby_crack_mysql_hashes/005.png" alt="Triggering the target to connect to us." title="Triggering the target to connect to us.">
+                <br>
+                <br>
+                <p>However, we can see that when the target connects to the MySQL service, the local machine resets the connection.</p>
+                <img src="../img/toby_crack_mysql_hashes/006.png" alt="Local machine resets the MySQL connection." title="Local machine resets the MySQL connection.">
+                <br>
+                <br>
+                <p>It is because the local machine is listening on the localhost interface and remote servers can't connect to this interface.</p>
+                <img src="../img/toby_crack_mysql_hashes/007.png" alt="MySQL listening on the localhost interface." title="MySQL listening on the localhost interface.">
+                <br>
+                <br>
+                <p>Binding the address to "0.0.0.0" instead of "127.0.0.1" configures the MySQL service to run on all the interfaces on the local machine.</p>
+                <img src="../img/toby_crack_mysql_hashes/008.png" alt="Configuring MariaDB/MySQL to run on all interfaces." title="Configuring MariaDB/MySQL to run on all interfaces.">
+                <br>
+                <br>
+                <p>After changing the MySQL configuration, it is important to restart the service.</p>
+                <img src="../img/toby_crack_mysql_hashes/009.png" alt="Restarting the MariaDB/MySQL service." title="Restarting the MariaDB/MySQL service.">
+                <br>
+                <br>
+                <p>And now we can see that the MySQL service is running on all the interfaces.</p>
+                <img src="../img/toby_crack_mysql_hashes/010.png" alt="MariaDB/MySQL service listening on all interfaces." title="MariaDB/MySQL service listening on all interfaces.">
+                <br>
+                <br>
+                <p>Let's trigger the target server again to connect to the MySQL service.</p>
+                <img src="../img/toby_crack_mysql_hashes/011.png" alt="Triggering the target to connect to the MariaDB/MySQL service." title="Triggering the target to connect to the MariaDB/MySQL service.">
+                <br>
+                <br>
+                <p>Now, we can see that the TCP three way handshake is completed and a MySQL Greeting message is sent.</p>
+                <img src="../img/toby_crack_mysql_hashes/012.png" alt="TCP three way handshake with MySQL greeting message." title="TCP three way handshake with MySQL greeting message.">
+                <br>
+                <br>
+                <p>Note that two salts are also sent. The first salt is eight characters and the second salt is twelve characters.</p>
+                <img src="../img/toby_crack_mysql_hashes/013.png" alt="MySQL salts sent." title="MySQL salts sent.">
+                <br>
+                <br>
+                <p>It shows the password hash that is sent by the client to the MySQL server for authentication. The password is hashed by the two salts.</p>
+                <img src="../img/toby_crack_mysql_hashes/014.png" alt="Password hash used for authentication." title="Password hash used for authentication.">
+                <br>
+                <br>
+                <p>I have combined both salts and run it through <span class="command">xxd</span> to create a hex dump.</p>
+                <img src="../img/toby_crack_mysql_hashes/015.png" alt="Creating a hex dump of the two salts using xxd." title="Creating a hex dump of the two salts using xxd.">
+                <br>
+                <br>
+                <p>It shows the format of the MySQL authentication hash that most cracking tools expect.</p>
+                <img src="../img/toby_crack_mysql_hashes/016.png" alt="Format of the MySQL authentication hash." title="Format of the MySQL authentication hash.">
+                <br>
+                <br>
+                <p>I have combined the salts with the password hash in the expected format.</p>
+                <img src="../img/toby_crack_mysql_hashes/017.png" alt="Combining the hexdump of the salts and hash." title="Combining the hexdump of the salts and hash.">
+                <br>
+                <br>
+                <p>Let's run the hashes through <span class="command">hashcat</span> using a password list. And we can see that <span class="command">hashcat</span> was able to successfully find the password.</p>
+                <img src="../img/toby_crack_mysql_hashes/018.png" alt="Cracking the password with hashcat." title="Cracking the password with hashcat.">
+                <img src="../img/toby_crack_mysql_hashes/019.png" alt="Cracking the password with hashcat." title="Cracking the password with hashcat.">
+                <!-- <img src="../img/toby_crack_mysql_hashes/020.png" alt="" title=""> -->
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_maria_db_exploit.html" class="widget_links">MariaDB/MySQL Exploit Version 10.3.25 (CVE-2021-27928)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_02.html" class="widget_links">Dirty Pipe Exploit - Example 02</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_01.html" class="widget_links">Dirty Pipe Exploit - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/ricoh_printer_privilege_escalation.html" class="widget_links">Ricoh Printer Driver Privilege Escalation</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/scf_capture_hashes.html" class="widget_links">Capture Hashes with SCF File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/privilege_escalation_via_server_operators_group.html" class="widget_links">Privilege Escalation via Server Operators Group</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel &lt; 4.4.0-116</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

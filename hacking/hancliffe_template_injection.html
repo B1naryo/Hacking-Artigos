@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server Side Template Injection - Example 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a Server Side Template Injection (SSTI) injection.">
+        <meta name="keywords" content="kali, linux, kali linux, server, side, template, injection, server side template injection, ssti">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 1, 2022</p>
+                <h1 class="heading">Server Side Template Injection - Example 1</h1>
+                <p>In this tutorial, we will see how to perform a SSTI (Server-Side Template Injection) attack. The web server is running nginx. This SSTI attack will allow us to upload a netcat executable to the target and gain a reverse shell on the local box.</p>
+                <p>This shows the main page of the website.</p>
+                <img src="../img/hancliffe_template_injection/001.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>There is a directory called "/maintenance" that is currently under maintenance.</p>
+                <img src="../img/hancliffe_template_injection/002.png" alt="maintenance directory." title="maintenance directory.">
+                <br>
+                <br>
+                <p>This <a href="https://i.blackhat.com/us-18/Wed-August-8/us-18-Orange-Tsai-Breaking-Parser-Logic-Take-Your-Path-Normalization-Off-And-Pop-0days-Out-2.pdf">page</a> provides more information about this attack. The web server is vulnerable to path normalization issue. Adding <span class="command">..;</span> at the end of the URL redirects us to "/nuxeo/nxstartup.faces".</p>
+                <img src="../img/hancliffe_template_injection/003.png" alt="Trying to discover SSTI vulnerability." title="Trying to discover SSTI vulnerability.">
+                <br>
+                <br>
+                <img src="../img/hancliffe_template_injection/004.png" alt="Trying to discover SSTI vulnerability." title="Trying to discover SSTI vulnerability.">
+                <br>
+                <br>
+                <p>It is the redirection response in Burp Suite.</p>
+                <img src="../img/hancliffe_template_injection/005.png" alt="Trying to discover SSTI vulnerability." title="Trying to discover SSTI vulnerability.">
+                <br>
+                <br>
+                <p>Trying to browse to "/maintenance/..;/nuxeo/nxstartup.faces" redirects us to "/nuxeo/login.jsp".</p>
+                <img src="../img/hancliffe_template_injection/006.png" alt="Following the redirection." title="Following the redirection.">
+                <br>
+                <br>
+                <img src="../img/hancliffe_template_injection/007.png" alt="Following the redirection." title="Following the redirection.">
+                <br>
+                <br>
+                <p>It shows the redirection in Burp Suite.</p>
+                <img src="../img/hancliffe_template_injection/008.png" alt="Following the redirection." title="Following the redirection.">
+                <br>
+                <br>
+                <p>Browsing to "/maintenance/..;/nuxeo/login.jsp" returns a "Sorry, the page you requested cannot be found." message.</p>
+                <img src="../img/hancliffe_template_injection/009.png" alt="Page not found message." title="Page not found message.">
+                <br>
+                <br>
+                <p>Removing "nuxeo" from the URL and adding the payload <span class="command">pwn${7*7}.xhtml</span> displays the result of the multiplication. This shows that SSTI is possible.</p>
+                <img src="../img/hancliffe_template_injection/010.png" alt="Successful SSTI payload." title="Successful SSTI payload.">
+                <br>
+                <br>
+                <p>Paste in this payload in the URL bar of the browser. It tries to ping the local box.</p>
+                <img src="../img/hancliffe_template_injection/011.png" alt="Pinging our local box using SSTI payload." title="Pinging our local box using SSTI payload.">
+                <br>
+                <br>
+                <p>The ICMP packets are received in the local box which is an indication that command execution is successful.</p>
+                <img src="../img/hancliffe_template_injection/012.png" alt="Pinging our local box using SSTI payload." title="Pinging our local box using SSTI payload.">
+                <br>
+                <br>
+                <p>We need to download a 64-bit netcat to the local box so that we could upload it to the web server.</p>
+                <img src="../img/hancliffe_template_injection/013.png" alt="netcat executable on the local box." title="netcat executable on the local box.">
+                <br>
+                <br>
+                <p>This uploads the netcat executable to the "c:\programdata\" directory.</p>
+                <img src="../img/hancliffe_template_injection/014.png" alt="Uploading netcat to the web server." title="Uploading netcat to the web server.">
+                <br>
+                <br>
+                <img src="../img/hancliffe_template_injection/015.png" alt="Uploading netcat to the web server." title="Uploading netcat to the web server.">
+                <br>
+                <br>
+                <p>We have to have this Python web server running before executing the previus payload. It shows that the netcat executable has been successfully retrieved.</p>
+                <img src="../img/hancliffe_template_injection/016.png" alt="Python web server serving the netcat executable." title="Python web server serving the netcat executable.">
+                <br>
+                <br>
+                <p>Executing this payload uses netcat to connect powershell to our local listener.</p>
+                <img src="../img/hancliffe_template_injection/017.png" alt="Executing the netcat reverse shell." title="Executing the netcat reverse shell.">
+                <br>
+                <br>
+                <img src="../img/hancliffe_template_injection/018.png" alt="Executing the netcat reverse shell." title="Executing the netcat reverse shell.">
+                <br>
+                <br>
+                <p>It shows us receiving a reverse shell on the local box. Note that it is important to have this netcat listener running before executing the payload.</p>
+                <img src="../img/hancliffe_template_injection/019.png" alt="Receiving the netcat reverse shell." title="Receiving the netcat reverse shell.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

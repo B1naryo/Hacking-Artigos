@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Perform Directory Traversal by Bypassing Filters</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">June 22, 2022</p>
+                <h1 class="heading">Perform Directory Traversal by Bypassing Filters</h1>
+                <p>In this tutorial, we will see how to bypass a web application filter and perform directory traversal. We will be using the unicode character "%ef%bc%8f" which translates to "/" in ASCII. The target performs normalization after the payload bypasses the WAF, therefore, allowing us to bypass the filter and perform directory traversal attack.</p>
+                <p><a href="https://book.hacktricks.xyz/pentesting-web/unicode-normalization-vulnerability">This</a> and <a href="https://jlajara.gitlab.io/Bypass_WAF_Unicode">this</a> page contains more information about this attack.</p>
+                <p>This is the main page of the web application. It has links to a monthly and a quarterly report.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/001.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>Trying to download the monthly report returns this page.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/002.png" alt="Trying to download the monthly report." title="Trying to download the monthly report.">
+                <br>
+                <br>
+                <p>The same page is returned when trying to access the quarterly report.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/003.png" alt="Trying to download the quarterly report." title="Trying to download the quarterly report.">
+                <br>
+                <br>
+                <p>Let's try to see if we can read the "/etc/passwd" file.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/004.png" alt="Trying to read the contents of the /etc/passwd file." title="Trying to read the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <p>It redirects us to the "/filenotfound" page. The text says that a lot of input filtering is performed on the website.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/005.png" alt="Trying to access /etc/passwd results in redirection to '/filenotfound' page." title="Trying to access /etc/passwd results in redirection to '/filenotfound' page.">
+                <br>
+                <br>
+                <p>Let's try to access some page that we are sure doesn't exist.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/006.png" alt="Trying to access some page that doesn't exist." title="Trying to access some page that doesn't exist.">
+                <br>
+                <br>
+                <p>If a page doesn't exist, the text on the page says "Not Found".</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/007.png" alt="Website response to trying to accesss a page that doesn't exist." title="Website response to trying to accesss a page that doesn't exist.">
+                <br>
+                <br>
+                <p>Trying to access the '/etc/passwd' file preceded by a bunch of '../' results in the same output that says a lot of input filtering is performed.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/008.png" alt="Trying to access /etc/passwd results in a redirection to '/filenotfound' page." title="Trying to access /etc/passwd results in a redirection to '/filenotfound' page.">
+                <br>
+                <br>
+                <img src="../img/unicode_directory_travel_bypass_filter/009.png" alt="Trying to access /etc/passwd results in a redirection to '/filenotfound' page." title="Trying to access /etc/passwd results in a redirection to '/filenotfound' page.">
+                <br>
+                <br>
+                <p>This page contains some interesting unicode characters that we can use to bypass web application filters.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/010.png" alt="Web page that contains some unicode characters that allows us to bypass web filters." title="Web page that contains some unicode characters that allows us to bypass web filters.">
+                <br>
+                <br>
+                <p>Let's try to perform the directory traversal attack once more and catch the request in Burp Intercept.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/011.png" alt="Catching the directory traversal attack in Burp Intercept." title="Catching the directory traversal attack in Burp Intercept.">
+                <br>
+                <br>
+                <p>Now change the "/" characters with their equivalent unicode ones "%ef%bc%8f".</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/012.png" alt="Replacing ASCII characters with their equivalent unicode ones." title="Replacing ASCII characters with their equivalent unicode ones.">
+                <br>
+                <br>
+                <p>The response shows the contents of the /etc/passwd file.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/013.png" alt="Response returns the contents of the /etc/passwd file." title="Response returns the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <img src="../img/unicode_directory_travel_bypass_filter/014.png" alt="Response returns the contents of the /etc/passwd file." title="Response returns the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <p>We can also use <span class="command">curl</span> to read local files on the target.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/015.png" alt="Using curl to read local files on the target." title="Using curl to read local files on the target.">
+                <br>
+                <br>
+                <p>It shows a simple Python script that can be used to read the contents of the /etc/passwd file.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/016.png" alt="Simple Python script to read the contents of the /etc/passwd file." title="Simple Python script to read the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <img src="../img/unicode_directory_travel_bypass_filter/017.png" alt="Simple Python script to read the contents of the /etc/passwd file." title="Simple Python script to read the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <p>The script is modified to take the filename from the user.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/018.png" alt="Modifying the Python script to take the filename from the user." title="Modifying the Python script to take the filename from the user.">
+                <br>
+                <br>
+                <img src="../img/unicode_directory_travel_bypass_filter/019.png" alt="Modifying the Python script to take the filename from the user." title="Modifying the Python script to take the filename from the user.">
+                <br>
+                <br>
+                <p>I have modified the script even further to print out the filename if the file exists and copy the contents of the file into a directory called "files".</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/020.png" alt="Modifying the Python script to copy the contents of the file to a local directory." title="Modifying the Python script to copy the contents of the file to a local directory.">
+                <br>
+                <br>
+                <p>Trying to read the /etc/passwd file works.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/021.png" alt="Retrieving the /etc/passwd file using the Python script." title="Retrieving the /etc/passwd file using the Python script.">
+                <br>
+                <br>
+                <p>Let's change into the "files" directory. We can see that the /etc/passwd file has been copied into this directory.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/022.png" alt="Verifying that the /etc/passwd file has been successfully copied." title="Verifying that the /etc/passwd file has been successfully copied.">
+                <br>
+                <br>
+                <p>Trying to access a file that doesn't exist won't save anything to disk.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/023.png" alt="Trying to access a file that doesn't exist." title="Trying to access a file that doesn't exist.">
+                <br>
+                <br>
+                <p>This page contains a bunch of common linux filenames to perform LFI/RFI attacks.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/028.png" alt="GitHub page that contains common filenames for LFI/RFI attacks." title="GitHub page that contains common filenames for LFI/RFI attacks.">
+                <br>
+                <br>
+                <p>Running the Python script with the payloads file in a Bash script returns the files that are present on the target.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/024.png" alt="Running the Python script with the filename payloads." title="Running the Python script with the filename payloads.">
+                <br>
+                <br>
+                <p>We can see that the files that were found have been copied to the "files" directory.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/025.png" alt="Found files are copied to the 'files' directory." title="Found files are copied to the 'files' directory.">
+                <br>
+                <br>
+                <p>This is another script in Python that allows us to retrieve the contents of the remote file by prompting us for the filename. This script uses the "cmd" Python module.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/026.png" alt="Simple Python script to perform LFI/RFI attack." title="Simple Python script to perform LFI/RFI attack.">
+                <br>
+                <br>
+                <p>We can see that it was able to read the contents of /etc/lsb-release.</p>
+                <img src="../img/unicode_directory_travel_bypass_filter/027.png" alt="Accessing the contents of the /etc/lsb-release file." title="Accessing the contents of the /etc/lsb-release file.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/backdoor_identify_process_through_lfi.html" class="widget_links">Identify Vulnerable Processes Through LFI</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_brute_force_pin.html" class="widget_links">Brute-Force Pins Using wfuzz</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

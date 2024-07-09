@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Identify Vulnerable Processes Through LFI</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 7, 2022</p>
+                <h1 class="heading">Identify Vulnerable Processes Through LFI</h1>
+                <p>In this tutorial, we will see how to exploit a LFI (Local File Inclusion) vulnerability to identify processes running on the system. Normally, people use LFI to read files on the target system. However, it can also be used to list all the processes running on the target which will allow us to identify any vulnerable processes that we can exploit in future.</p>
+                <p>Let's run a netcat listener and put it in background by pressing Ctrl + Z.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/001.png" alt="Running netcat and putting it in background." title="Running netcat and putting it in background.">
+                <br>
+                <br>
+                <p>Executing <span class="command">ps -a</span> lists the current processes. We can see that netcat is running with an ID of 1678.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/002.png" alt="Listing all processes with ps." title="Listing all processes with ps.">
+                <br>
+                <br>
+                <p>Running <span class="command">cat /proc/[PROCESS_ID]/cmdline</span> shows the command that was used to run the process.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/003.png" alt="Displaying the command that was used to run a process using cat /proc/1678/cmdline." title="Displaying the command that was used to run a process using cat /proc/1678/cmdline.">
+                <br>
+                <br>
+                <p>Let's use another example. <span class="command">sleep 60</span> pauses the terminal for 60 seconds and after that we get the prompt back. There is no need to background this process because it runs for 60 seconds and then it stops running.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/004.png" alt="Running sleep to pause the terminal." title="Running sleep to pause the terminal.">
+                <br>
+                <br>
+                <p><span class="command">ps -a</span> lists the "sleep" process and it is running with an ID of 1776.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/005.png" alt="Listing all processes with ps." title="Listing all processes with ps.">
+                <br>
+                <br>
+                <p>Again, let's run <span class="command">cat /proc/[PROCESS_ID]/cmdline</span> to display the command that was used to run this process.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/006.png" alt="Displaying the command that was used to run a process using cat /proc/1776/cmdline." title="Displaying the command that was used to run a process using cat /proc/1776/cmdline.">
+                <br>
+                <br>
+                <p>Now that we have an understanding of processes, let's see how we can use this to identify vulnerable processes on a target. In this case, the target is vulnerable to LFI and we can list the contents of any file that we choose. We can see the output of the "/etc/passwd" file.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/007.png" alt="Using LFI to display the contents of the /etc/passwd file." title="Using LFI to display the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <p>Trying to access the contents of the current process <span class="command">cat /proc/self/cmdline</span> results in a warning which asks us to add an argument to the command.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/008.png" alt="Trying to access the current process cmdline using LFI." title="Trying to access the current process cmdline using LFI.">
+                <br>
+                <br>
+                <p>Let's run the command again by adding the required arguments. We can see that the command that was used to run the current process on the target was <span class="command">/usr/sbin/apache2 -k start</span>.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/009.png" alt="Using the LFI vulnerability to list the current process on the target." title="Using the LFI vulnerability to list the current process on the target.">
+                <br>
+                <br>
+                <p>We can also list other processes. It shows the first process on the target which in this case is the init process.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/010.png" alt="Displaying the first process on the target using LFI." title="Displaying the first process on the target using LFI.">
+                <br>
+                <br>
+                <p>The next step is to filter all the irrelevant data from the output. Using <span class="command">cut</span> we can truncate the first part of the output.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/011.png" alt="Filtering the output to get the process command." title="Filtering the output to get the process command.">
+                <br>
+                <br>
+                <p>We can truncate the last part of the output using <span class="command">sed</span>. Or we could have reversed the output, used "cut" to truncate the last part of the output and then reverse the string once again.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/012.png" alt="Filtering the output to get the process command." title="Filtering the output to get the process command.">
+                <br>
+                <br>
+                <p>Let's write a shell script that would try to get the commands that were used to run the first 1000 processes.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/013.png" alt="Listing the first 1000 processes." title="Listing the first 1000 processes.">
+                <br>
+                <br>
+                <p>Let's run the script.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/014.png" alt="Running the shell script." title="Running the shell script.">
+                <br>
+                <br>
+                <p>It shows all the commands that were used to run the processes. In this case, the process running <span class="command">gdbserver</span> that is listening on port 1337 is vulnerable.</p>
+                <img src="../img/backdoor_identify_process_through_lfi/015.png" alt="Listing all the commands that were used to run the processes." title="Listing all the commands that were used to run the processes.">
+                <img src="../img/backdoor_identify_process_through_lfi/016.png" alt="Listing all the commands that were used to run the processes." title="Listing all the commands that were used to run the processes.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_brute_force_pin.html" class="widget_links">Brute-Force Pins Using wfuzz</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

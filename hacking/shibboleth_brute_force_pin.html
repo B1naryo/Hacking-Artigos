@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Brute-Force Pins Using wfuzz</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to brute-force pin numbers that is used to reset user passwords.">
+        <meta name="keywords" content="kali, linux, kali linux, parrot, os, parrot os, brute force, pin, brute force pin, web application hacking, web server hacking, wfuzz, brute force, wfuzz brute force">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 6, 2022</p>
+                <h1 class="heading">Brute-Force Pins Using wfuzz</h1>
+                <p>In this tutorial, we will see how to brute-force PINs using wfuzz. The web site has a "Forgot Password" button that will prompt for a username. Upon submitting the username, it will send a PIN to the email address associated with the username.</p>
+                <p>This is the login page of the website. Click on "Forgot Password?".</p>
+                <img src="../img/shibboleth_brute_force_pin/001.png" alt="Login page of the website." title="Login page of the website.">
+                <br>
+                <br>
+                <p>Enter in a valid username. The web application will send a PIN code to the email associated with this username.</p>
+                <img src="../img/shibboleth_brute_force_pin/002.png" alt="Entering a valid username." title="Entering a valid username.">
+                <br>
+                <br>
+                <p>Let's enter in a random PIN code.</p>
+                <img src="../img/shibboleth_brute_force_pin/003.png" alt="Entering a random PIN code." title="Entering a random PIN code.">
+                <br>
+                <br>
+                <p>The response is "Invalid Pincode".</p>
+                <img src="../img/shibboleth_brute_force_pin/004.png" alt="Invalid pincode response." title="Invalid pincode response.">
+                <!-- <img src="../img/shibboleth_brute_force_pin/005.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Trying to brute-force the PIN code results in "429 | Too Many Requests".</p>
+                <img src="../img/shibboleth_brute_force_pin/006.png" alt="429 too many requests response after brute forcing the PIN codes." title="429 too many requests response after brute forcing the PIN codes.">
+                <br>
+                <br>
+                <p>This is the response in Burp Suite.</p>
+                <img src="../img/shibboleth_brute_force_pin/007.png" alt="420 too many requests in Burp Suite." title="420 too many requests in Burp Suite.">
+                <br>
+                <br>
+                <p>In order to brute force the PIN code we have to use an additional HTTP header. Let's generate a list of 10,000 IP addresses that are unique.</p>
+                <img src="../img/shibboleth_brute_force_pin/008.png" alt="Generating a list of 10000 random IP addresses." title="Generating a list of 10000 random IP addresses.">
+                <br>
+                <br>
+                <p>The IP address starts from 127.0.0.1 and ends with 127.0.39.254.</p>
+                <img src="../img/shibboleth_brute_force_pin/009.png" alt="IP address range." title="IP address range.">
+                <br>
+                <br>
+                <p>This list contains a bunch of HTTP headers that we can use in this scenario. We will be using the second one "X-Forwarded-For" with the list of IP addresses that we have generated.</p>
+                <img src="../img/shibboleth_brute_force_pin/010.png" alt="HTTP headers to modify the source." title="HTTP headers to modify the source.">
+                <br>
+                <br>
+                <p>Let's run <span class="command">wfuzz</span> to brute force the PINs. Note that the range of PIN codes is from 0000 to 9999 and for the "X-Forwarded-For" header we are using the "ip_list.txt" file. However, it returns a lot of results.</p>
+                <img src="../img/shibboleth_brute_force_pin/011.png" alt="Running wfuzz to brute force the PIN codes." title="Running wfuzz to brute force the PIN codes.">
+                <!-- <img src="../img/shibboleth_brute_force_pin/012.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>It filters all the irrelevant results which have 5651 characters in the response. Finally, it finds the PIN code. Note that the response also includes the IP address that was used in the "X-Forwarded-For" header.</p>
+                <img src="../img/shibboleth_brute_force_pin/013.png" alt="wuzz finds the PIN code." title="wuzz finds the PIN code.">
+                <br>
+                <br>
+                <p>Enter in the username and PIN code.</p>
+                <img src="../img/shibboleth_brute_force_pin/014.png" alt="Entering the username and PIN code." title="Entering the username and PIN code.">
+                <br>
+                <br>
+                <p>Enter in a new password.</p>
+                <!-- <img src="../img/shibboleth_brute_force_pin/015.png" alt="Entering a new password." title="Entering a new password."> -->
+                <img src="../img/shibboleth_brute_force_pin/016.png" alt="Enter in a new password." title="Enter in a new password.">
+                <!-- <img src="../img/shibboleth_brute_force_pin/017.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Login with the new password.</p>
+                <img src="../img/shibboleth_brute_force_pin/018.png" alt="Logging in with the new password." title="Logging in with the new password.">
+                <br>
+                <br>
+                <p>We are able to login to the website.</p>
+                <img src="../img/shibboleth_brute_force_pin/019.png" alt="Website login." title="Website login.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

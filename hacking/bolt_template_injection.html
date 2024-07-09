@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server Side Template Injection (SSTI) - Example 3</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a SSTI (Server-Side Template Injection) attack.">
+        <meta name="keywords" content="kali, linux, kali linux, server side template injection, ssti">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 3, 2022</p>
+                <h1 class="heading">Server Side Template Injection (SSTI) - Example 3</h1>
+                <p>In this tutorial, we will see how to perform a SSTI (Server-Side Template Injection) attack. We inject the payload in the username. Upon changing our profile, an email is sent to us which asks us to confirm our profile changes by clicking on a link. Once we click on the link, it triggers the payload and another email is sent to us saying that our changes has been confirmed.</p>
+                <p>This shows the profile page of a user.</p>
+                <img src="../img/bolt_template_injection/001.png" alt="Profile page of a user." title="Profile page of a user.">
+                <br>
+                <br>
+                <p>Clicking on Settings allows us to modify our usernames. Let's enter <span class="command">{{ 7*7 }} in the username field.</span> </p>
+                <img src="../img/bolt_template_injection/002.png" alt="Injecting the payload in the username field." title="Injecting the payload in the username field.">
+                <br>
+                <br>
+                <p>Clicking on Submit redirects us to the profile page.</p>
+                <img src="../img/bolt_template_injection/003.png" alt="Profile page after submitting the payload in the username field." title="Profile page after submitting the payload in the username field.">
+                <br>
+                <br>
+                <p>Upon changing our profile, an email is sent to us asking us to confirm our changes by clicking on a link in the email.</p>
+                <img src="../img/bolt_template_injection/004.png" alt="Email with a link asking us to confirm the changes." title="Email with a link asking us to confirm the changes.">
+                <br>
+                <br>
+                <p>Once we click on the link, we receive another email that confirms our changes.</p>
+                <img src="../img/bolt_template_injection/005.png" alt="Email confirming our changes." title="Email confirming our changes.">
+                <br>
+                <br>
+                <p>This <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection#jinja2">page</a> contains a bunch of Jinja2 payloads that we can try in the username.</p>
+                <img src="../img/bolt_template_injection/006.png" alt="GitHub page with Jinja2 payloads." title="GitHub page with Jinja2 payloads.">
+                <img src="../img/bolt_template_injection/007.png" alt="GitHub page with Jinja2 payloads." title="GitHub page with Jinja2 payloads.">
+                <img src="../img/bolt_template_injection/008.png" alt="GitHub page with Jinja2 payloads." title="GitHub page with Jinja2 payloads.">
+                <img src="../img/bolt_template_injection/009.png" alt="GitHub page with Jinja2 payloads." title="GitHub page with Jinja2 payloads.">
+                <br>
+                <br>
+                <p>Let's save this payload in the username field that runs the <span class="command">id</span> command.</p>
+                <img src="../img/bolt_template_injection/010.png" alt="Payload with the id command." title="Payload with the id command.">
+                <br>
+                <br>
+                <p>Click on the link to confirm the changes.</p>
+                <img src="../img/bolt_template_injection/011.png" alt="Email with a link asking us to confirm our changes." title="Email with a link asking us to confirm our changes.">
+                <br>
+                <br>
+                <p>We can see that the next email that is sent to us confirming our changes also contains the output of the <span class="command">id</span> command.</p>
+                <img src="../img/bolt_template_injection/012.png" alt="Email containing the output of the id command." title="Email containing the output of the id command.">
+                <br>
+                <br>
+                <p>Our next payload pings our local machine from the target box. If the ping is successful then it means we have communication between the hosts.</p>
+                <img src="../img/bolt_template_injection/013.png" alt="Ping payload in the username field of the profile page." title="Ping payload in the username field of the profile page.">
+                <br>
+                <br>
+                <p>Click on the link to confirm the changes.</p>
+                <img src="../img/bolt_template_injection/014.png" alt="Clicking on the link to confirm the changes." title="Clicking on the link to confirm the changes.">
+                <br>
+                <br>
+                <p>This email contians the output of the ping. We can see that the ping was sent and received by our local box.</p>
+                <img src="../img/bolt_template_injection/015.png" alt="Output of the ping command." title="Output of the ping command.">
+                <br>
+                <br>
+                <p>We can see the pings are received by our local machine. This means that we have successful communication between the hosts.</p>
+                <img src="../img/bolt_template_injection/016.png" alt="ICMP packets received on the local machine." title="ICMP packets received on the local machine.">
+                <br>
+                <br>
+                <p>Our next payload is to try to initiate a reverse shell on the target box.</p>
+                <img src="../img/bolt_template_injection/017.png" alt="Running a reverse shell on the target box." title="Running a reverse shell on the target box.">
+                <br>
+                <br>
+                <p>Let's click on the link to confirm our changes.</p>
+                <img src="../img/bolt_template_injection/018.png" alt="Clicking on the link to confirm our changes." title="Clicking on the link to confirm our changes.">
+                <br>
+                <br>
+                <p>We receive a reverse connection on our netcat listener. Note that it is important to have the netcat listener running before executing the payload.</p>
+                <img src="../img/bolt_template_injection/019.png" alt="Receiving a reverse shell on the box." title="Receiving a reverse shell on the box.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

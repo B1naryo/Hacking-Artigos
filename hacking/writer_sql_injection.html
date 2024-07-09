@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Example 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a SQL injection and through that also perform a LFI attack.">
+        <meta name="keywords" content="kali, linux, kali linux, sql, injection, sql injection, lfi, local file inclusion">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 04, 2022</p>
+                <h1 class="heading">SQL Injection - Example 1</h1>
+                <p>In this tutorial, we will see how to perform SQL injection on the login page of a website. We will learn how to use <span class="command">ffuf</span> to see if the login page is vulnerable to SQL injection by using different payloads from danielmiessler's SecLists. And at the end of this tutorial, we will see how to write a simple Python script to perform a LFI (Local File Inclusion) attack on the web application.</p>
+                <p>This is the login page of the website.</p>
+                <img src="../img/writer_sql_injection/001.png" alt="Login page of the website." title="Login page of the website.">
+                <br>
+                <br>
+                <p>It is a generic SQL injection payload to see if the web application shows some indication of a vulnerability.</p>
+                <img src="../img/writer_sql_injection/002.png" alt="SQL injection to determine vulnerability." title="SQL injection to determine vulnerability.">
+                <br>
+                <br>
+                <p>Let's enter the payload in the username and write some random string for the password.</p>
+                <img src="../img/writer_sql_injection/003.png" alt="Entering the SQL injection in the login page." title="Entering the SQL injection in the login page.">
+                <br>
+                <br>
+                <p>The SQL injection worked, and we are successfully able to login to the website.</p>
+                <img src="../img/writer_sql_injection/004.png" alt="Successful login by SQL injection." title="Successful login by SQL injection.">
+                <br>
+                <br>
+                <p>The assumption is that this how the query behind the login page probably looks like.</p>
+                <img src="../img/writer_sql_injection/005.png" alt="Login page SQL query." title="Login page SQL query.">
+                <br>
+                <br>
+                <p>The SQL injection modifies the query to check if 1 is equal to 1 (which it always is) and comments out the rest of the query.</p>
+                <img src="../img/writer_sql_injection/006.png" alt="Modified SQL query in the login page." title="Modified SQL query in the login page.">
+                <br>
+                <br>
+                <p>Now that the SQL injection is done, let's do some deep dive into the web application. This is a GitHub page from danielmiessler which provides a very good list of SQL injection payloads that we could use for fuzzing.</p>
+                <img src="../img/writer_sql_injection/007.png" alt="GitHub page with SQL injection payloads for fuzzing." title="GitHub page with SQL injection payloads for fuzzing.">
+                <br>
+                <br>
+                <p><span class="command">ffuf</span> is a good tool that can be used for fuzzing. Let's fuzz the username with the payloads downloaded from the above mentioned GitHub page. However, it returns a lot of results and we need to filter out the irrelevant ones.</p>
+                <img src="../img/writer_sql_injection/008.png" alt="Using ffuf to fuzz the username." title="Using ffuf to fuzz the username.">
+                <br>
+                <br>
+                <p>We filter out the results that have 206 words <span class="command">--fw 206</span>. ffuf has managed to find five payloads that seem to work. Attempting all the five payloads with <span class="command">ffuf</span> allows a successful login.</p>
+                <img src="../img/writer_sql_injection/009.png" alt="Filtering out ffuf results." title="Filtering out ffuf results.">
+                <!-- <img src="../img/writer_sql_injection/010.png" alt="First SQL injection payload identified by ffuf." title="First SQL injection payload identified by ffuf.">
+                <br>
+                <br>
+                <p>Successful login using the first <span class="command">ffuf</span> identified payload.</p>
+                <img src="../img/writer_sql_injection/011.png" alt="Successful login using the first ffuf identified payload." title="Successful login using the first ffuf identified payload.">
+                <br>
+                <br>
+                <p>This is the second payload identified by <span class="command">ffuf</span>.</p>
+                <img src="../img/writer_sql_injection/012.png" alt="Second SQL injection payload identified by ffuf." title="Second SQL injection payload identified by ffuf.">
+                <br>
+                <br>
+                <p>Successful login using the second <span class="command">ffuf</span> identified payload.</p>
+                <img src="../img/writer_sql_injection/013.png" alt="Successful login using the second ffuf identified payload." title="Successful login using the second ffuf identified payload.">
+                <br>
+                <br>
+                <p>This is the third payload identified by <span class="command">ffuf</span>.</p>
+                <img src="../img/writer_sql_injection/014.png" alt="Third SQL injection payload identified by ffuf." title="Third SQL injection payload identified by ffuf.">
+                <br>
+                <br>
+                <p>Successful login using the third <span class="command">ffuf</span> identified payload.</p>
+                <img src="../img/writer_sql_injection/015.png" alt="Successful login using the third ffuf identified payload." title="Successful login using the third ffuf identified payload.">
+                <br>
+                <br>
+                <p>This is the fourth payload identified by <span class="command">ffuf</span>.</p>
+                <img src="../img/writer_sql_injection/016.png" alt="Fourth SQL injection payload identified by ffuf." title="Fourth SQL injection payload identified by ffuf.">
+                <br>
+                <br>
+                <p>Successful login using the fourth <span class="command">ffuf</span> identified payload.</p>
+                <img src="../img/writer_sql_injection/017.png" alt="Successful login using the fourth ffuf identified payload." title="Successful login using the fourth ffuf identified payload.">
+                <br>
+                <br>
+                <p>This is the fifth payload identified by <span class="command">ffuf</span>.</p>
+                <img src="../img/writer_sql_injection/018.png" alt="Fifth SQL injection payload identified by ffuf." title="Fifth SQL injection payload identified by ffuf.">
+                <br>
+                <br>
+                <p>All five attempts lead to successful logins to the website.</p>
+                <img src="../img/writer_sql_injection/019.png" alt="Successful login using the fifth ffuf identified payload." title="Successful login using the fifth ffuf identified payload."> -->
+                <br>
+                <br>
+                <p>The <span class="command">-x http://127.0.0.1:8080</span> can be used to route traffic through Burp Suite Proxy.</p>
+                <img src="../img/writer_sql_injection/020.png" alt="Routing fuzzing through Burp Suite Proxy." title="Routing fuzzing through Burp Suite Proxy.">
+                <br>
+                <br>
+                <p>This shows one of the payloads that <span class="command">ffuf</span> sends. Note that the response length of this one is smaller than the rest and for the title it says "Redirecting | Writer.HTB". It can be an indication of successful login.</p>
+                <img src="../img/writer_sql_injection/021.png" alt="Examing one of the payloads in Burp Proxy." title="Examing one of the payloads in Burp Proxy.">
+                <br>
+                <br>
+                <p>Our next goal is to see if we can read some files on the web server. Let's enter one of the payloads that works in the username field and some random text in the password field and click on "Sign in".</p>
+                <img src="../img/writer_sql_injection/022.png" alt="Using some credentials to login to the website." title="Using some credentials to login to the website.">
+                <br>
+                <br>
+                <p>Capture the request in Burp Intercept and send it to Burp Repeater.</p>
+                <img src="../img/writer_sql_injection/023.png" alt="Sending the request to Burp Repeater." title="Sending the request to Burp Repeater.">
+                <br>
+                <br>
+                <p>Once in Burp Repeater, the UNION injection technique can be used to determine what is returned back to us. We can see that only "2" is returned back. It means that we have one field to work with.</p>
+                <img src="../img/writer_sql_injection/024.png" alt="UNION SQL injection in Burp Repeater." title="UNION SQL injection in Burp Repeater.">
+                <br>
+                <br>
+                <p>Let's see if a string can be returned back. And it does.</p>
+                <img src="../img/writer_sql_injection/025.png" alt="Using some text in the UNION SQL injection." title="Using some text in the UNION SQL injection.">
+                <br>
+                <br>
+                <p>The <span class="command">LOAD_FILE()</span> function can be used to read files from the system. In this case we are reading the "/etc/passwd" file.</p>
+                <img src="../img/writer_sql_injection/026.png" alt="Reading the /etc/passwd file with LOAD_FILE()." title="Reading the /etc/passwd file with LOAD_FILE().">
+                <br>
+                <br>
+                <p>The next goal is to see if we can perform a LFI attack by brute-forcing filenames from a list. I have taken the script from <a href="https://www.youtube.com/watch?v=MkvDid7xO7o">ippsec's</a> walkthrough and brought some minor modifications to it. This simple Python script retrieves the contents of the "/etc/passwd" file.</p>
+                <img src="../img/writer_sql_injection/027.png" alt="Python script to retrieve the contents of a file." title="Python script to retrieve the contents of a file.">
+                <br>
+                <br>
+                <p>This returns the "/etc/passwd" file but with a lot of HTML content. We need to filter these out by using a regular expression.</p>
+                <img src="../img/writer_sql_injection/028.png" alt="/etc/passwd file with a lot of HTML content." title="/etc/passwd file with a lot of HTML content.">
+                <br>
+                <br>
+                <p>The regular expression in the script will retrieve everything after the word "admin". This is where the contents of our file starts.</p>
+                <img src="../img/writer_sql_injection/029.png" alt="Filtering the output of the Python script through a regular expression." title="Filtering the output of the Python script through a regular expression.">
+                <br>
+                <br>
+                <p>Running the script returns the contents of the file but only the first line.</p>
+                <img src="../img/writer_sql_injection/030.png" alt="First line of the file is returned by the Python script." title="First line of the file is returned by the Python script.">
+                <br>
+                <br>
+                <p>Adding "re.DOTALL" to the regular expression returns everything from the start of the file to the end of the HTML page.</p>
+                <img src="../img/writer_sql_injection/031.png" alt="Retrieving the contents of the file using the Python script." title="Retrieving the contents of the file using the Python script.">
+                <br>
+                <br>
+                <p>The Python script returns the "/etc/passwd" file but there is still some HTML that needs to be filtered out.</p>
+                <img src="../img/writer_sql_injection/032.png" alt="Contents of the /etc/passwd file with some HTML content." title="Contents of the /etc/passwd file with some HTML content.">
+                <img src="../img/writer_sql_injection/033.png" alt="Contents of the /etc/passwd file with some HTML content." title="Contents of the /etc/passwd file with some HTML content.">
+                <br>
+                <br>
+                <p>We can see that when the contents of the "/etc/passwd" file ends, the next thing that comes immediately after it is the ending "&lt;/h3&gt;" tag. Let's add this to the regular expression.</p>
+                <img src="../img/writer_sql_injection/034.png" alt="Regular expression to remove the HTML contents that comes after the file ends." title="Regular expression to remove the HTML contents that comes after the file ends.">
+                <br>
+                <br>
+                <p>This is better. The only thing retrieved is the contents of the file and everything else is filtered out.</p>
+                <img src="../img/writer_sql_injection/035.png" alt="Python script to retrieve the contents of a file." title="Python script to retrieve the contents of a file.">
+                <br>
+                <br>
+                <p>But what if we try to retrieve a file that doesn't exist in the system. The output in that case will be "None".</p>
+                <img src="../img/writer_sql_injection/036.png" alt="Trying to retrieve a file that doesn't exist." title="Trying to retrieve a file that doesn't exist.">
+                <br>
+                <br>
+                <p>The next step is to modify the script to identify the output when a file exists or when it doesn't.</p>
+                <img src="../img/writer_sql_injection/037.png" alt="Modifying the script to check the existence of a file." title="Modifying the script to check the existence of a file.">
+                <br>
+                <br>
+                <p>We can see that if the file exists, we get a 'Success!' response and if it doesn't exist then we get a 'Fail' response.</p>
+                <img src="../img/writer_sql_injection/038.png" alt="Success or Fail output of the script." title="Success or Fail output of the script.">
+                <br>
+                <br>
+                <p>Let's modify the script to return the contents of the file if the file exists and to return 'Fail' if the file doesn't exist.</p>
+                <img src="../img/writer_sql_injection/039.png" alt="Modifying the script to check the existence of a file." title="Modifying the script to check the existence of a file.">
+                <br>
+                <br>
+                <p>Running the script to see if it works. And it does.</p>
+                <img src="../img/writer_sql_injection/040.png" alt="Python script that returns the contents of the file." title="Python script that returns the contents of the file.">
+                <!-- <img src="../img/writer_sql_injection/041.png" alt="" title="">
+                <img src="../img/writer_sql_injection/042.png" alt="" title="">
+                <img src="../img/writer_sql_injection/043.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Our next goal is save the contents of the file that is returned back to us in the "files" directory.</p>
+                <img src="../img/writer_sql_injection/044.png" alt="Script to save the contents of the file." title="Script to save the contents of the file.">
+                <br>
+                <br>
+                <p>Let's run the script once again to retrieve the contents of the "/etc/passwd" file.</p>
+                <img src="../img/writer_sql_injection/045.png" alt="Script to return the contents of /etc/passwd file." title="Script to return the contents of /etc/passwd file.">
+                <br>
+                <br>
+                <p>The "/etc/passwd" file is created in the "files" directory.</p>
+                <img src="../img/writer_sql_injection/046.png" alt="Viewing the created file." title="Viewing the created file.">
+                <br>
+                <br>
+                <p>This GitHub page has some interesting payloads to brute-force filenames on the target.</p>
+                <img src="../img/writer_sql_injection/047.png" alt="GitHub page with useful payloads." title="GitHub page with useful payloads.">
+                <br>
+                <br>
+                <p>This list contains the names of some important files on a Linux system.</p>
+                <img src="../img/writer_sql_injection/048.png" alt="List of important Linux files." title="List of important Linux files.">
+                <br>
+                <br>
+                <p>Let's download this list to our local box.</p>
+                <img src="../img/writer_sql_injection/049.png" alt="Download the LFI list." title="Download the LFI list.">
+                <br>
+                <br>
+                <p>This list contains 1012 lines (payloads).</p>
+                <img src="../img/writer_sql_injection/050.png" alt="Number of lines the LFI file." title="Number of lines the LFI file.">
+                <br>
+                <br>
+                <p>This script tries to parse through all the lines in the file that is passed to it and tries to see if the target contains the file. If the target contains the file, then it would be copied to the "files" directory.</p>
+                <img src="../img/writer_sql_injection/051.png" alt="Script to brute force for LFI." title="Script to brute force for LFI.">
+                <!-- <img src="../img/writer_sql_injection/052.png" alt="" title="">
+                <img src="../img/writer_sql_injection/053.png" alt="" title="">
+                <img src="../img/writer_sql_injection/054.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Let's run the script and pass it the "lfi-linux-list.txt" file that we downloaded earlier.</p>
+                <img src="../img/writer_sql_injection/055.png" alt="Running the brute force script to identify important files." title="Running the brute force script to identify important files.">
+                <br>
+                <br>
+                <p>We can see that as new files are found, it is downloaded in the "files" directory.</p>
+                <img src="../img/writer_sql_injection/056.png" alt="New files downloaded in the files directory." title="New files downloaded in the files directory.">
+                <br>
+                <br>
+                <p>In addition, I think it is a good opportunity to demonstrate the <span class="command">cmd</span> Python module.</p>
+                <img src="../img/writer_sql_injection/059.png" alt="Python script to read files using SQL injection." title="Python script to read files using SQL injection.">
+                <br>
+                <br>
+                <p>Upon running the script, it will prompt us to enter in a name of the file to retrieve.</p>
+                <img src="../img/writer_sql_injection/060.png" alt="Retrieving files using the SQL injection Python script." title="Retrieving files using the SQL injection Python script.">
+                <img src="../img/writer_sql_injection/061.png" alt="Retrieving files using the SQL injection Python script." title="Retrieving files using the SQL injection Python script.">
+                <p>You can follow me on Twitter <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nosql_authentication_bypass.html" class="widget_links">NoSQL Authentication Bypass</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">WPAdmin Shell Upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_theme_edit.html" class="widget_links">Reverse Shell in WordPress via Theme (Template) Edit Feature</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_edit_plugin.html" class="widget_links">Reverse Shell in WordPress via Edit Plugin Feature</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_add_plugin.html" class="widget_links">Reverse Shell in WordPress via Add Plugin Feature</a></li>
+                        </ul>
+                    </div>
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

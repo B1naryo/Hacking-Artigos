@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>XSS (Cross-Site Scripting) - Example 02</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a XSS injection by modifying the Referer field.">
+        <meta name="keywords" content="kali, linux, kali linux, xss, cross-site scripting, xss attack, xss injection">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">March 29, 2022</p>
+                <h1 class="heading">XSS (Cross-Site Scripting) - Example 01</h1>
+                <p>In this tutorial, we will see how to perform XXS (Cross-Site Scripting) attack by modifying the "Referer" header of our request that is used while we are submitting a "Contact Us" form. Using this attack technique, we will see how to read a user's email by writing some JavaScript code.</p>
+                <p>This is the main page of the website.</p>
+                <img src="../img/stacked_xss/001.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>Down at the bottom of the page there is a "Contact Us" form.</p>
+                <img src="../img/stacked_xss/002.png" alt="Contact Us form at the bottom of the page." title="Contact Us form at the bottom of the page.">
+                <br>
+                <br>
+                <p>We will enter in some HTML tags to see if we get a connection to our Python listener. It is important to add the field name after the IP address in the URL so that we know which field the request is coming from.</p>
+                <img src="../img/stacked_xss/003.png" alt="Filling in the Contact Us form with some HTML tags." title="Filling in the Contact Us form with some HTML tags.">
+                <br>
+                <br>
+                <p>We capture the request in Burp Intercept and enter in the HTML tags in the "Host" and "Referer" headers.</p>
+                <img src="../img/stacked_xss/004.png" alt="Modifying the request in Burp Suite." title="Modifying the request in Burp Suite.">
+                <br>
+                <br>
+                <p>After waiting some time we get a connection in our Python listener from the "Referer" header. Note that it is important to have the Python listener started before submitting the form.</p>
+                <img src="../img/stacked_xss/005.png" alt="Reverse connection in our Python listener." title="Reverse connection in our Python listener.">
+                <br>
+                <br>
+                <p>Now that we have identified a cross-site injectable field, let's enter in some random data in the form and submit it.</p>
+                <img src="../img/stacked_xss/006.png" alt="Submitting the Contact Us form." title="Submitting the Contact Us form.">
+                <br>
+                <br>
+                <p>We capture the request in Burp Intercept and send it to Burp Reapter.</p>
+                <img src="../img/stacked_xss/007.png" alt="Sending the request to Burp Repeater." title="Sending the request to Burp Repeater.">
+                <br>
+                <br>
+                <p>This time we use a different tag to have the server connect back to us.</p>
+                <img src="../img/stacked_xss/008.png" alt="Modifying the Referer header." title="Modifying the Referer header.">
+                <br>
+                <br>
+                <p>Instead of having a Python listener, now we have a netcat listener on port 80. Note that it reveals the entire HTTP header section that is used to connect back to us. The interesting part is the "Referer" header which contains a URL <span class="command">http://mail.stacked.htb/read-mail.php?id=2</span>. This is the endpoint that is used to make a connection back to us.</p>
+                <img src="../img/stacked_xss/009.png" alt="Reading the Referer header of the target in netcat." title="Reading the Referer header of the target in netcat.">
+                <br>
+                <br>
+                <p>The following screenshots show some other payloads that can be used in the "Referer" header to have the target connect back to us. This can come handy in case some of the words are being filtered by some kind of a web application firewall. There are probably more payloads that can be used to have the target connect back to us.</p>
+                <img src="../img/stacked_xss/010.png" alt="Payloads that connect back to us." title="Payloads that connect back to us.">
+                <br>
+                <br>
+                <!-- <img src="../img/stacked_xss/011.png" alt="" title=""> -->
+                <img src="../img/stacked_xss/012.png" alt="Payloads that connect back to us." title="Payloads that connect back to us.">
+                <br>
+                <br>
+                <img src="../img/stacked_xss/013.png" alt="Payloads that connect back to us." title="Payloads that connect back to us.">
+                <!-- <img src="../img/stacked_xss/014.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Our next goal is to have a JavaScript file on our local machine and have it run on the target server and return the results back to us. We will be using <span class="command">XMLHttpRequest</span> for this attack. <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">This</a> and <a href="https://www.w3schools.com/xml/xml_http.asp">this</a> page contains more information about <span class="command">XMLHttpRequest</span>.</p>
+                <p>According to MDN (Mozilla Developer Network):</p>
+                <p class="quote">XMLHttpRequest (XHR) objects are used to interact with servers. You can retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just part of a page without disrupting what the user is doing.</p>
+                <p class="quote">XMLHttpRequest is used heavily in AJAX programming.</p>
+                <p class="quote">Despite its name, XMLHttpRequest can be used to retrieve any type of data, not just XML.</p>
+                <p class="quote">If your communication needs to involve receiving event data or message data from a server, consider using server-sent events through the EventSource interface. For full-duplex communication, WebSockets may be a better choice.</p>
+                <br>
+                <p>You can find more information about this sort of attack in <a href="https://0xdf.gitlab.io/2022/03/19/htb-stacked.html">this</a>, <a href="https://0xdf.gitlab.io/2021/08/14/htb-crossfittwo.html">this</a>, and <a href="https://0xdf.gitlab.io/2020/03/07/htb-bankrobber.html">this</a> pages. The following JavaScript code tries to connect to the Python listener using a GET request. <span class="command">document.location</span> reveals the location of the endpoint that is trying to connect back to us. This step is not entirely necessary as we already know the endpoint that is trying to connect back. We have already revealed the endpoint using the netcat listener.</p>
+                <img src="../img/stacked_xss/015.png" alt="JavaScript code that reveals the endpoint connecting back to us." title="JavaScript code that reveals the endpoint connecting back to us.">
+                <br>
+                <br>
+                <p>Send the request using Burp Repeater. Note that we have included the filename of the JavaScript code at the end of the URL so that the target executes this JavaScript file.</p>
+                <img src="../img/stacked_xss/016.png" alt="Sending the request using Burp Repeater." title="Sending the request using Burp Repeater.">
+                <br>
+                <br>
+                <p>The Python listener shows the address of the endpoint. It appears to be e-mail related.</p>
+                <img src="../img/stacked_xss/017.png" alt="Location of the cross-site injectable endpoint revealed." title="Location of the cross-site injectable endpoint revealed.">
+                <br>
+                <br>
+                <p>This JavaScript code sends us a POST request with the contents of the endpoint's HTML code (<span class="command">document.documentElement.outerHTML</span>). Note that the POST request is being sent to port 8000. Port 80 is already used by the Python web server from which the target is retrieving this JavaScript file. Later we will see how to send the contents of this endpoint as a Base64 encoded GET request.</p>
+                <img src="../img/stacked_xss/018.png" alt="JavaScript code to retrieve the contents of the endpoint's HTML." title="JavaScript code to retrieve the contents of the endpoint's HTML.">
+                <br>
+                <br>
+                <p>Send the request in Burp Repeater.</p>
+                <img src="../img/stacked_xss/019.png" alt="Sending the request in Burp Repeater." title="Sending the request in Burp Repeater.">
+                <br>
+                <br>
+                <p>The JavaScript file is retrieved from the Python server listening on port 80.</p>
+                <img src="../img/stacked_xss/020.png" alt="JavaScript file retrieved from the Python server." title="JavaScript file retrieved from the Python server.">
+                <br>
+                <br>
+                <p>The netcat listener on port 8000 redirects whatever it receives to "index.html". After the JavaScript file is read and executed by the target, it sends a POST request to this port with the HTML contents of the endpoint.</p>
+                <img src="../img/stacked_xss/021.png" alt="HTML content of the endpoint is received on netcat listener." title="HTML content of the endpoint is received on netcat listener.">
+                <br>
+                <br>
+                <p>This shows the "index.html" file in Firefox. It appears to be some kind of a mailbox with links to inbox, sent, drafts, junk and trash. The link to inbox appears to go the "/dashboard.php".</p>
+                <img src="../img/stacked_xss/022.png" alt="Mail endpoint read in Firefox." title="Mail endpoint read in Firefox.">
+                <br>
+                <br>
+                <p>This JavaScript code sends a GET request to the retrieve the contents of the '/dashboard.php' page. The <span class="command">dashboardreq.readyState == 4</span> says that once the request to '/dashboard.php' is done, it sends the contents of this GET request as a POST request to our netcat listener.</p>
+                <img src="../img/stacked_xss/023.png" alt="JavaScript code to read the dashboard.php file." title="JavaScript code to read the dashboard.php file.">
+                <br>
+                <br>
+                <p>Send the request in Burp Repeater.</p>
+                <img src="../img/stacked_xss/024.png" alt="Sending the request in Burp Repeater." title="Sending the request in Burp Repeater.">
+                <br>
+                <br>
+                <p>The JavaScript file is being retrieved from the Python web server.</p>
+                <img src="../img/stacked_xss/025.png" alt="JavaScript file being retreived on the Python web server." title="JavaScript file being retreived on the Python web server.">
+                <br>
+                <br>
+                <p>Netcat is redirecting its input to 'dashboard.html' file.</p>
+                <img src="../img/stacked_xss/026.png" alt="Netcat redirecting input to dashboard.html file." title="Netcat redirecting input to dashboard.html file.">
+                <br>
+                <br>
+                <p>There appears to be two emails in the inbox.</p>
+                <img src="../img/stacked_xss/027.png" alt="Reading the contents of the inbox of the target." title="Reading the contents of the inbox of the target.">
+                <br>
+                <br>
+                <p>This JavaScript code tries to read the first email and send its contents as a POST request to port 8000.</p>
+                <img src="../img/stacked_xss/028.png" alt="JavaScript code to read the first email." title="JavaScript code to read the first email.">
+                <br>
+                <br>
+                <p>Send the request in Burp Repeater.</p>
+                <img src="../img/stacked_xss/029.png" alt="Sending the request in Burp Repeater." title="Sending the request in Burp Repeater.">
+                <br>
+                <br>
+                <p>We can see that the JavaScript file has been retrieved from our Python web server.</p>
+                <img src="../img/stacked_xss/030.png" alt="JavaScript file retrieved from Python web server." title="JavaScript file retrieved from Python web server.">
+                <br>
+                <br>
+                <p>The contents of the POST request is saved in the "inbox.html" file.</p>
+                <img src="../img/stacked_xss/031.png" alt="Contents of the first email sent to inbox.html." title="Contents of the first email sent to inbox.html.">
+                <br>
+                <br>
+                <p>We are successful in reading the user's email.</p>
+                <img src="../img/stacked_xss/032.png" alt="Email contents in Firefox." title="Email contents in Firefox.">
+                <br>
+                <br>
+                <p>This script does the same thing of retrieving a web page using a GET request and sending its contents to us as a POST request. I have included this because it is kind of simpler than the first four scripts that I have demonstrated above. In the first part it sends a GET request to receive the contents of 'http://mail.stacked.htb' and in the second part it sends the response of the GET request as a POST request to us on port 8000.</p>
+                <img src="../img/stacked_xss/033.png" alt="Simple JavaScript code to retrieve the contents of a HTML page." title="Simple JavaScript code to retrieve the contents of a HTML page.">
+                <br>
+                <br>
+                <p>Send the request in Burp Repeater.</p>
+                <img src="../img/stacked_xss/034.png" alt="Sending the request in Burp Repeater." title="Sending the request in Burp Repeater.">
+                <br>
+                <br>
+                <p>The file is retrieved from our Python web server.</p>
+                <img src="../img/stacked_xss/035.png" alt="File retrieved from Python web server." title="File retrieved from Python web server.">
+                <br>
+                <br>
+                <p>It sends the contents of the POST request to "page.html".</p>
+                <img src="../img/stacked_xss/036.png" alt="Netcat receiving the POST request." title="Netcat receiving the POST request.">
+                <br>
+                <br>
+                <p>This shows the HTML page in Firefox.</p>
+                <img src="../img/stacked_xss/037.png" alt="HTML page being shown in Firefox." title="HTML page being shown in Firefox.">
+                <br>
+                <br>
+                <p>The following JavaScript code retrieves the contents of 'http://mail.stacked.htb' as a GET request in the first part of the script. And in the second part, it sends the response of the GET request to our netcat listener on port 8000 as a Base64 encoded GET request. In the previous code snippet, the response was sent to us in a POST request.</p>
+                <img src="../img/stacked_xss/038.png" alt="JavaScript code to send the file as a GET request." title="JavaScript code to send the file as a GET request.">
+                <br>
+                <br>
+                <p>Send the request in Burp Repeater.</p>
+                <img src="../img/stacked_xss/039.png" alt="Sending the request in Burp Repeater." title="Sending the request in Burp Repeater.">
+                <br>
+                <br>
+                <p>The JavaScript file is retrieved from our Python web server.</p>
+                <img src="../img/stacked_xss/040.png" alt="JavaScript file retrieved from Python server." title="JavaScript file retrieved from Python server.">
+                <br>
+                <br>
+                <p>The contents of the endpoint is sent to us as a GET request.</p>
+                <img src="../img/stacked_xss/041.png" alt="Receiving the contents of the file as a GET request in the netcat listener." title="Receiving the contents of the file as a GET request in the netcat listener.">
+                <br>
+                <br>
+                <p>We save the contents of the GET request in a file. Since it is Base64 encoded, it is important to Base64 decode it.</p>
+                <img src="../img/stacked_xss/042.png" alt="Base64 decoding the file." title="Base64 decoding the file.">
+                <!-- <img src="../img/stacked_xss/043.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>This displays the contents of the file in Firefox.</p>
+                <img src="../img/stacked_xss/044.png" alt="File displayed in Firefox." title="File displayed in Firefox.">
+                <p>You can follow me on Twitter <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nosql_authentication_bypass.html" class="widget_links">NoSQL Authentication Bypass</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">WPAdmin Shell Upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_theme_edit.html" class="widget_links">Reverse Shell in WordPress via Theme (Template) Edit Feature</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_edit_plugin.html" class="widget_links">Reverse Shell in WordPress via Edit Plugin Feature</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_add_plugin.html" class="widget_links">Reverse Shell in WordPress via Add Plugin Feature</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                        </ul>
+                    </div>
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

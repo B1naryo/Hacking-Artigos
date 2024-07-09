@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server Side Template Injection (SSTI) - Example 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a server side template injection (SSTI).">
+        <meta name="keywords" content="kali, linux, kali linux, server side, template, injection, server side template injection, ssti">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 2, 2022</p>
+                <h1 class="heading">Server Side Template Injection (SSTI) - Example 2</h1>
+                <p>In this tutorial, we will see how to perform a SSTI (Server-Side Template Injection) attack. The website allows us to register ourselves and provides us with a UUID that we can use with the password to login to the web application. Once logged in, we can buy furniture by adding it to the cart.</p>
+                <!-- <img src="../img/spider_template_injection/001.png" alt="" title="">
+                <img src="../img/spider_template_injection/002.png" alt="" title="">
+                <img src="../img/spider_template_injection/003.png" alt="" title=""> -->
+                <p>This is the main page of the website. It allows us to "Register" or "Login".</p>
+                <img src="../img/spider_template_injection/004.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>Let's register a user.</p>
+                <img src="../img/spider_template_injection/005.png" alt="User registration page." title="User registration page.">
+                <br>
+                <br>
+                <p>It returns a UUID which we can use to login to the website instead of using our username.</p>
+                <img src="../img/spider_template_injection/006.png" alt="Logging in to the website." title="Logging in to the website.">
+                <br>
+                <br>
+                <p>Once logged in we can purchase any furniture that we want by adding it to the cart. Let's click on "User Information" on the left panel to see what information it contains regarding the user.</p>
+                <img src="../img/spider_template_injection/007.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>This page contains only the username and UUID.</p>
+                <img src="../img/spider_template_injection/008.png" alt="User information page." title="User information page.">
+                <br>
+                <br>
+                <p>Let's copy the cookie and decode it to see what it contains.</p>
+                <img src="../img/spider_template_injection/009.png" alt="Copying the cookie from the website." title="Copying the cookie from the website.">
+                <br>
+                <br>
+                <p>The last part of the cookie (after the dot (.)) can't be decoded. But the part that is decoded shows that it contains the UUID and the items that we have added to the cart.</p>
+                <img src="../img/spider_template_injection/010.png" alt="Base64 decoding the cookie." title="Base64 decoding the cookie.">
+                <br>
+                <br>
+                <p>Let's click on a chair and add it to the cart.</p>
+                <img src="../img/spider_template_injection/011.png" alt="Adding an item to our cart." title="Adding an item to our cart.">
+                <br>
+                <br>
+                <p>Copy the cookie.</p>
+                <img src="../img/spider_template_injection/012.png" alt="Copying the cookie." title="Copying the cookie.">
+                <br>
+                <br>
+                <p>Base64 decoding the cookie shows that an item has been added to the cart. So this was a quick introduction to the functionality of the website.</p>
+                <img src="../img/spider_template_injection/013.png" alt="Base64 decoding the cookie." title="Base64 decoding the cookie.">
+                <br>
+                <br>
+                <p>Let's attempt a SSTI attack while registering a user.</p>
+                <img src="../img/spider_template_injection/014.png" alt="Register user with SSTI payload." title="Register user with SSTI payload.">
+                <br>
+                <br>
+                <p>Login to the website using the UUID.</p>
+                <img src="../img/spider_template_injection/015.png" alt="Logging in to the website." title="Logging in to the website.">
+                <br>
+                <br>
+                <p>Click on "User Information".</p>
+                <img src="../img/spider_template_injection/016.png" alt="Clicking on User Information." title="Clicking on User Information.">
+                <br>
+                <br>
+                <p>The username is displayed intact without any changes. And it doesn't crash the web application.</p>
+                <img src="../img/spider_template_injection/017.png" alt="User information page." title="User information page.">
+                <br>
+                <br>
+                <p>Register with a different payload in the username <span class="command">0xma${7*7}</span>. Login and click on "User Information".</p>
+                <img src="../img/spider_template_injection/018.png" alt="Register a user with SSTI payload." title="Register a user with SSTI payload.">
+                <!-- <img src="../img/spider_template_injection/019.png" alt="" title="">
+                <img src="../img/spider_template_injection/020.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>The username is displayed intact and there is no sign of SSTI yet.</p>
+                <img src="../img/spider_template_injection/021.png" alt="Username is displayed intact in the User Information page." title="Username is displayed intact in the User Information page.">
+                <br>
+                <br>
+                <p>Let's add another set of curly braces to the username <span class="command">0xma${{7*7}}</span>.</p>
+                <img src="../img/spider_template_injection/022.png" alt="Registering a username with SSTI payload." title="Registering a username with SSTI payload.">
+                <br>
+                <br>
+                <p>The web application responds with a message that the username cannot exceed 10 characters.</p>
+                <img src="../img/spider_template_injection/023.png" alt="Web application response that username cannot exceed 10 characters." title="Web application response that username cannot exceed 10 characters.">
+                <br>
+                <br>
+                <p>Let's reduce our username to 10 characters by registering <span class="command">ma${{7*7}}</span>. Login to the website and click on "User Information".</p>
+                <img src="../img/spider_template_injection/024.png" alt="Registering a user with SSTI payload." title="Registering a user with SSTI payload.">
+                <!-- <img src="../img/spider_template_injection/025.png" alt="" title="">
+                <img src="../img/spider_template_injection/026.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Bingo. We get the result of the multiplication in the SSTI payload. This shows that SSTI attack is possible.</p>
+                <img src="../img/spider_template_injection/027.png" alt="SSTI payload successful." title="SSTI payload successful.">
+                <br>
+                <br>
+                <p>Let's try a Jinja payload to see if it works. This <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection#jinja2---basic-injection">page</a> contains more information about Jinja payloads.</p>
+                <img src="../img/spider_template_injection/030.png" alt="GitHub page for Jinja payloads." title="GitHub page for Jinja payloads.">
+                <br>
+                <br>
+                <p>Since we are only restricted to 10 characters, we can only use <span class="command">config</span> instead of <span class="command">config.items()</span>.</p>
+                <img src="../img/spider_template_injection/028.png" alt="Viewing the config items." title="Viewing the config items.">
+                <!-- <img src="../img/spider_template_injection/029.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>The "User Information" page now displays configuration information.</p>
+                <img src="../img/spider_template_injection/031.png" alt="Reading the configuration in the website." title="Reading the configuration in the website.">
+                <br>
+                <br>
+                <p>This shows the secret key that is used to encrypt the cookies. This <a href="./spider_sql_injection.html">tutorial</a> shows how we can use this secret key to perform a SQL injection by injecting our payload in the cookie.</p>
+                <img src="../img/spider_template_injection/032.png" alt="" title="">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

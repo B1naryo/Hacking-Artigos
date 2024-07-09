@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Example 5</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform SQL injection by modifying JSON data that is sent to the web server.">
+        <meta name="keywords" content="kali, linux, kali linux, sql, injection, sql injection, sql injection json, web application hacking, sql injection hacking">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 5, 2022</p>
+                <h1 class="heading">SQL Injection - Example 5</h1>
+                <p>In this tutorial, we will see how to perform SQL injection by modifying data that is sent as JSON. Using this technique, we can list the contents of the databases, read local files on the server and gain reverse shell to the target.</p>
+                <p>This page contains a list of usernames. Clicking on "View" returns some info about that particular user.</p>
+                <img src="../img/altered_sql_injection/001.png" alt="List of users in the main page of the web application." title="List of users in the main page of the web application.">
+                <br>
+                <br>
+                <p>Clicking on the first user returns some information about the first user.</p>
+                <img src="../img/altered_sql_injection/002.png" alt="Clicking on the first user in the list." title="Clicking on the first user in the list.">
+                <br>
+                <br>
+                <p>This is the request that was sent when the first user was clicked. It contains two items: "id" and "secret".</p>
+                <img src="../img/altered_sql_injection/003.png" alt="Viewing the HTTP JSON request in Burp Suite." title="Viewing the HTTP JSON request in Burp Suite.">
+                <br>
+                <br>
+                <p>Let's add a single quote (') after the ID and see the response from the web server. It returns "Server Error" message.</p>
+                <img src="../img/altered_sql_injection/004.png" alt="Adding a single-quote to the ID to check for SQL injection." title="Adding a single-quote to the ID to check for SQL injection.">
+                <br>
+                <br>
+                <p>Commenting out the rest of the statement with (-- -) doesn't change the output. It still returns "Server Error".</p>
+                <img src="../img/altered_sql_injection/005.png" alt="Commenting out the rest of the SQL query." title="Commenting out the rest of the SQL query.">
+                <br>
+                <br>
+                <p>Removing the single-quote gets rid of the error message. The output is the same as before.</p>
+                <img src="../img/altered_sql_injection/006.png" alt="Removing the single-quote from the SQL injection query." title="Removing the single-quote from the SQL injection query.">
+                <br>
+                <br>
+                <p>Running the UNION SQL query shows that three columns are returned back from the query but we don't see any of our input.</p>
+                <img src="../img/altered_sql_injection/007.png" alt="Running the UNION SQL injection to determine the columns returned back." title="Running the UNION SQL injection to determine the columns returned back.">
+                <br>
+                <br>
+                <p>Let's enter an ID that we are sure doesn't exist in the database. We can see that 3 is displayed.</p>
+                <img src="../img/altered_sql_injection/008.png" alt="Entering an invalid ID to see the output of the SQL UNION query." title="Entering an invalid ID to see the output of the SQL UNION query.">
+                <br>
+                <br>
+                <p>The <span class="command">user()</span> function returns the current user that is running these SQL queries on the web server.</p>
+                <img src="../img/altered_sql_injection/009.png" alt="Executing the user() SQL function to determine the current user." title="Executing the user() SQL function to determine the current user.">
+                <br>
+                <br>
+                <p>We can also read files from the web server using the <span class="command">LOAD_FILE()</span> function. It shows the contents of the "/etc/passwd" file.</p>
+                <img src="../img/altered_sql_injection/010.png" alt="Reading the contents of the /etc/passwd file using the LOAD_FILE() MySQL function." title="Reading the contents of the /etc/passwd file using the LOAD_FILE() MySQL function.">
+                <br>
+                <br>
+                <p>Our next goal is to read the contents of the databases in the web server. It returns the first database name.</p>
+                <img src="../img/altered_sql_injection/011.png" alt="Listing the first database name." title="Listing the first database name.">
+                <br>
+                <br>
+                <p>In order to list all the databases in the system, we have to use the <span class="command">group_concat()</span> function. It returns five database names.</p>
+                <img src="../img/altered_sql_injection/012.png" alt="Listing all the databases in the web server." title="Listing all the databases in the web server.">
+                <br>
+                <br>
+                <p>Let's list all the tables in the "uhc" database. It returns six table names.</p>
+                <img src="../img/altered_sql_injection/013.png" alt="Listing the table names in the uhc database." title="Listing the table names in the uhc database.">
+                <br>
+                <br>
+                <p>The "users" table seems interesting. It lists all the columns in the "users" table.</p>
+                <img src="../img/altered_sql_injection/014.png" alt="Listing the columns in the users table." title="Listing the columns in the users table.">
+                <br>
+                <br>
+                <p>It dumps the contents of the "name" and "password" columns. Note that they are enclosed in parenthesis and are separated by a colon.</p>
+                <img src="../img/altered_sql_injection/015.png" alt="Dumping the contents of the name and password columns of the users table." title="Dumping the contents of the name and password columns of the users table.">
+                <br>
+                <br>
+                <p>Our next goal is to get a reverse shell on the web server. It Base64 encodes the command that we want to run on the web server.</p>
+                <img src="../img/altered_sql_injection/016.png" alt="Base64 encoding the reverse shell command." title="Base64 encoding the reverse shell command.">
+                <br>
+                <br>
+                <p>It saves the Bash command for a reverse shell to a file called "secret.php".</p>
+                <img src="../img/altered_sql_injection/017.png" alt="Saving the Bash reverse shell command in a file on the web server." title="Saving the Bash reverse shell command in a file on the web server.">
+                <br>
+                <br>
+                <p>Let's access the "secret.php" file through the browser.</p>
+                <img src="../img/altered_sql_injection/020.png" alt="Running the reverse shell script through the web browser." title="Running the reverse shell script through the web browser.">
+                <br>
+                <br>
+                <p>And now we have received a reverse shell on the box. Note that it is important to create the netcat listener before executing the script from the browser.</p>
+                <img src="../img/altered_sql_injection/018.png" alt="Receiving a reverse shell on the box." title="Receiving a reverse shell on the box.">
+                <br>
+                <br>
+                <p>We could have triggered the reverse shell script from the terminal using <span class="command">curl</span> as well.</p>
+                <img src="../img/altered_sql_injection/019.png" alt="Running the reverse shell script through curl." title="Running the reverse shell script through curl.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/hancliffe_template_injection.html" class="widget_links">Server Side Template Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_lfi.html" class="widget_links">Local File Inclusion (LFI) Attack - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

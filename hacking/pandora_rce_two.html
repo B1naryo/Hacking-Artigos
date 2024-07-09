@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 01</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">June 09, 2022</p>
+                <h1 class="heading">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 01</h1>
+                <p>In this tutorial, we will see how to perform a SQL injection attack in the pandora_console component of the Artica Pandora FMS 742. It allows an unauthenticated attacker to upgrade his unprivileged session via the /include/chart_generator.php "session_id" parameter which leads to login bypass.</p>
+                <p>This <a href="https://sploitus.com/exploit?id=100B9151-5B50-532E-BF69-74864F32DB02">page</a> contains more information about this exploit.</p>
+                <p>Paste in this URL in the browser.</p>
+                <img src="../img/pandora_rce_two/001.png" alt="URL with the SQL injection." title="URL with the SQL injection.">
+                <br>
+                <br>
+                <p>Browsing this URL displays a blank page.</p>
+                <img src="../img/pandora_rce_two/002.png" alt="Running the SQL injection in the browser." title="Running the SQL injection in the browser.">
+                <br>
+                <br>
+                <p>Browse to the "/pandora_console/" page or if you are already on that page then refresh it. It logs us in as admin.</p>
+                <img src="../img/pandora_rce_two/003.png" alt="Browsing to '/pandora_console/' to get admin privileges." title="Browsing to '/pandora_console/' to get admin privileges.">
+                <br>
+                <br>
+                <p>This simple PHP script will run whatever command we pass to the "cmd" parameter.</p>
+                <img src="../img/pandora_rce_two/004.png" alt="PHP script to run commands." title="PHP script to run commands.">
+                <br>
+                <br>
+                <p>Click on "Admin tools" and then click on "File manager".</p>
+                <img src="../img/pandora_rce_two/005.png" alt="Navigating to the 'File manager' page to upload the PHP script." title="Navigating to the 'File manager' page to upload the PHP script.">
+                <br>
+                <br>
+                <p>It shows a bunch of images. Click on "Upload file(s)".</p>
+                <img src="../img/pandora_rce_two/006.png" alt="Clicking on 'Upload file(s)'." title="Clicking on 'Upload file(s)'.">
+                <br>
+                <br>
+                <p>Click on Browse.</p>
+                <img src="../img/pandora_rce_two/007.png" alt="Clicking on Browse." title="Clicking on Browse.">
+                <br>
+                <br>
+                <p>Select the PHP file.</p>
+                <img src="../img/pandora_rce_two/008.png" alt="Selecting the PHP file." title="Selecting the PHP file.">
+                <br>
+                <br>
+                <p>Click on Go.</p>
+                <img src="../img/pandora_rce_two/009.png" alt="Clicking on Go." title="Clicking on Go.">
+                <br>
+                <br>
+                <p>Now we can utitlize the PHP script to run commands on the server. It runs the <span class="command">whoami</span> command.</p>
+                <img src="../img/pandora_rce_two/010.png" alt="Running the 'whoami' command on the target using curl through command injection." title="Running the 'whoami' command on the target using curl through command injection.">
+                <br>
+                <br>
+                <p>Let's run a Bash reverse shell.</p>
+                <img src="../img/pandora_rce_two/011.png" alt="Running Bash reverse shell using curl through command injection." title="Running Bash reverse shell using curl through command injection.">
+                <br>
+                <br>
+                <p>It is important to have <span class="command">netcat</span> listening before running the reverse shell.</p>
+                <img src="../img/pandora_rce_two/012.png" alt="Receiving the reverse shell with netcat." title="Receiving the reverse shell with netcat.">
+                <br>
+                <br>
+                <p>We can also upload a PHP reverse shell script to the target. Let's copy this script to the current working directory.</p>
+                <img src="../img/pandora_rce_two/013.png" alt="Finding a PHP reverse shell script on the system." title="Finding a PHP reverse shell script on the system.">
+                <br>
+                <br>
+                <p>Enter in your own IP address and the port on which you will be listening.</p>
+                <img src="../img/pandora_rce_two/014.png" alt="Entering in the IP address and port number to listen on." title="Entering in the IP address and port number to listen on.">
+                <br>
+                <br>
+                <p>Run the PHP reverse shell script using <span class="command">curl</span>.</p>
+                <img src="../img/pandora_rce_two/015.png" alt="Running PHP reverse shell script using curl." title="Running PHP reverse shell script using curl.">
+                <br>
+                <br>
+                <p>And we get a reverse shell on our <span class="command">netcat</span> listener.</p>
+                <img src="../img/pandora_rce_two/016.png" alt="Receiving the reverse shell with netcat." title="Receiving the reverse shell with netcat.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_kerberoasting.html" class="widget_links">AS-REP Roast Attach (Kerberoasting)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_reset_password_using_powerview.html" class="widget_links">Reset Password Using PowerView PowerShell Script</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Find Executables Through LFI</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">August 19, 2022</p>
+                <h1 class="heading">Find Executables Through LFI</h1>
+                <p>In this tutorial, we will see how to find an executable file on the target system. The web application shows that there is an application running that will check the key file that the users upload. Our goal is to find the location of this executable through a LFI attack that the web server is vulnerable to.</p>
+                <p>The main page of the web application says that it will check the license key file through an application called 'activate_license'.</p>
+                <img src="../img/retired_find_executable_file/001.png" alt="Main page of the web application." title="Main page of the web application.">
+                <br>
+                <br>
+                <p>The $PATH variable holds the directories in which the Linux system will look for executables.</p>
+                <img src="../img/retired_find_executable_file/002.png" alt="Checking the $PATH to find the directories that contain executables." title="Checking the $PATH to find the directories that contain executables.">
+                <br>
+                <br>
+                <p></p>
+                <img src="../img/retired_find_executable_file/003.png" alt="" title="">
+                <img src="../img/retired_find_executable_file/004.png" alt="" title="">
+                <img src="../img/retired_find_executable_file/005.png" alt="" title="">
+                <img src="../img/retired_find_executable_file/006.png" alt="" title="">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/retired_file_read.html" class="widget_links">Bypass PHP URL Filtering to Perform LFI Attack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/fingerprint_ear.html" class="widget_links">EAR (Execute After Redirect) Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/phoenix_wordpress_sql_injection.html" class="widget_links">Time-Based SQL Injection - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backendtwo_mass_assignment.html" class="widget_links">Mass Assignment Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/unicode_directory_travel_bypass_filter.html" class="widget_links">Perform Directory Traversal by Bypassing Filters</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backdoor_identify_process_through_lfi.html" class="widget_links">Identify Vulnerable Processes Through LFI</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_brute_force_pin.html" class="widget_links">Brute-Force Pins Using wfuzz</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

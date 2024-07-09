@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Example 3</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a SQL injection and through that also perform a LFI attack.">
+        <meta name="keywords" content="kali, linux, kali linux, sql, injection, sql injection, lfi, local file inclusion">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 28, 2022</p>
+                <h1 class="heading">SQL Injection - Example 3</h1>
+                <p>In this tutorial, we will see how to perform a SQL injection in a website where we submit our names to join a tournament. We will run the SQL injection attacks using Burp Suite and curl. After we identify a SQL injection vulnerability, we will write a Python script to perform a LFI (Local File Inclusion) attack to identify and download important files in the local system.</p>
+                <p>This shows the main page of the website where we can submit our names to join a tournament.</p>
+                <img src="../img/union_sql_injection/001.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>When we submit a valid user, we get a "Congratulations" message with a link to complete the challenge.</p>
+                <img src="../img/union_sql_injection/002.png" alt="Submit a valid user." title="Submit a valid user.">
+                <br>
+                <br>
+                <p>However, if a user has already registered and completed the challenge then that user cannot submit his name to the tournament.</p>
+                <img src="../img/union_sql_injection/003.png" alt="Submitting an invalid username." title="Submitting an invalid username.">
+                <br>
+                <br>
+                <p>This shows the POST request that is sent to the website when we submit a valid username. Let's send this request to Burp Repeater.</p>
+                <img src="../img/union_sql_injection/004.png" alt="Sending the username submission to Burp Repeater." title="Sending the username submission to Burp Repeater.">
+                <br>
+                <br>
+                <p>This is the response we get to a valid username submission.</p>
+                <img src="../img/union_sql_injection/005.png" alt="Valid username submission through Burp Repeater." title="Valid username submission through Burp Repeater.">
+                <br>
+                <br>
+                <p>And this is the response we get when we submit an invalid username.</p>
+                <img src="../img/union_sql_injection/006.png" alt="Invalid username submission through Burp Repeater." title="Invalid username submission through Burp Repeater.">
+                <br>
+                <br>
+                <p>Adding a single quote to the invalid username returns the single quote in the response.</p>
+                <img src="../img/union_sql_injection/007.png" alt="Adding a single quote to the invalid username." title="Adding a single quote to the invalid username.">
+                <br>
+                <br>
+                <p>Closing the SQL statement ";" and commenting out the rest of the SQL query "-- -" returns the same output that we saw earlier. This is the same as sending the username "ippsec".</p>
+                <img src="../img/union_sql_injection/008.png" alt="Inserting a SQL injection." title="Inserting a SQL injection.">
+                <br>
+                <br>
+                <p>Adding ";" to close the SQL query and "-- -" to comment out the rest of the query to a valid username also returns the same output as we saw earlier. It is like submitting "dangeroushacker".</p>
+                <img src="../img/union_sql_injection/009.png" alt="Inserting a SQL injection." title="Inserting a SQL injection.">
+                <br>
+                <br>
+                <p>Using this payload returns the "Congratulations" message even though "ippsec" user is not allowed to participate. The interesting thing is that the link to the challenge is not present. It is kind of strange. It can be that the word "OR" is being filtered.</p>
+                <img src="../img/union_sql_injection/010.png" alt="Sending a payload with OR in it." title="Sending a payload with OR in it.">
+                <br>
+                <br>
+                <p>Next, we try the "0xma" username. Even though this user is presented with a "Congratulations" message, no link to the challenge is presented. It can be that the words "OR" and "0X" are being filtered.</p>
+                <img src="../img/union_sql_injection/011.png" alt="Sending a payload with 0x in it." title="Sending a payload with 0x in it.">
+                <br>
+                <br>
+                <p>Now that we have some understanding of the web application, we can try a UNION injection technique to see how many columns are returned back to us. Sending a <span class="command">UNION SELECT 1</span> returns the same output that we got when we sent the username "ippsec". It can be an indication that only one column is returned back to us.</p>
+                <img src="../img/union_sql_injection/012.png" alt="Performing a UNION injection attack." title="Performing a UNION injection attack.">
+                <!-- <img src="../img/union_sql_injection/013.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Let's use the function <span class="command">user()</span> to return the current username on the web server. Note that we have removed the username "ippsec" because the output of this function is shown where the username "ippsec" was shown.</p>
+                <img src="../img/union_sql_injection/014.png" alt="Returning the current username using SQL injection." title="Returning the current username using SQL injection.">
+                <br>
+                <br>
+                <p>This shows the same SQL injection using <span class="command">curl</span>.</p>
+                <img src="../img/union_sql_injection/015.png" alt="Returning the current username using curl." title="Returning the current username using curl.">
+                <!-- <img src="../img/union_sql_injection/016.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Let's find out some database names. However, it returns only one database name.</p>
+                <img src="../img/union_sql_injection/017.png" alt="SQL injection to view retrieve the first database name." title="SQL injection to view retrieve the first database name.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/018.png" alt="SQL injection to view retrieve the first database name using curl." title="SQL injection to view retrieve the first database name using curl.">
+                <br>
+                <br>
+                <p>Using the <span class="command">GROUP_CONCAT()</span> function returns all the database names. It returns five databases and the one called "november" seems to be interesting.</p>
+                <img src="../img/union_sql_injection/019.png" alt="SQL injection to retrieve all the database names." title="SQL injection to retrieve all the database names.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/020.png" alt="SQL injection to retrieve all the database names using curl." title="SQL injection to retrieve all the database names using curl.">
+                <br>
+                <br>
+                <p>This SQL query returns all the table names inside the "november" database. There are two tables: flag and players.</p>
+                <img src="../img/union_sql_injection/021.png" alt="SQL injection to retrieve all table names in the november database." title="SQL injection to retrieve all table names in the november database.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/022.png" alt="SQL injection to retrieve all table names in the november database using curl." title="SQL injection to retrieve all table names in the november database using curl.">
+                <br>
+                <br>
+                <p>The following SQL query returns all the table names and the column names inside those tables. We can see that the "flag" table has one column called "one" and the "players" table has one column called "player".</p>
+                <img src="../img/union_sql_injection/023.png" alt="SQL injection to retrieve tables and columns within those tables." title="SQL injection to retrieve tables and columns within those tables.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/024.png" alt="SQL injection to retrieve tables and columns within those tables using curl." title="SQL injection to retrieve tables and columns within those tables using.">
+                <br>
+                <br>
+                <p>It returns the contents of the "one" column inside the "flag" table. This reveals the key to the challenge.</p>
+                <img src="../img/union_sql_injection/025.png" alt="SQL injection to retrive the contents of the one column in the flag table." title="SQL injection to retrive the contents of the one column in the flag table.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/026.png" alt="SQL injection to retrive the contents of the one column in the flag table using curl." title="SQL injection to retrive the contents of the one column in the flag table using curl.">
+                <br>
+                <br>
+                <p>It returns the contents of the "player" column in the "players" table.</p>
+                <img src="../img/union_sql_injection/027.png" alt="SQL injection to retrieve the contents of the player column in the players table." title="SQL injection to retrieve the contents of the player column in the players table.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/028.png" alt="SQL injection to retrieve the contents of the player column in the players table using curl." title="SQL injection to retrieve the contents of the player column in the players table using curl.">
+                <br>
+                <br>
+                <p>Let's submit the flag that we found earlier in the "flag" table.</p>
+                <img src="../img/union_sql_injection/029.png" alt="Submitting the flag." title="Submitting the flag.">
+                <br>
+                <br>
+                <p>We can see that the flag is accepted and our IP address has been whitelisted.</p>
+                <img src="../img/union_sql_injection/030.png" alt="Flag accepted message." title="Flag accepted message.">
+                <br>
+                <br>
+                <p>Next, we try to see if we can load a file using the <span class="command">LOAD_FILE()</span> function. It shows us the contents of the "/etc/passwd" file.</p>
+                <img src="../img/union_sql_injection/031.png" alt="SQL injection to load the /etc/passwd file." title="SQL injection to load the /etc/passwd file.">
+                <br>
+                <br>
+                <img src="../img/union_sql_injection/032.png" alt="SQL injection to load the /etc/passwd file using curl." title="SQL injection to load the /etc/passwd file using curl.">
+                <br>
+                <br>
+                <p>Our next goal is to write a Python script that can be used to perform a LFI (Local File Inclusion) attack using the SQL injection vulnerability that we have discovered. This simple script tries to retrieve the contents of the "/etc/passwd" file.</p>
+                <img src="../img/union_sql_injection/033.png" alt="Python script to retrieve the contents of the /etc/passwd file." title="Python script to retrieve the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <p>Our Python script has retrieved the contents of the "/etc/passwd" file but there is some irrelevant data at the beginning and end of the file.</p>
+                <img src="../img/union_sql_injection/034.png" alt="/etc/passwd file retrieved by the Python script." title="/etc/passwd file retrieved by the Python script.">
+                <img src="../img/union_sql_injection/035.png" alt="/etc/passwd file retrieved by the Python script." title="/etc/passwd file retrieved by the Python script.">
+                <br>
+                <br>
+                <p>We add a regular expression that will exclude anything upto and including "Sorry, " which appears at the beginning of the file.</p>
+                <img src="../img/union_sql_injection/036.png" alt="Filtering the output of the script." title="Filtering the output of the script.">
+                <br>
+                <br>
+                <p>The output starts with the contents of the "/etc/passwd" file.</p>
+                <img src="../img/union_sql_injection/037.png" alt="Output of the Python script." title="Output of the Python script.">
+                <img src="../img/union_sql_injection/038.png" alt="Output of the Python script." title="Output of the Python script.">
+                <br>
+                <br>
+                <p>Next, let's modify the regular expression to filter out anything that comes after " you".</p>
+                <img src="../img/union_sql_injection/039.png" alt="Adding regular expression to the script to filter out the results." title="Adding regular expression to the script to filter out the results.">
+                <br>
+                <br>
+                <p>Now the script returns the contents of the file in which we are interested and no irrelevant data.</p>
+                <img src="../img/union_sql_injection/040.png" alt="Python script filters out irrelevant data." title="Python script filters out irrelevant data.">
+                <img src="../img/union_sql_injection/041.png" alt="Python script filters out irrelevant data." title="Python script filters out irrelevant data.">
+                <br>
+                <br>
+                <p>But what happens if we try to retrieve a file that doesn't exist.</p>
+                <img src="../img/union_sql_injection/042.png" alt="Retrieving a file that doesn't exist." title="Retrieving a file that doesn't exist.">
+                <br>
+                <br>
+                <p>The script returns an empty output.</p>
+                <img src="../img/union_sql_injection/043.png" alt="Empty output while trying to retrieve a non-existent file." title="Empty output while trying to retrieve a non-existent file.">
+                <br>
+                <br>
+                <p>We modify the script to return the contents of a file if it exists and if it doesn't then it would print out 'Fail' on the screen. We also add another functionality to the script so that we could pass the filename that we want to retrieve by passing it as an argument to the script.</p>
+                <img src="../img/union_sql_injection/044.png" alt="Modifying the script so that it would take the filename as an argument." title="Modifying the script so that it would take the filename as an argument.">
+                <br>
+                <br>
+                <p>Passing a filename as an argument and it works.</p>
+                <img src="../img/union_sql_injection/045.png" alt="Successful file retrieval by passing the filename as an argument." title="Successful file retrieval by passing the filename as an argument.">
+                <img src="../img/union_sql_injection/046.png" alt="Successful file retrieval by passing the filename as an argument." title="Successful file retrieval by passing the filename as an argument.">
+                <br>
+                <br>
+                <p>Trying to retrieve a file that doesn't exist returns 'Fail'.</p>
+                <img src="../img/union_sql_injection/047.png" alt="Fail output while trying to retrieve a non-existent file." title="Fail output while trying to retrieve a non-existent file.">
+                <br>
+                <br>
+                <p>Let's try to perform a LFI (Local File Injection) attack by using the payloads from this GitHub page.</p>
+                <img src="../img/writer_sql_injection/047.png" alt="GitHub page with useful payloads." title="GitHub page with useful payloads.">
+                <br>
+                <br>
+                <p>This list contains the names of very important files on a Linux system.</p>
+                <img src="../img/writer_sql_injection/048.png" alt="List of important Linux files." title="List of important Linux files.">
+                <br>
+                <br>
+                <p>Our next goal is save the contents of the file that is returned back to us in the "files" directory.</p>
+                <img src="../img/union_sql_injection/048.png" alt="Saving the retrieved files in the files directory." title="Saving the retrieved files in the files directory.">
+                <br>
+                <br>
+                <p>Let's run the script and pass it the "lfi-linux-list.txt" file that we downloaded earlier. We can see that some files mentioned in the list are found in the target server.</p>
+                <img src="../img/union_sql_injection/049.png" alt="Trying to retrieve a list of all the files in the list." title="Trying to retrieve a list of all the files in the list.">
+                <br>
+                <br>
+                <p>As soon as the files are found, its contents are retrieved and saved in the "files" directory.</p>
+                <img src="../img/union_sql_injection/050.png" alt="Retrieved files are saved on the local system." title="Retrieved files are saved on the local system.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nosql_authentication_bypass.html" class="widget_links">NoSQL Authentication Bypass</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

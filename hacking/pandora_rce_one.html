@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Remote Command Execution in Artica Pandora FMS 744 (CVE-2020-13851)</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">June 23, 2022</p>
+                <h1 class="heading">Remote Command Execution in Artica Pandora FMS 744 (CVE-2020-13851)</h1>
+                <p>In this tutorial, we will see how to perform a get a reverse shell by triggering a RCE (Remote Code Execution) vulnerability in Artica Pandora FMS. The vulnerability exists in the "Events" page of the FMS.</p>
+                <p>Click on "Events" and then "View events".</p>
+                <img src="../img/pandora_rce_one/001.png" alt="Navigating to 'View events' in Artica Pandora FMS." title="Navigating to 'View events' in Artica Pandora FMS.">
+                <br>
+                <br>
+                <p>This is the captured request in Burp Suite. Send it to Burp Repeater.</p>
+                <img src="../img/pandora_rce_one/002.png" alt="Capturing the 'View events' HTTP request in Burp Suite." title="Capturing the 'View events' HTTP request in Burp Suite.">
+                <br>
+                <br>
+                <p>Let's delete all the irrelevant stuff and only keep the parameters that are needed. Enter in a Bash reverse shell command for the value of the "target" parameter.</p>
+                <img src="../img/pandora_rce_one/003.png" alt="Executing a Bash reverse shell command in Artica Pandora FMS." title="Executing a Bash reverse shell command in Artica Pandora FMS.">
+                <br>
+                <br>
+                <p>We receive a reverse shell on our netcat listener. It is important to have netcat listening before executing the reverse shell command.</p>
+                <img src="../img/pandora_rce_one/004.png" alt="Receiving reverse shell on the netcat listener." title="Receiving reverse shell on the netcat listener.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_two.html" class="widget_links">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_kerberoasting.html" class="widget_links">AS-REP Roast Attach (Kerberoasting)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_reset_password_using_powerview.html" class="widget_links">Reset Password Using PowerView PowerShell Script</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

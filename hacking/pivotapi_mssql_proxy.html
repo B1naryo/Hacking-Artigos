@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MSSQL Proxy</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 15, 2022</p>
+                <h1 class="heading">MSSQL Proxy</h1>
+                <p>In this tutorial, we will see how to proxy our traffic through Microsoft SQL Server. This technique can be used to perform lateral movement through a compromised Microsoft SQL Server. It is important to have "sysadmin" privileges on the Microsoft SQL server.</p>
+                <p>This is the GitHub page for <span class="command">mssqlproxy</span>.</p>
+                <img src="../img/pivotapi_mssql_proxy/001.png" alt="GitHub page for mssqlproxy." title="GitHub page for mssqlproxy.">
+                <br>
+                <br>
+                <p>This shows a quick description and usage of <span class="command">mssqlproxy</span>.</p>
+                <img src="../img/pivotapi_mssql_proxy/002.png" alt="Description and usage of mssqlproxy." title="Description and usage of mssqlproxy.">
+                <img src="../img/pivotapi_mssql_proxy/003.png" alt="Description and usage of mssqlproxy." title="Description and usage of mssqlproxy.">
+                <img src="../img/pivotapi_mssql_proxy/004.png" alt="Description and usage of mssqlproxy." title="Description and usage of mssqlproxy.">
+                <br>
+                <br>
+                <p>It is important to download these two DLL libraries as well.</p>
+                <img src="../img/pivotapi_mssql_proxy/005.png" alt="DLL libraries required for mssqlproxy." title="DLL libraries required for mssqlproxy.">
+                <br>
+                <br>
+                <p>Let's clone this repo.</p>
+                <img src="../img/pivotapi_mssql_proxy/006.png" alt="Cloning the mssqlproxy repo from GitHub." title="Cloning the mssqlproxy repo from GitHub.">
+                <br>
+                <br>
+                <p>It shows the contents of the repo. And note that I have also downloaded the DLL files in this directory.</p>
+                <img src="../img/pivotapi_mssql_proxy/007.png" alt="Contents of the mssqlproxy repo." title="Contents of the mssqlproxy repo.">
+                <br>
+                <br>
+                <p>Trying to connect to the target presents a "ModuleNotFoundError". This script is not compatible with Python3.</p>
+                <img src="../img/pivotapi_mssql_proxy/008.png" alt="ModuleNotFoundError while trying to run the mssqlproxy tool." title="ModuleNotFoundError while trying to run the mssqlproxy tool.">
+                <br>
+                <br>
+                <p>This script is written by 0xdf and it is compatible with Python3.</p>
+                <img src="../img/pivotapi_mssql_proxy/009.png" alt="Python3 compatible mssqlproxy script." title="Python3 compatible mssqlproxy script.">
+                <br>
+                <br>
+                <p>Let's download this script.</p>
+                <img src="../img/pivotapi_mssql_proxy/010.png" alt="Downloading the Python3 compatible mssqlproxy script." title="Downloading the Python3 compatible mssqlproxy script.">
+                <br>
+                <br>
+                <p>It connects to the target. There is no error.</p>
+                <img src="../img/pivotapi_mssql_proxy/011.png" alt="Connecting to the target using mssqlproxy." title="Connecting to the target using mssqlproxy.">
+                <br>
+                <br>
+                <p>Running <span class="command">help</span> shows the available commands.</p>
+                <img src="../img/pivotapi_mssql_proxy/012.png" alt="Running help to find the different commands for mssqlproxy." title="Running help to find the different commands for mssqlproxy.">
+                <br>
+                <br>
+                <p>Let's rename "assembly.dll" to "Microsoft.SqlServer.Proxy.dll".</p>
+                <img src="../img/pivotapi_mssql_proxy/013.png" alt="Renaming assembly.dll to Microsoft.SqlServer.Proxy.dll." title="Renaming assembly.dll to Microsoft.SqlServer.Proxy.dll.">
+                <br>
+                <br>
+                <p>Next, upload "reciclador.dll" to the target in the temp directory.</p>
+                <img src="../img/pivotapi_mssql_proxy/014.png" alt="Uploading reciclador.dll to the target using mssqlproxy." title="Uploading reciclador.dll to the target using mssqlproxy.">
+                <br>
+                <br>
+                <p>It installs "Microsoft.SqlServer.Proxy.dll" on the target.</p>
+                <img src="../img/pivotapi_mssql_proxy/015.png" alt="Installing Microsoft.SqlServer.Proxy.dll to the target using mssqlproxy." title="Installing Microsoft.SqlServer.Proxy.dll to the target using mssqlproxy.">
+                <br>
+                <br>
+                <p>It checks if "reciclador" is installed.</p>
+                <img src="../img/pivotapi_mssql_proxy/016.png" alt="mssqlproxy checks if reciclador is installed." title="mssqlproxy checks if reciclador is installed.">
+                <br>
+                <br>
+                <p>It enables proxy on port 1337.</p>
+                <img src="../img/pivotapi_mssql_proxy/017.png" alt="mssqlproxy enables proxy on port 1337." title="mssqlproxy enables proxy on port 1337.">
+                <br>
+                <br>
+                <p>We can see that port 1337 is in listening state on the local box.</p>
+                <img src="../img/pivotapi_mssql_proxy/018.png" alt="Checking to see if port 1337 is listening." title="Checking to see if port 1337 is listening.">
+                <br>
+                <br>
+                <p>Let's enable proxychains.</p>
+                <img src="../img/pivotapi_mssql_proxy/019.png" alt="Enabling proxychains using /etc/proxychains4.conf." title="Enabling proxychains using /etc/proxychains4.conf.">
+                <br>
+                <br>
+                <p>Scanning port 5985 (WinRM) using <span class="command">proxychains</span> shows that the port is open.</p>
+                <img src="../img/pivotapi_mssql_proxy/020.png" alt="Scanning port 5985 through namp using proxychains." title="Scanning port 5985 through namp using proxychains.">
+                <br>
+                <br>
+                <p>We can also connect to the Windows Remote Management port using <span class="command">evil-winrm</span>.</p>
+                <img src="../img/pivotapi_mssql_proxy/021.png" alt="Connecting to the target through evil-winrm using proxychains." title="Connecting to the target through evil-winrm using proxychains.">
+                <br>
+                <br>
+                <p>Directly scanning the target without proxychains shows that the port is filtered.</p>
+                <img src="../img/pivotapi_mssql_proxy/022.png" alt="Directly scanning the target's WinRM port without proxychains." title="Directly scanning the target's WinRM port without proxychains.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/search_gmsa.html" class="widget_links">Retrieve GMSA (Group Managed Service Accounts) Password</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/toby_crack_mysql_hashes.html" class="widget_links">Capture and Crack MariaDB/MySQL Hashes</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_maria_db_exploit.html" class="widget_links">MariaDB/MySQL Exploit Version 10.3.25 (CVE-2021-27928)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_02.html" class="widget_links">Dirty Pipe Exploit - Example 02</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_01.html" class="widget_links">Dirty Pipe Exploit - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/ricoh_printer_privilege_escalation.html" class="widget_links">Ricoh Printer Driver Privilege Escalation</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/scf_capture_hashes.html" class="widget_links">Capture Hashes with SCF File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/privilege_escalation_via_server_operators_group.html" class="widget_links">Privilege Escalation via Server Operators Group</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

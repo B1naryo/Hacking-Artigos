@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 02</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">June 14, 2022</p>
+                <h1 class="heading">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 02</h1>
+                <p>In this tutorial, we will see how to perform a SQL injection on the Artica Pandora FMS using sqlmap. This will allow us to read SESSION IDs from the database and we will see how to use wfuzz to find a valid SESSION ID and login as another user on the target.</p>
+                <p>This <a href="https://blog.sonarsource.com/pandora-fms-742-critical-code-vulnerabilities-explained/">page</a> contains more information about this vulnerability.</p>
+                <!-- <img src="../img/pandora_sql_injection/001.png" alt="" title=""> -->
+                <!-- <img src="../img/pandora_sql_injection/002.png" alt="" title=""> -->
+                <p>Visiting the console page presents a login page.</p>
+                <img src="../img/pandora_sql_injection/003.png" alt="Pandora login console page." title="Pandora login console page.">
+                <br>
+                <br>
+                <p>Let's browse to "chart_generator.php" console page. The response is "Access Is Not Granted".</p>
+                <img src="../img/pandora_sql_injection/004.png" alt="Browsing 'chart_generator.php' page in Artica Pandora FMS." title="chart_generator.php' page in Artica Pandora FMS.">
+                <br>
+                <br>
+                <p>Adding the "session_id" parameter with the value of a (') single-quote results in a SQL error. This can be an indication of a SQL injection vulnerability.</p>
+                <img src="../img/pandora_sql_injection/005.png" alt="Performing SQL injection on Artica Pandora FMS." title="Performing SQL injection on Artica Pandora FMS.">
+                <br>
+                <br>
+                <p>Copy the request from Burp Suite to a file.</p>
+                <img src="../img/pandora_sql_injection/006.png" alt="Copying the SQL injection attempt from Burp Suite to a file." title="Copying the SQL injection attempt from Burp Suite to a file.">
+                <br>
+                <br>
+                <p>This shows the captured request. Note that I have changed the value of the "session_id" parameter from a single-quote to 1.</p>
+                <img src="../img/pandora_sql_injection/007.png" alt="Changing the value of 'session_id' parameter from a single-quote to one." title="Changing the value of 'session_id' parameter from a single-quote to one.">
+                <br>
+                <br>
+                <p>Running <span class="command">sqlmap</span> with the "--dbs" option displays all the database names. There are two databases: information_schema and pandora.</p>
+                <img src="../img/pandora_sql_injection/008.png" alt="Running sqlmap to find database names." title="Running sqlmap to find database names.">
+                <img src="../img/pandora_sql_injection/009.png" alt="Running sqlmap to find database names." title="Running sqlmap to find database names.">
+                <br>
+                <br>
+                <p>It shows all the tables in the "pandora" database. It was able to find 178 tables.</p>
+                <img src="../img/pandora_sql_injection/010.png" alt="Running sqlmap to find tables in a database." title="Running sqlmap to find tables in a database.">
+                <img src="../img/pandora_sql_injection/011.png" alt="Running sqlmap to find tables in a database." title="Running sqlmap to find tables in a database.">
+                <br>
+                <br>
+                <p>It dumps the contents of the "tsessions_php" table. We can see that this table contains a bunch of session IDs.</p>
+                <img src="../img/pandora_sql_injection/012.png" alt="Running sqlmap to dump the contents of a table." title="Running sqlmap to dump the contents of a table.">
+                <img src="../img/pandora_sql_injection/013.png" alt="Running sqlmap to dump the contents of a table." title="Running sqlmap to dump the contents of a table.">
+                <br>
+                <br>
+                <p>Let's save all the session IDs in a file called "session_ids.txt".</p>
+                <img src="../img/pandora_sql_injection/014.png" alt="Saving the session IDs in a file." title="Saving the session IDs in a file.">
+                <br>
+                <br>
+                <p>Running <span class="command">wfuzz</span> with the session IDs in the file shows that one of the them produces an output with a different length.</p>
+                <img src="../img/pandora_sql_injection/015.png" alt="Running wfuzz to find the distinct session ID." title="Running wfuzz to find the distinct session ID.">
+                <img src="../img/pandora_sql_injection/016.png" alt="Running wfuzz to find the distinct session ID." title="Running wfuzz to find the distinct session ID.">
+                <br>
+                <br>
+                <p>Right-click on the browser window and click on Inspect. Click on the Storage tab and paste in the session ID.</p>
+                <img src="../img/pandora_sql_injection/017.png" alt="Pasting the valid session ID in the browser." title="Pasting the valid session ID in the browser.">
+                <br>
+                <br>
+                <p>Refresh the web page and now you have admin privileges on the FMS.</p>
+                <img src="../img/pandora_sql_injection/018.png" alt="Refreshing the page to get admin privileges on the FMS." title="Refreshing the page to get admin privileges on the FMS.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_one.html" class="widget_links">Remote Command Execution in Artica Pandora FMS 744 (CVE-2020-13851)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_two.html" class="widget_links">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_kerberoasting.html" class="widget_links">AS-REP Roast Attach (Kerberoasting)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_reset_password_using_powerview.html" class="widget_links">Reset Password Using PowerView PowerShell Script</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

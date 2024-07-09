@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Example 6</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">February 15, 2024</p>
+                <h1 class="heading">SQL Injection - Example 6</h1>
+                <p>In this tutorial, we will see how to perform a SQL injection attack. The website offers a game that records the number of times you click on the page. However, the PHP function that saves the user score is vulnerable to SQL injection attack.</p>
+                <p>This is the main page of the web application.</p>
+                <img src="../img/clicker_newline_injection/001.png" alt="Main page of the web application." title="Main page of the web application.">
+                <br>
+                <br>
+                <p>Let's register a new user.</p>
+                <img src="../img/clicker_newline_injection/002.png" alt="User Registration." title="User Registration.">
+                <br>
+                <br>
+                <p>Log in as the newly created user.</p>
+                <img src="../img/clicker_newline_injection/003.png" alt="Logging into the web application." title="Logging into the web application.">
+                <br>
+                <br>
+                <p>After logging in, the page provides three options: view the profile page, logout, and play the game.</p>
+                <img src="../img/clicker_newline_injection/004.png" alt="Main page after logging in." title="Main page after logging in.">
+                <br>
+                <br>
+                <p>The profile page shows the user score.</p>
+                <img src="../img/clicker_newline_injection/005.png" alt="Profile page of the user." title="Profile page of the user.">
+                <br>
+                <br>
+                <p>This is the game page. Clicking on the white circular area increases the number of clicks.</p>
+                <img src="../img/clicker_newline_injection/006.png" alt="Game page." title="Game page.">
+                <br>
+                <br>
+                <p>I clicked on the circular area five times, so the score shows 5. It gives us the option to save the game and then exit.</p>
+                <img src="../img/clicker_newline_injection/007.png" alt="Playing the game." title="Playing the game.">
+                <br>
+                <br>
+                <p>After exiting, it says that the game is saved.</p>
+                <img src="../img/clicker_newline_injection/008.png" alt="Game saved." title="Game saved.">
+                <br>
+                <br>
+                <p>The profile page shows the updated score.</p>
+                <img src="../img/clicker_newline_injection/009.png" alt="Profile page with the updated score." title="Profile page with the updated score.">
+                <br>
+                <br>
+                <p>This is the request that is passed to the web application when we save the game. It passes two parameters: clicks and level.</p>
+                <img src="../img/clicker_newline_injection/010.png" alt="HTTP request that saves the game." title="HTTP request that saves the game.">
+                <br>
+                <br>
+                <p>The PHP code for the site includes a check to see if the user is trying to set the 'role' parameter.</p>
+                <img src="../img/clicker_newline_injection/101.png" alt="PHP function that checks if the user is admin." title="PHP function that checks if the user is admin.">
+                <br>
+                <br>
+                <p>This is the function that takes the parameters and their values from the URL.</p>
+                <img src="../img/clicker_newline_injection/102.png" alt="PHP function that parses the URL." title="PHP function that parses the URL.">
+                <br>
+                <br>
+                <p>After passing the values for 'clicks' and 'level', this is how the update statement is supposed to look like.</p>
+                <img src="../img/clicker_newline_injection/104.png" alt="SQL update statement." title="SQL update statement.">
+                <br>
+                <br>
+                <p>We can add a new parameter called 'role' and set its value to 'Admin'. Note that after 'role', we are adding the '=' character '%3d' and then we are assigning 'Admin' to it.</p>
+                <img src="../img/clicker_newline_injection/011.png" alt="Adding the 'role' parameter to the HTTP request." title="Adding the 'role' parameter to the HTTP request.">
+                <br>
+                <br>
+                <p>We are URL encoding '=' to '%3d'. And by using URL encoding, the first parameter which is 'click' becomes "role='Admin',clicks". And since "lower(role='Admin',clicks)" is not equal to 'role', the new update statement becomes like this.</p>
+                <img src="../img/clicker_newline_injection/105.png" alt="The new SQL update statement." title="The new SQL update statement.">
+                <br>
+                <br>
+                <p>Now that we have logged in with the 'Admin' role, we get a new link to 'Administration'.</p>
+                <img src="../img/clicker_newline_injection/012.png" alt="A new link to the Administration page after newline injection attack." title="A new link to the Administration page after newline injection attack.">
+                <br>
+                <br>
+                <p>The 'Administration' page shows a list of all the top players.</p>
+                <img src="../img/clicker_newline_injection/013.png" alt="List of top players." title="List of top players.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/clicker_newline_injection.html" class="widget_links">Newline Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/retired_file_read.html" class="widget_links">Bypass PHP URL Filtering to Perform LFI Attack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/fingerprint_ear.html" class="widget_links">EAR (Execute After Redirect) Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/phoenix_wordpress_sql_injection.html" class="widget_links">Time-Based SQL Injection - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backendtwo_mass_assignment.html" class="widget_links">Mass Assignment Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_one.html" class="widget_links">Remote Command Execution in Artica Pandora FMS 744 (CVE-2020-13851)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/unicode_directory_travel_bypass_filter.html" class="widget_links">Perform Directory Traversal by Bypassing Filters</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_sql_injection.html" class="widget_links">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 02</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pandora_rce_two.html" class="widget_links">SQL Injection Vulnerability in Artica Pandora FMS 742 (CVE-2021-32099) - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_kerberoasting.html" class="widget_links">AS-REP Roast Attach (Kerberoasting)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

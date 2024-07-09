@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bypass PHP URL Filtering to Perform LFI Attack</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">September 29, 2022</p>
+                <h1 class="heading">Bypass PHP URL Filtering to Perform LFI Attack</h1>
+                <p>In this tutorial, we will see how to bypass URL filtering to read local files on the target system. I will use some custom PHP code to explain the backend logic and how it can be bypassed. And at the end we will use a simple Bash script to read local files from the target using the terminal without having to use the browser.</p>
+                <p>This is the main page of the website. The 'page' parameter in the URL takes a filename which it will display. In this case, it is 'default.html'.</p>
+                <img src="../img/retired_file_read/001.png" alt="Main page of the web application that reads a file." title="Main page of the web application that reads a file.">
+                <br>
+                <br>
+                <p>Trying to browse the root page of the web application redirets us to '/index.php?page=default.html'.</p>
+                <img src="../img/retired_file_read/002.png" alt="The web application redirects when trying to access the root page." title="The web application redirects when trying to access the root page.">
+                <br>
+                <br>
+                <p>Following the redirect displays this PHP code. It is filtering '../' and './'. However, it is very easy to bypass it.</p>
+                <img src="../img/retired_file_read/003.png" alt="PHP code used to filter filenames passed to the URL." title="PHP code used to filter filenames passed to the URL.">
+                <br>
+                <br>
+                <p>We can see that in the first line, 'Are' is filtered from 'HowAreYou'. And the output is 'HowYou'. And in the third line, I have squeezed an 'Are' inside the 'Are'. The end result is 'HowAreYou'.</p>
+                <img src="../img/retired_file_read/004.png" alt="PHP code to demonstrate the input filtering." title="PHP code to demonstrate the input filtering.">
+                <img src="../img/retired_file_read/005.png" alt="PHP code to demonstrate the input filtering." title="PHP code to demonstrate the input filtering.">
+                <br>
+                <br>
+                <p>I have used the same code from the web application. We can see that using '.....///' equates to '../' after filtering is done which is what we want in order to perform directory traversal.</p>
+                <img src="../img/retired_file_read/006.png" alt="Bypassing the PHP code to perform directory traversal attack." title="Bypassing the PHP code to perform directory traversal attack.">
+                <img src="../img/retired_file_read/007.png" alt="Bypassing the PHP code to perform directory traversal attack." title="Bypassing the PHP code to perform directory traversal attack.">
+                <br>
+                <br>
+                <p>Using the filter bypass technique, we are able to read the /etc/passwd file.</p>
+                <img src="../img/retired_file_read/008.png" alt="Reading the /etc/passwd file." title="Reading the /etc/passwd file.">
+                <br>
+                <br>
+                <img src="../img/retired_file_read/009.png" alt="Reading the /etc/passwd file." title="Reading the /etc/passwd file.">
+                <br>
+                <br>
+                <p>This is a simple Bash script that allows us to read files by just passing in the filename.</p>
+                <img src="../img/retired_file_read/010.png" alt="Simple Bash script to read the files." title="Simple Bash script to read the files.">
+                <img src="../img/retired_file_read/011.png" alt="Simple Bash script to read the files." title="Simple Bash script to read the files.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/fingerprint_ear.html" class="widget_links">EAR (Execute After Redirect) Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/phoenix_wordpress_sql_injection.html" class="widget_links">Time-Based SQL Injection - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backendtwo_mass_assignment.html" class="widget_links">Mass Assignment Vulnerability</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/unicode_directory_travel_bypass_filter.html" class="widget_links">Perform Directory Traversal by Bypassing Filters</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/backdoor_identify_process_through_lfi.html" class="widget_links">Identify Vulnerable Processes Through LFI</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_brute_force_pin.html" class="widget_links">Brute-Force Pins Using wfuzz</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_sql_injection.html" class="widget_links">SQL Injection - Example 5</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_php_type_juggling.html" class="widget_links">PHP Type Juggling</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/bolt_template_injection.html" class="widget_links">Server Side Template Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/spider_template_injection.html" class="widget_links">Server Side Template Injection - Example 2</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

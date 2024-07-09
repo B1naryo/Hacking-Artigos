@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ARP Privilege Escalation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to use ARP to read files with root privileges on a Linux system.">
+        <meta name="keywords" content="kali, linux, kali linux, arp, privilege, escalation, arp privilege escalation, read files with root permissions">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 24, 2022</p>
+                <h1 class="heading">ARP Privilege Escalation</h1>
+                <p>In this tutorial, we will see how to use ARP to read files that can only be read by users with root level privileges. We are assuming that the ARP tool has the "ep" capabilities set. If these capabilities are set then it can allow us to read any file that we want on the Linux system.</p>
+                <p>It shows the permission assigned to the "arp" executable.</p>
+                <img src="../img/arp_privilege_escalation/001.png" alt="Viewing the permissions of the arp tool." title="Viewing the permissions of the arp tool.">
+                <br>
+                <br>
+                <p>The <span class="command">getcap</span> command can be used to view the capabilities assigned to <span class="command">arp</span>. We can see that the "ep" capabilities are set. This <a href="https://tbhaxor.com/understanding-linux-capabilities/">page</a> contains more information about capabilities assigned to executables.</p>
+                <img src="../img/arp_privilege_escalation/002.png" alt="Viewing the capabilities of arp." title="Viewing the capabilities of arp.">
+                <br>
+                <br>
+                <p>This <a href="https://gtfobins.github.io/gtfobins/arp/">page</a> contains more information about how to use <span class="command">arp</span> to read files from the Linux system. For this demo, we are trying to read the contents of the "/root/root.txt" file which can only be read by the root user.</p>
+                <img src="../img/arp_privilege_escalation/003.png" alt="Viewing the root file." title="Viewing the root file.">
+                <br>
+                <br>
+                <p>Next, we can try to read the "/etc/shadow" file.</p>
+                <img src="../img/arp_privilege_escalation/004.png" alt="Viewing the /etc/shadow file." title="Viewing the /etc/shadow file.">
+                <br>
+                <br>
+                <p>We can use <span class="command">grep</span> and <span class="command">cut</span> to filter the results so that we could just read the "/etc/shadow" file. This is something I learned from <a href="https://0xdf.gitlab.io/2022/02/12/htb-earlyaccess.html">0xdf's</a> blog post.</p>
+                <img src="../img/arp_privilege_escalation/005.png" alt="Viewing the /etc/shadow file." title="Viewing the /etc/shadow file.">
+                <br>
+                <br>
+                <p>We can also read the root user's private SSH key. Using this key, we can login to the target box as the root user.</p>
+                <img src="../img/arp_privilege_escalation/006.png" alt="Viewing the .ssh/id_rsa file." title="Viewing the .ssh/id_rsa file.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/capture_ldap_credentials.html" class="widget_links">Capture LDAP Credentials</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/privilege_escalation_via_server_operators_group.html" class="widget_links">Privilege Escalation via Server Operators Group</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel &lt; 4.4.0-116</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

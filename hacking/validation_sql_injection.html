@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Second Order SQL Injection - Example 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a SQL injection and gain a reverse shell on the box.">
+        <meta name="keywords" content="kali, linux, kali linux, sql, injection, sql injection, reverse, shell, reverse shell, php, php reverse shell">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 12, 2022</p>
+                <h1 class="heading">Second Order SQL Injection - Example 2</h1>
+                <p>In this tutorial, we will see how to perform a second order SQL injection. The SQL injection will be performed on an item from the drop down list which the developer forgot to filter for bad characters. After revealing the contents of the database, we will see how to write a PHP file on the web server and gain reverse shell on the box.</p>
+                <p>This is the main page of the website. It takes a username and we can select our country from the drop-down list.</p>
+                <img src="../img/validation_sql_injection/001.png" alt="Main page of the website." title="Main page of the website.">
+                <br>
+                <br>
+                <p>Let's enter a username and select a country.</p>
+                <img src="../img/validation_sql_injection/002.png" alt="Entering a username and selecting a country." title="Entering a username and selecting a country.">
+                <br>
+                <br>
+                <p>Once the username is submitted, it lists all the users in that particular country.</p>
+                <img src="../img/validation_sql_injection/003.png" alt="Viewing the users in a country." title="Viewing the users in a country.">
+                <br>
+                <br>
+                <p>The HTTP request that is used to submit a username in Burp Suite. It takes two paramters: username and country.</p>
+                <img src="../img/validation_sql_injection/004.png" alt="User submission HTTP request in Burp Suite." title="User submission HTTP request in Burp Suite.">
+                <br>
+                <br>
+                <p>Upon receiving the HTTP request, the web application sends us a 302 redirect to "/account.php". Note that it also sets a cookie which is the MD5 sum of the username.</p>
+                <img src="../img/validation_sql_injection/005.png" alt="302 redirect from the web application in Burp Suite." title="302 redirect from the web application in Burp Suite.">
+                <br>
+                <br>
+                <p>Next, a GET request is sent to "/account.php" with the cookie sent in the 302 redirect response.</p>
+                <img src="../img/validation_sql_injection/006.png" alt="GET request in response to a 302 redirect response in Burp Suite." title="GET request in response to a 302 redirect response in Burp Suite.">
+                <br>
+                <br>
+                <p>Finally, the 200 response which displays the "Welcome" message.</p>
+                <img src="../img/validation_sql_injection/007.png" alt="200 response from the Burp Suite." title="200 response from the Burp Suite.">
+                <br>
+                <br>
+                <p>Running the username through <span class="command">md5sum</span> shows the MD5 sum of the username which is the same as the cookie sent in the GET request.</p>
+                <img src="../img/validation_sql_injection/008.png" alt="md5sum of the username." title="md5sum of the username.">
+                <br>
+                <br>
+                <p>Now that we have an understanding of the web application, let's try to perform our SQL injection attack. Right-click on the HTTP request that is used to submit the username and country and send it to Burp Repeater.</p>
+                <img src="../img/validation_sql_injection/009.png" alt="Sending the user submission HTTP request to Burp Repeater." title="Sending the user submission HTTP request to Burp Repeater.">
+                <br>
+                <br>
+                <p>Since the country name is not submitted by the user in an input box, the developer hasn't filtered it for bad characters. Let's add a single-quote (') after the country name to see how the web application handles it.</p>
+                <img src="../img/validation_sql_injection/010.png" alt="Adding a single-quote to perform a SQL injection in Burp Repeater." title="Adding a single-quote to perform a SQL injection in Burp Repeater.">
+                <br>
+                <br>
+                <p>Following the redirect leads to "/account.php".</p>
+                <img src="../img/validation_sql_injection/011.png" alt="Redirected to account.php." title="Redirected to account.php.">
+                <br>
+                <br>
+                <p>We can make a MD5 sum of the username using the terminal or we can also copy this MD5 sum from the "Set-Cookie" response header.</p>
+                <img src="../img/validation_sql_injection/012.png" alt="Running the username through md5sum." title="Running the username through md5sum.">
+                <br>
+                <br>
+                <p>The next step is to right-click on the page and click on "Inspect". Let's paste in the MD5 sum of the user for the cookie and reload the page. Modifying the cookie of the page is important because we need to access the page to which this particular user belongs (in this case it is Austria).</p>
+                <img src="../img/validation_sql_injection/013.png" alt="Pasting in the MD5 sum of the username." title="Pasting in the MD5 sum of the username.">
+                <br>
+                <br>
+                <p>Note the single quote (') after the country name: Austria. It also reveals an error. This can be an indication of a SQL injection vulnerability.</p>
+                <img src="../img/validation_sql_injection/014.png" alt="SQL injection vulnerability indication." title="SQL injection vulnerability indication.">
+                <br>
+                <br>
+                <p>The assumption is that this is the SQL query used to retrieve the usernames that belong to a particular country. The query returns one column called "username". If one column is returned then using a UNION statement with one value shouldn't return an error.</p>
+                <img src="../img/validation_sql_injection/015.png" alt="Assumption of the SQL query used on the web server." title="Assumption of the SQL query used on the web server.">
+                <br>
+                <br>
+                <p>Let's test this theory by adding a UNION statement with one value and send the request.</p>
+                <img src="../img/validation_sql_injection/016.png" alt="Testing for a UNION injection using Burp Repeater." title="Testing for a UNION injection using Burp Repeater.">
+                <!-- <img src="../img/validation_sql_injection/017.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Again, it is important to modify the cookie so we could access the users for Austria.</p>
+                <img src="../img/validation_sql_injection/018.png" alt="Modifying the cookie in the browser." title="Modifying the cookie in the browser.">
+                <br>
+                <br>
+                <p>We can see that "1" is returned back to us. It is an indication of a successful UNION-based SQL injection.</p>
+                <img src="../img/validation_sql_injection/019.png" alt="Successful UNION based SQL injection." title="Successful UNION based SQL injection.">
+                <br>
+                <br>
+                <p>Let's see if we can return a string.</p>
+                <img src="../img/validation_sql_injection/020.png" alt="Testing a string with a UNION based SQL injection." title="Testing a string with a UNION based SQL injection.">
+                <br>
+                <br>
+                <p>Good. 0xma is returned back to us.</p>
+                <img src="../img/validation_sql_injection/021.png" alt="Successful UNION-based SQL injection." title="Successful UNION-based SQL injection.">
+                <br>
+                <br>
+                <p>The <span class="command">user()</span> function returns the current user that has access to the database.</p>
+                <img src="../img/validation_sql_injection/022.png" alt="SQL injection to find the user that accesses the database." title="SQL injection to find the user that accesses the database.">
+                <br>
+                <br>
+                <p>The user with which we are accessing the database is "uhc".</p>
+                <img src="../img/validation_sql_injection/023.png" alt="The page displays the database access user." title="The page displays the database access user.">
+                <br>
+                <br>
+                <p>It reveals the databases in the system.</p>
+                <img src="../img/validation_sql_injection/024.png" alt="SQL injection command to reveal the databases." title="SQL injection command to reveal the databases.">
+                <br>
+                <br>
+                <p>The system has four databases.</p>
+                <img src="../img/validation_sql_injection/025.png" alt="Database names revealed." title="Database names revealed.">
+                <br>
+                <br>
+                <p>It displays the table names in the "registration" database.</p>
+                <img src="../img/validation_sql_injection/026.png" alt="Displaying the table names in the registration database." title="Displaying the table names in the registration database.">
+                <br>
+                <br>
+                <p>The "registration" database has one table in it called "registration".</p>
+                <img src="../img/validation_sql_injection/027.png" alt="Table names in the registration database." title="Table names in the registration database.">
+                <br>
+                <br>
+                <p>It displays the column names in the "registration" table.</p>
+                <img src="../img/validation_sql_injection/028.png" alt="Displaying the column names in the registration table." title="Displaying the column names in the registration table.">
+                <br>
+                <br>
+                <p>The "registration" table has four columns in it: username, userhash, country and regtime.</p>
+                <img src="../img/validation_sql_injection/029.png" alt="Column names in the registration table." title="Column names in the registration table.">
+                <br>
+                <br>
+                <p>It displays the contents of the "username" column.</p>
+                <img src="../img/validation_sql_injection/030.png" alt="Displaying the contents of the username column." title="Displaying the contents of the username column.">
+                <br>
+                <br>
+                <p>The usernames in the "registration" table.</p>
+                <img src="../img/validation_sql_injection/031.png" alt="Usernames in the registration table." title="Usernames in the registration table.">
+                <br>
+                <br>
+                <p>Next, let's find out what privileges does the "uhc" user have on the box.</p>
+                <img src="../img/validation_sql_injection/032.png" alt="SQL injection to find the privileges of a user on the DBMS." title="SQL injection to find the privileges of a user on the DBMS.">
+                <br>
+                <br>
+                <p>It lists all the privileges of the "uhc" user. One of the important privileges is the "CREATE" privilege, which allows us to write files on the web server.</p>
+                <img src="../img/validation_sql_injection/033.png" alt="Displaying all the privileges of the database user." title="Displaying all the privileges of the database user.">
+                <br>
+                <br>
+                <p>It writes a PHP web shell on the target which will allow us to execute commands via the "cmd" parameter.</p>
+                <img src="../img/validation_sql_injection/034.png" alt="Writing a PHP web shell on the web server." title="Writing a PHP web shell on the web server.">
+                <br>
+                <br>
+                <p>Trying to access the web shell displays a warning. The web shell requires a parameter with a command to be executed.</p>
+                <img src="../img/validation_sql_injection/035.png" alt="Accessing the web shell without a command." title="Accessing the web shell without a command.">
+                <br>
+                <br>
+                <p>It runs the <span class="command">id</span> command. We have access to the web server as the "www-data" user.</p>
+                <img src="../img/validation_sql_injection/036.png" alt="Running the id command reveals the www-data user." title="Running the id command reveals the www-data user.">
+                <br>
+                <br>
+                <p>Let's send this request to Burp Repeater so that we could easily execute other commands.</p>
+                <img src="../img/validation_sql_injection/037.png" alt="Sending the request to Burp Repeater." title="Sending the request to Burp Repeater.">
+                <br>
+                <br>
+                <p>It is a simple Bash command that will give us a reverse shell.</p>
+                <img src="../img/validation_sql_injection/038.png" alt="Bash reverse shell command." title="Bash reverse shell command.">
+                <br>
+                <br>
+                <p>However, it is important to URL encode the command before sending it to the web server.</p>
+                <img src="../img/validation_sql_injection/039.png" alt="URL encoding the command before sending it to the web server." title="URL encoding the command before sending it to the web server.">
+                <br>
+                <br>
+                <p>Send the URL encoded command.</p>
+                <img src="../img/validation_sql_injection/040.png" alt="Sending the URL encoded command through Burp Repeater." title="Sending the URL encoded command through Burp Repeater.">
+                <br>
+                <br>
+                <p>A reverse shell is received from the web server.</p>
+                <img src="../img/validation_sql_injection/041.png" alt="Receiving a reverse shell from the web server." title="Receiving a reverse shell from the web server.">
+                <br>
+                <br>
+                <p>It also possible to run commands from the terminal using <span class="command">curl</span>.</p>
+                <img src="../img/validation_sql_injection/062.png" alt="Executing commands via curl from the terminal." title="Executing commands via curl from the terminal.">
+                <br>
+                <br>
+                <p>Command execution is successful and a reverse shell is received from the web server.</p>
+                <img src="../img/validation_sql_injection/063.png" alt="Receiving a reverse shell from the web server." title="Receiving a reverse shell from the web server.">
+                <!-- <img src="../img/validation_sql_injection/059.png" alt="" title="">
+                <img src="../img/validation_sql_injection/060.png" alt="" title="">
+                <img src="../img/validation_sql_injection/061.png" alt="" title=""> -->
+                <br>
+                <br>
+                <p>Our next goal is to automate this SQL injection technique. This Python script prompts us to enter a username to register, and also the SQL query that we want to run.</p>
+                <img src="../img/validation_sql_injection/064.png" alt="Running the SQL injection Python script." title="Running the SQL injection Python script.">
+                <br>
+                <br>
+                <p>Note that the username that is registered and the SQL query that is executed is separated by a colon (:).</p>
+                <img src="../img/validation_sql_injection/065.png" alt="Executing SQL query using the Python script." title="Executing SQL query using the Python script.">
+                <br>
+                <br>
+                <img src="../img/validation_sql_injection/066.png" alt="Executing SQL query using the Python script." title="Executing SQL query using the Python script.">
+                <br>
+                <br>
+                <img src="../img/validation_sql_injection/067.png" alt="Executing SQL query using the Python script." title="Executing SQL query using the Python script.">
+                <br>
+                <br>
+                <img src="../img/validation_sql_injection/068.png" alt="Executing SQL query using the Python script." title="Executing SQL query using the Python script.">
+                <br>
+                <br>
+                <p>The Python script sends all the requests through Burp Suite.</p>
+                <img src="../img/validation_sql_injection/069.png" alt="Traffic passing through Burp Suite." title="Traffic passing through Burp Suite.">
+                <br>
+                <br>
+                <p>This is another variation of the above Python script. This script doesn't prompt us to enter a username, instead it randomly generates a string and registers that as our username.</p>
+                <img src="../img/validation_sql_injection/070.png" alt="Python script to execute SQL query." title="Python script to execute SQL query.">
+                <br>
+                <br>
+                <p>These are the users which the script have registered on the web application while executing SQL queries.</p>
+                <img src="../img/validation_sql_injection/071.png" alt="Executing the SQL queries through the Python script." title="Executing the SQL queries through the Python script.">
+                <br>
+                <br>
+                <p>I want to show another technique that I learned from <a href="https://www.youtube.com/watch?v=dFKsSYVeVbI">ippsec's</a> walkthrough. This technique involves creating a Flask proxy server that can be accessed on the localhost and it forwards our traffic to the target.</p>
+                <img src="../img/validation_sql_injection/043.png" alt="Flask proxy server script." title="Flask proxy server script.">
+                <br>
+                <br>
+                <p>Flask proxy server is running on port 80.</p>
+                <img src="../img/validation_sql_injection/044.png" alt="Running the Flask proxy server on port 80." title="Running the Flask proxy server on port 80.">
+                <br>
+                <br>
+                <p>Accessing the localhost from the browser returns "Web App with Python Flask!".</p>
+                <img src="../img/validation_sql_injection/045.png" alt="Accessing the proxy server from browser." title="Accessing the proxy server from browser.">
+                <br>
+                <br>
+                <p>The Flask proxy shows that it received a connection from the localhost.</p>
+                <img src="../img/validation_sql_injection/046.png" alt="Flask proxy logging the traffic." title="Flask proxy logging the traffic.">
+                <br>
+                <br>
+                <p>It reads the "country" parameter from the GET request and displays it.</p>
+                <img src="../img/validation_sql_injection/047.png" alt="Flask proxy server script to read the country parameter." title="Flask proxy server script to read the country parameter.">
+                <br>
+                <br>
+                <p>Flask proxy server is running on port 80.</p>
+                <img src="../img/validation_sql_injection/048.png" alt="Running the Flask proxy server on port 80." title="Running the Flask proxy server on port 80.">
+                <br>
+                <br>
+                <p>Note that "0xma" is passed as the country name and it gets displayed.</p>
+                <img src="../img/validation_sql_injection/049.png" alt="Accessing the proxy server from browser and passing a country name." title="Accessing the proxy server from browser and passing a country name.">
+                <br>
+                <br>
+                <p>The Flask proxy shows that it received a connection from the localhost with a "country" parameter.</p>
+                <img src="../img/validation_sql_injection/050.png" alt="Flask proxy logging the traffic." title="Flask proxy logging the traffic.">
+                <br>
+                <br>
+                <p>Let's modify the script to generate a random string for the username that it will register. The country name will be taken from the GET request.</p>
+                <img src="../img/validation_sql_injection/051.png" alt="Flask proxy server script to read the country parameter and generates a random username." title="Flask proxy server script to read the country parameter and generates a random username.">
+                <br>
+                <br>
+                <p>Flask proxy server is running on port 80.</p>
+                <img src="../img/validation_sql_injection/052.png" alt="Running the Flask proxy server on port 80." title="Running the Flask proxy server on port 80.">
+                <br>
+                <br>
+                <p>Note that it accepts a country name from URL and sends a randomly generated username to the web application.</p>
+                <img src="../img/validation_sql_injection/053.png" alt="Accessing the proxy server from browser and passing a country name with a random username." title="Accessing the proxy server from browser and passing a country name with a random username.">
+                <br>
+                <br>
+                <p>The Flask proxy shows that it received a connection from the localhost with a "country" parameter.</p>
+                <img src="../img/validation_sql_injection/054.png" alt="Flask proxy logging the traffic." title="Flask proxy logging the traffic.">
+                <br>
+                <br>
+                <p>Let's capture the request in Burp Intercept and save it to a file.</p>
+                <img src="../img/validation_sql_injection/055.png" alt="Capturing the request in Burp Intercept." title="Capturing the request in Burp Intercept.">
+                <br>
+                <br>
+                <p>It is saved as "reg_request".</p>
+                <img src="../img/validation_sql_injection/056.png" alt="Saving the request from Burp Intercept." title="Saving the request from Burp Intercept.">
+                <br>
+                <br>
+                <p>It is time to run <span class="command">sqlmap</span> using the captured request. It detects the SQL injection vulnerability and will allow us to dump the contents of the database if we choose to do so.</p>
+                <img src="../img/validation_sql_injection/057.png" alt="Running sqlmap to identify SQL injection vulnerability." title="Running sqlmap to identify SQL injection vulnerability.">
+                <img src="../img/validation_sql_injection/058.png" alt="Running sqlmap to identify SQL injection vulnerability." title="Running sqlmap to identify SQL injection vulnerability.">
+                <br>
+                <br>
+                <p>And at last, it is the PHP script on the web server that registers the user.</p>
+                <img src="../img/validation_sql_injection/042.png" alt="PHP script to register the username." title="PHP script to register the username.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/xxe_injection.html" class="widget_links">XXE Injection</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nosql_authentication_bypass.html" class="widget_links">NoSQL Authentication Bypass</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">WPAdmin Shell Upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_theme_edit.html" class="widget_links">Reverse Shell in WordPress via Theme (Template) Edit Feature</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wordpress_edit_plugin.html" class="widget_links">Reverse Shell in WordPress via Edit Plugin Feature</a></li>
+                        </ul>
+                    </div>
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

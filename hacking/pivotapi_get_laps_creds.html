@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Retrieve LAPS (Local Administrator Password Solution) Credentials</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 24, 2022</p>
+                <h1 class="heading">Retrieve LAPS (Local Administrator Password Solution) Credentials</h1>
+                <p>In this tutorial, we will see how to retrieve the LAPS (Local Administrator Password Solution) password from the system. We will start by adding a user to the LAPS group. And once the user is part of the LAPS group, we will see how to retrieve the LAPS password and login to the target as administrator.</p>
+                <p>It shows all the available groups in the system. Note the two LAPS related groups.</p>
+                <img src="../img/pivotapi_get_laps_creds/001.png" alt="Running net groups to find all available groups." title="Running net groups to find all available groups.">
+                <br>
+                <br>
+                <p>The presence of the "AdmPwd.dll" is a good indication that LAPS is being used.</p>
+                <img src="../img/pivotapi_get_laps_creds/002.png" alt="Presence of admpwd.dll on the target." title="Presence of admpwd.dll on the target.">
+                <br>
+                <br>
+                <p>Let's copy PowerView.ps1 to the target using <span class="command">scp</span>.</p>
+                <img src="../img/pivotapi_get_laps_creds/003.png" alt="Copying PowerView.ps1 to the target using scp." title="Copying PowerView.ps1 to the target using scp.">
+                <br>
+                <br>
+                <p>It shows that the PowerView.ps1 script has been successfully copied to the target.</p>
+                <img src="../img/pivotapi_get_laps_creds/004.png" alt="PowerView.ps1 successfully copied to the target." title="PowerView.ps1 successfully copied to the target.">
+                <br>
+                <br>
+                <p>Let's import this PowerShell module. Once imported, we can reset "gibdeon's" password using the <span class="command">Set-DomainUserPassword</span> cmdlet from PowerView.ps1. I am doing this because I don't have "gibdeon's" password and this user alone can add other users to the "LAPS" related groups.</p>
+                <img src="../img/pivotapi_get_laps_creds/005.png" alt="Resetting a user's password with Set-DomainUserPassword from PowerView.ps1 PowerShell script." title="Resetting a user's password with Set-DomainUserPassword from PowerView.ps1 PowerShell script.">
+                <br>
+                <br>
+                <p>It creates an authentication object with the "gibdeon" user and the newly modified password.</p>
+                <img src="../img/pivotapi_get_laps_creds/006.png" alt="Creating an authentication object with gibdeon user." title="Creating an authentication object with gibdeon user.">
+                <br>
+                <br>
+                <p>Since this user has the privileges of creating a new user, we can create a new user account.</p>
+                <img src="../img/pivotapi_get_laps_creds/007.png" alt="Creating a new user." title="Creating a new user.">
+                <br>
+                <br>
+                <p>Running <span class="command">net users</span> shows that the new user account has been created successfully.</p>
+                <img src="../img/pivotapi_get_laps_creds/008.png" alt="Running net users to list all the accounts on the system." title="Running net users to list all the accounts on the system.">
+                <br>
+                <br>
+                <p>Let's add this newly created account to the "WinRM", "SSH" and "LAPS READ" groups.</p>
+                <img src="../img/pivotapi_get_laps_creds/009.png" alt="Adding a user to the WinRM, SSH and LAPS READ groups." title="Adding a user to the WinRM, SSH and LAPS READ groups.">
+                <img src="../img/pivotapi_get_laps_creds/010.png" alt="Adding a user to the WinRM, SSH and LAPS READ groups." title="Adding a user to the WinRM, SSH and LAPS READ groups.">
+                <img src="../img/pivotapi_get_laps_creds/011.png" alt="Adding a user to the WinRM, SSH and LAPS READ groups." title="Adding a user to the WinRM, SSH and LAPS READ groups.">
+                <br>
+                <br>
+                <p>Since we have added this user to the "SSH" group, it possible to SSH into this box.</p>
+                <img src="../img/pivotapi_get_laps_creds/012.png" alt="Logging into the target using SSH." title="Logging into the target using SSH.">
+                <br>
+                <br>
+                <p>The <span class="command">Get-ADComputer</span> cmdlet allows us to retrieve the password. It is possible because the user is part of the "LAPS READ" group.</p>
+                <img src="../img/pivotapi_get_laps_creds/013.png" alt="Retrieving the LAPS administrator password using Get-ADComputer." title="Retrieving the LAPS administrator password using Get-ADComputer.">
+                <br>
+                <br>
+                <p>Now that we have the password, we can log in to the box using the administrador (or administrator) account.</p>
+                <img src="../img/pivotapi_get_laps_creds/014.png" alt="Logging into the target as administrador or administrator account." title="Logging into the target as administrador or administrator account.">
+                <br>
+                <br>
+                <p>As a side note, I have enabled port forwarding using SSH which takes all the traffic on port 5985 on the local box and sends it to port 5985 on the target box.</p>
+                <img src="../img/pivotapi_get_laps_creds/015.png" alt="Enabling port forwarding on port 5985 using SSH." title="Enabling port forwarding on port 5985 using SSH.">
+                <br>
+                <br>
+                <p>It shows that the local box listening on port 5985.</p>
+                <img src="../img/pivotapi_get_laps_creds/016.png" alt="Local box is listening on port 5985." title="Local box is listening on port 5985.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/pivotapi_mssql_proxy.html" class="widget_links">MSSQL Proxy</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/search_gmsa.html" class="widget_links">Retrieve GMSA (Group Managed Service Accounts) Password</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/toby_crack_mysql_hashes.html" class="widget_links">Capture and Crack MariaDB/MySQL Hashes</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/shibboleth_maria_db_exploit.html" class="widget_links">MariaDB/MySQL Exploit Version 10.3.25 (CVE-2021-27928)</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_02.html" class="widget_links">Dirty Pipe Exploit - Example 02</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/altered_dirty_pipe_01.html" class="widget_links">Dirty Pipe Exploit - Example 01</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/ricoh_printer_privilege_escalation.html" class="widget_links">Ricoh Printer Driver Privilege Escalation</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/scf_capture_hashes.html" class="widget_links">Capture Hashes with SCF File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/privilege_escalation_via_server_operators_group.html" class="widget_links">Privilege Escalation via Server Operators Group</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>

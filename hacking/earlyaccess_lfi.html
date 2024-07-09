@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Local File Inclusion (LFI) Attack - Example 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a local file inclusion (LFI) attack against a web application.">
+        <meta name="keywords" content="kali, linux, kali linux, bug, bounty, bug bounty, lfi, local file inclusion">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">April 30, 2022</p>
+                <h1 class="heading">Local File Inclusion (LFI) Attack - Example 1</h1>
+                <p>In this tutorial, we will see how to perform a Local File Inclusion (LFI) attack. LFI attacks can be used by an attacker to expose files on the web server. Using this method we can access sensitive files on the web server and read its contents.</p>
+                <p>This is the main page for the admin user.</p>
+                <img src="../img/earlyaccess_lfi/001.png" alt="Main page of the web application." title="Main page of the web application.">
+                <br>
+                <br>
+                <p>This is the "Hashing-Tools" page. Note that the URL has "tool=hashing" at the end of it.</p>
+                <img src="../img/earlyaccess_lfi/002.png" alt="Hashing-Tools page." title="Hashing-Tools page.">
+                <br>
+                <br>
+                <p>This is the "File-Tools" page. Note that the URL has "tool=file" at the end of it.</p>
+                <img src="../img/earlyaccess_lfi/003.png" alt="File-Tools page." title="File-Tools page.">
+                <br>
+                <br>
+                <p>In the "Hashing-Tools" page, let's enter something in the input field and click on the "Hash" button.</p>
+                <img src="../img/earlyaccess_lfi/004.png" alt="Entering text to get a hash." title="Entering text to get a hash.">
+                <br>
+                <br>
+                <p>It displays the password hash.</p>
+                <img src="../img/earlyaccess_lfi/005.png" alt="Hash of the password." title="Hash of the password.">
+                <br>
+                <br>
+                <p>This shows the POST request that is sent to the web application when we enter a password. Note that the body of the POST request has four parameters: action, redirect, password and hash_function.</p>
+                <img src="../img/earlyaccess_lfi/006.png" alt="POST request that sends the password." title="POST request that sends the password.">
+                <br>
+                <br>
+                <p>Click on the black Hash button.</p>
+                <img src="../img/earlyaccess_lfi/007.png" alt="Clicking on the hash button." title="Clicking on the hash button.">
+                <br>
+                <br>
+                <p>This page allows us to compare a password with a hash to see if they match. Enter in a password and hash and then click on Verify.</p>
+                <img src="../img/earlyaccess_lfi/008.png" alt="Entering a password and hash." title="Entering a password and hash.">
+                <br>
+                <br>
+                <p>We get a message that says the password and hash matches.</p>
+                <img src="../img/earlyaccess_lfi/009.png" alt="Password and hash matched." title="Password and hash matched.">
+                <br>
+                <br>
+                <p>This is the POST request that is sent when we try to verify a password and a hash. Note that it also has four parameters: action, password, hash and hash_function.</p>
+                <img src="../img/earlyaccess_lfi/010.png" alt="POST request that shows the password and hash." title="POST request that shows the password and hash.">
+                <br>
+                <br>
+                <p>It was an introduction to the functionality of the web application. When we try to visit "http://dev.earlyaccess.htb/actions/hash.php", it redirects us to "http://dev.earlyaccess.htb/home.php".</p>
+                <img src="../img/earlyaccess_lfi/011.png" alt="Trying to access the hash.php page." title="Trying to access the hash.php page.">
+                <br>
+                <br>
+                <p>This is the home page for the admin user which we saw earlier.</p>
+                <img src="../img/earlyaccess_lfi/012.png" alt="Redirected to the home page for the admin user." title="Redirected to the home page for the admin user.">
+                <br>
+                <br>
+                <p>One of the pages had "tool=file" in the URL. Accessing "http://dev.earlyaccess.htb/actions/file.php" requires a file to be specified.</p>
+                <img src="../img/earlyaccess_lfi/013.png" alt="file.php page which asks us to specify a file." title="file.php page which asks us to specify a file.">
+                <br>
+                <br>
+                <p>Let's try to brute-force parameters that the file.php page might take. Note that it returns a lot of output.</p>
+                <img src="../img/earlyaccess_lfi/014.png" alt="Running wfuzz to find parameters." title="Running wfuzz to find parameters.">
+                <br>
+                <br>
+                <p><span class="command">--hh 35</span> filters all the output that has 35 characters in it. It identifies "filepath" as a valid parameter.</p>
+                <img src="../img/earlyaccess_lfi/015.png" alt="Finding the correct parameter." title="Finding the correct parameter.">
+                <br>
+                <br>
+                <p>The web application allows files that are in the current directory. Accessing "/etc/passwd" is not possible.</p>
+                <img src="../img/earlyaccess_lfi/016.png" alt="Error that says it cannot read files outside the current directory." title="Error that says it cannot read files outside the current directory.">
+                <br>
+                <br>
+                <p>Accessing "file.php" works and the response is that the file has executed successfully.</p>
+                <img src="../img/earlyaccess_lfi/017.png" alt="Reading file.php file." title="Reading file.php file.">
+                <br>
+                <br>
+                <p>Accessing "hash.php" works as well.</p>
+                <img src="../img/earlyaccess_lfi/018.png" alt="Reading hash.php file." title="Reading hash.php file.">
+                <br>
+                <br>
+                <p>Let's try to use PHP filter to access the contents of the "file.php" in Base64 format. However, for some reason we are not successful in reading the file.</p>
+                <img src="../img/earlyaccess_lfi/019.png" alt="Trying to use PHP filter to access file.php file." title="Trying to use PHP filter to access file.php file.">
+                <br>
+                <br>
+                <p>Next, we try to read the contents of the "hash.php" file. It displays the contents of this file in Base64 encoded format.</p>
+                <img src="../img/earlyaccess_lfi/020.png" alt="Reading the contents of the hash.php file in Base64 encoded format." title="Reading the contents of the hash.php file in Base64 encoded format.">
+                <br>
+                <br>
+                <p>Paste the Base64 encoded string in a new file.</p>
+                <img src="../img/earlyaccess_lfi/021.png" alt="Pasting the Base64 encoded string in a file." title="Pasting the Base64 encoded string in a file.">
+                <br>
+                <br>
+                <p>The file can be Base64 decoded with the <span class="command">base64 -d hash.b64.php</span> command.</p>
+                <img src="../img/earlyaccess_lfi/022.png" alt="Base64 decoding the file." title="Base64 decoding the file.">
+                <p>If you liked reading this article, you can follow me on Twitter: <a href="https://twitter.com/mujtabareads">mujtabareads</a>.</p>
+                <br>
+                <hr>
+                <br>
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/spider_sql_injection.html" class="widget_links">SQL Injection - Example 4</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/union_sql_injection.html" class="widget_links">SQL Injection - Example 3</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/previse_sql_injection.html" class="widget_links">SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_xss.html" class="widget_links">Cross-Site Scripting (XSS) Attack - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/validation_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/writer_sql_injection.html" class="widget_links">SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/stacked_xss.html" class="widget_links">XSS (Cross-Site Scripting) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/earlyaccess_sql_injection.html" class="widget_links">Second Order SQL Injection - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/nunchucks_server_side_template_injection.html" class="widget_links">Server Side Template Injection (SSTI) - Example 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/node_cookie_deserialization_command_injection.html" class="widget_links">Node Cookie Deserialization Command Injection</a></li>
+                        </ul>
+                    </div>
+                    <!-- <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2024</span>
+            </div>
+        </footer>
+    </body>
+</html>
